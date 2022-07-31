@@ -13,11 +13,11 @@ import {StateType} from "./Redux/State";
 
 type AppPropsType = {
     state: StateType
-    addPost: () => void
-    updateNewPostsText: (newText: string) => void
-    addMessage: () => void
-    updateNewMessageText: (text: string) => void
-
+    // addPost: () => void
+    // updateNewPostsText: (newText: string) => void
+    // addMessage: () => void
+    // updateNewMessageText: (text: string) => void
+    dispatch: (action: any) => void
 }
 
 function App(props: AppPropsType) {
@@ -33,16 +33,18 @@ function App(props: AppPropsType) {
                     <Route path='/news' component={News}/>
                     <Route path='/music' component={Music}/>
                     <Route path='/setting' component={Setting}/>
-                    <Route path='/dialogs' render={() => <Dialogs
-                        dialogsPage={props.state.dialogsPage}
-                        addMessage={props.addMessage}
-                        updateNewMessageText={props.updateNewMessageText}
-                        newMessageText={props.state.dialogsPage.newMessageText}
-                    />}/>
-                    <Route path='/profile' render={() => <Profile
+                    <Route path='/dialogs' render={() =>
+                        <Dialogs
+                            dialogsPage={props.state.dialogsPage}
+                            dispatch={props.dispatch}
+                            newMessageText={props.state.dialogsPage.newMessageText}
+                        />
+                    }/>
+                    <Route path='/profile' render={() =>
+                        <Profile
                         profilePage={props.state.profilePage}
-                        addPost={props.addPost}
-                        updateNewPostsText={props.updateNewPostsText}/>}/>
+                        dispatch={props.dispatch}
+                        />}/>
 
 
                 </div>
