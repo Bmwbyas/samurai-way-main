@@ -1,13 +1,14 @@
 import React from 'react';
 import s from './Navbar.module.css'
 import {NavLink} from "react-router-dom";
-import {navbarDataType} from "../../Redux/State";
+import { StoreType} from "../../Redux/Store";
 
 type navBarPropsType = {
-    navbarData: navbarDataType
+    store:StoreType
 }
 
 export const Navbar = (props: navBarPropsType) => {
+
     return (
         <nav className={s.nav}>
             <div className={s.item}><NavLink to="/profile" activeClassName={s.active}>Profile</NavLink></div>
@@ -20,7 +21,7 @@ export const Navbar = (props: navBarPropsType) => {
                 <div className={s.item}>Friends</div>
                 <div className={s.friendsList}>
 
-                    {props.navbarData.navBarFriends.map((el,index) => {
+                    {props.store._state.navbarData.navBarFriends.map((el,index) => {
                         return (<div key={index} className={s.friendsItem}>
                             <div className={s.circleFriends}></div>
                             {el.name}

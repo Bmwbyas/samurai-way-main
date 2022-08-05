@@ -3,21 +3,23 @@ import './App.css';
 import {Header} from './components/Header/Header';
 import {Navbar} from "./components/Navbar/Navbar";
 import {Profile} from "./components/Profile/Profile";
-import {Dialogs} from "./components/Dialogs/Dialogs";
+
 import {BrowserRouter, Route} from "react-router-dom";
 import {News} from "./components/News/News";
 import {Music} from "./components/Music/Music";
 import {Setting} from "./components/Setting/Setting";
-import {StateType} from "./Redux/State";
+import {StateType, StoreType} from "./Redux/Store";
+import {DialogsContainer} from "./components/Dialogs/DialogsContainer";
 
 
 type AppPropsType = {
-    state: StateType
+    state:StateType
     // addPost: () => void
     // updateNewPostsText: (newText: string) => void
     // addMessage: () => void
     // updateNewMessageText: (text: string) => void
     dispatch: (action: any) => void
+    store:StoreType
 }
 
 function App(props: AppPropsType) {
@@ -25,7 +27,7 @@ function App(props: AppPropsType) {
         <BrowserRouter>
             <div className='app-wrapper'>
                 <Header/>
-                <Navbar navbarData={props.state.navbarData}/>
+                <Navbar store={props.store}/>
 
                 <div className='app-wrapper-content'>
                     {/*<Route path='/dialogs' component={Dialogs}/>*/}
@@ -34,16 +36,13 @@ function App(props: AppPropsType) {
                     <Route path='/music' component={Music}/>
                     <Route path='/setting' component={Setting}/>
                     <Route path='/dialogs' render={() =>
-                        <Dialogs
-                            dialogsPage={props.state.dialogsPage}
-                            dispatch={props.dispatch}
-                            newMessageText={props.state.dialogsPage.newMessageText}
+                        <DialogsContainer
+                            store={props.store}
                         />
                     }/>
                     <Route path='/profile' render={() =>
                         <Profile
-                        profilePage={props.state.profilePage}
-                        dispatch={props.dispatch}
+                            store={props.store}
                         />}/>
 
 

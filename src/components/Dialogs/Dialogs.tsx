@@ -3,26 +3,23 @@ import s from './Dialogs.module.css'
 
 import {DialogsItems} from "./DialogItem/DialogsItems";
 import {Messages} from "./Message/Messages";
-import {
+import {dialogsPageType} from "../../Redux/Store";
 
-    addMessageActionCreator,
-    messagesPageType,
-    onChangeMessageHandlerActionCreator
-} from "../../Redux/State";
 
 type DialogsPropsType={
-    dialogsPage:messagesPageType
+    dialogsPage:dialogsPageType
     newMessageText:string
-    dispatch: (action: any) => void
+    addMessage:()=>void
+    updateNewMessage:(newMessage:string)=>void
 }
 export const Dialogs = (props:DialogsPropsType) => {
 
     const addMessageHandler=()=>{
-        props.dispatch(addMessageActionCreator())
+        props.addMessage()
     }
     const onChangeMessageHandler=(e:ChangeEvent<HTMLTextAreaElement>)=>{
         let text=e.currentTarget.value
-        if(text) props.dispatch(onChangeMessageHandlerActionCreator(text))
+        props.updateNewMessage(text)
     }
     return (
         <div className={s.dialogs}>
