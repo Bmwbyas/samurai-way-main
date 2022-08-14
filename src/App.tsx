@@ -8,47 +8,35 @@ import {BrowserRouter, Route} from "react-router-dom";
 import {News} from "./components/News/News";
 import {Music} from "./components/Music/Music";
 import {Setting} from "./components/Setting/Setting";
-import {StateType, StoreType} from "./Redux/Store";
+
 import {DialogsContainer} from "./components/Dialogs/DialogsContainer";
+import {NavbarContainer} from "./components/Navbar/NavbarContainer";
 
 
-type AppPropsType = {
-    state:StateType
-    // addPost: () => void
-    // updateNewPostsText: (newText: string) => void
-    // addMessage: () => void
-    // updateNewMessageText: (text: string) => void
-    dispatch: (action: any) => void
-    store:StoreType
-}
 
-function App(props: AppPropsType) {
+
+
+function App() {
     return (
-        <BrowserRouter>
-            <div className='app-wrapper'>
-                <Header/>
-                <Navbar store={props.store}/>
 
-                <div className='app-wrapper-content'>
-                    {/*<Route path='/dialogs' component={Dialogs}/>*/}
-                    {/*<Route path='/profile' component={Profile}/>*/}
-                    <Route path='/news' component={News}/>
-                    <Route path='/music' component={Music}/>
-                    <Route path='/setting' component={Setting}/>
-                    <Route path='/dialogs' render={() =>
-                        <DialogsContainer
-                            store={props.store}
-                        />
-                    }/>
-                    <Route path='/profile' render={() =>
-                        <Profile
-                            store={props.store}
-                        />}/>
+        <div className='app-wrapper'>
+            <Header/>
+            <NavbarContainer/>
+
+            <div className='app-wrapper-content'>
+                <Route path='/news' component={News}/>
+                <Route path='/music' component={Music}/>
+                <Route path='/setting' component={Setting}/>
+                <Route path='/dialogs' render={() =>
+                    <DialogsContainer/>
+                }/>
+                <Route path='/profile' render={() =>
+                    <Profile/>}/>
 
 
-                </div>
             </div>
-        </BrowserRouter>
+        </div>
+
     );
 }
 

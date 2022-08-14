@@ -1,42 +1,41 @@
-import { profileReduser} from "./profile-reduser";
-import { dialogsReduser} from "./dialogs-reduser";
-import {navbarReduser} from "./navbar-reduser";
-
-export type postDataType = {
+import { profileReducer} from "./profile-reduser";
+import { dialogsReducer} from "./dialogs-reduser";
+import {navbarReducer} from "./navbar-reduser";
+type postDataType = {
     id: number
     message: string
     likesCount: number
 }
-export type dialogsDataType = {
+type dialogsDataType = {
     id: number
     name: string
 }
-export type messageDataType = {
+type messageDataType = {
     id: number
     message: string
 }
-export type profilePageType = {
+type profilePageType = {
     postData: postDataType[]
     newPostText: string
 }
-export type dialogsPageType = {
+type dialogsPageType = {
     dialogsData: dialogsDataType[]
     messagesData: messageDataType[]
     newMessageText: string
 }
-export type navBarFriendsType = {
+type navBarFriendsType = {
     id: number
     name: string
 }
-export type navbarDataType = {
+type navbarDataType = {
     navBarFriends: navBarFriendsType[]
 }
-export type StateType = {
+type StateType = {
     profilePage: profilePageType
     dialogsPage: dialogsPageType
     navbarData: navbarDataType
 }
-export type StoreType={
+type StoreType={
     _state:StateType
     getState:()=>StateType
     callSubscriber:(state?:StateType)=>void
@@ -44,8 +43,7 @@ export type StoreType={
     dispatch:({type}:{type:string})=>void         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!1111111
 
 }
-
-export let store:StoreType = {
+let store:StoreType = {
     _state: {
         profilePage: {
             postData: [
@@ -91,9 +89,13 @@ export let store:StoreType = {
     },
 
     dispatch(action){
-        this._state.profilePage=profileReduser(this._state.profilePage,action);
-        this._state.dialogsPage=dialogsReduser(this._state.dialogsPage,action);
-        this._state.navbarData=navbarReduser(this._state.navbarData,action);
+        // @ts-ignore
+        this._state.profilePage=profileReducer(this._state.profilePage,action);
+        // @ts-ignore
+        this._state.dialogsPage=dialogsReducer(this._state.dialogsPage,action);
+        // @ts-ignore
+        this._state.navbarData=navbarReducer(this._state.navbarData,action);
+        // @ts-ignore
         this.callSubscriber(this._state);
 
 

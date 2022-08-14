@@ -9,7 +9,7 @@
 }
 .dialog img{
     width: 30px;
-    border-radius: 15px;
+    border-radius: 50%;
 }
 .dialog a{
     text-decoration: none;
