@@ -1,12 +1,10 @@
 import React from 'react';
 import s from "./../Dialogs.module.css"
 import {NavLink} from "react-router-dom";
-import {dialogsDataType} from "../../../Redux/redux-store";
-
-
+import {DialogsDataType} from "../../../Redux/dialogs-reduser";
 
 type dialogItemsPropsType={
-    dialogsData:dialogsDataType[]
+    dialogsData:DialogsDataType[]
 }
 type DialogPropsType = {
     name: string

@@ -1,11 +1,11 @@
 import React from 'react';
 import s from './../Dialogs.module.css'
-import {messageDataType} from "../../../Redux/redux-store";
+import {MessageDataType} from "../../../Redux/dialogs-reduser";
 
 
 
 type messageItemPropsType={
-    messagesData:messageDataType[]
+    messagesData:MessageDataType[]
 }
 type MessagePropsType = {
     message: string

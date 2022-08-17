@@ -1,13 +1,9 @@
 import React from 'react';
 import s from './Navbar.module.css'
 import {NavLink} from "react-router-dom";
-import {navbarPageType} from "../../Redux/redux-store";
+import {NavBarPropsType} from "./NavbarContainer";
 
-type navBarPropsType = {
-    navbarPage: navbarPageType
-}
-
-export const Navbar = (props: navBarPropsType) => {
+export const Navbar = (props: NavBarPropsType) => {
 
     return (
         <nav className={s.nav}>
@@ -25,6 +21,9 @@ export const Navbar = (props: navBarPropsType) => {
             </div>
             <div className={s.item}>
                 <NavLink to="/setting" activeClassName={s.active}>Setting</NavLink>
+            </div>
+            <div className={s.item}>
+                <NavLink to="/users" activeClassName={s.active}>Users</NavLink>
             </div>
 
             <div className={s.friends}>
