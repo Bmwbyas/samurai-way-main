@@ -1,10 +1,13 @@
 export type UsersDataType = {
     id: number
-    fullName: string
+    name: string
     followed: boolean
-    status: string
-    description: string
-    location: { city: string, country: string }
+    status: string | null
+    uniqueUrlName: string | null
+    photos: {
+        small: string | null
+        ladge: string | null
+    }
 }
 
 export const CHANGE_FOLLOW = 'CHANGE-FOLLOW';
@@ -14,11 +17,11 @@ type FollowUserActionType = {
     type: 'CHANGE-FOLLOW',
     userID: number,
 }
-type showMoreUsers = {
+type ShowMoreUsers = {
     type: 'SHOW-MORE-USERS',
     users: UsersDataType[]
 }
-type UsersReducerActionType = FollowUserActionType | showMoreUsers
+type UsersReducerActionType = FollowUserActionType | ShowMoreUsers
 export type UsersPageStateType = typeof initialState
 let initialState = {
     usersData: [] as UsersDataType[]
