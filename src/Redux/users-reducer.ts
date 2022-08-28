@@ -21,11 +21,25 @@ type ShowMoreUsers = {
     type: 'SHOW-MORE-USERS',
     users: UsersDataType[]
 }
-type UsersReducerActionType = FollowUserActionType | ShowMoreUsers
+type SetCurrentPageType={
+    type:'SET-CURRENT-PAGE'
+    currentPage:number
+}
+type SetTotalcountType=ReturnType<typeof setTotalCountAC>
+type SetIsFetchingType=ReturnType<typeof setIsFetchingAC>
+type UsersReducerActionType = FollowUserActionType
+    | ShowMoreUsers
+    |SetCurrentPageType
+    |SetTotalcountType
+    |SetIsFetchingType
+
 export type UsersPageStateType = typeof initialState
 let initialState = {
-    usersData: [] as UsersDataType[]
-
+    usersData: [] as UsersDataType[],
+    pageSize:5,
+    totalUsersCount:0,
+    currentPage:1,
+    isFetching:false
 }
 
 export const usersReducer = (state = initialState, action: UsersReducerActionType): UsersPageStateType => {
@@ -41,18 +55,24 @@ export const usersReducer = (state = initialState, action: UsersReducerActionTyp
         }
 
         case SHOW_MORE_USERS: {
-            // let moreUsers=[
-            //     {id: 1, fullName: "sasha", followed: true, status: 'a am ok', description:'I am working now',location: {city: 'Minsk', country: 'Belarus'}},
-            //     {id: 2, fullName: "masha", followed: true, status: 'she is ok',description:'I am shopping now', location: {city: 'Vitebsk', country: 'Belarus'}},
-            //     {id: 3, fullName: "dasha", followed: false, status: 'senior', description:'be happy',location: {city: 'Kiev', country: 'Ukraine'}},
-            //     {id: 4, fullName: "peter", followed: false, status: 'alcoholik',description:'Trololo', location: {city: 'Kiev', country: 'Ukraine'}},
-            // ]
-            return {...state, usersData: [...state.usersData, ...action.users]}
+            return {...state, usersData: [ ...action.users]}
+        }
+        case 'SET-CURRENT-PAGE':{
+            return {...state,currentPage:action.currentPage}
+        }
+        case 'SET-TOTAL-COUNT':{
+            return {...state,totalUsersCount:action.totalCount}
+        }
+        case "SET-FETCHING":{
+            return {...state,isFetching:action.isFetching}
         }
         default:
             return state;
     }
 }
 
-export const changeFollowAC = (userID: number) => ({type: CHANGE_FOLLOW, userID: userID} as const)
-export const setUsersAC = (users: UsersDataType[]) => ({type: SHOW_MORE_USERS, users: users} as const)
+export const changeFollowAC = (userID: number):FollowUserActionType => ({type: CHANGE_FOLLOW, userID: userID})
+export const setUsersAC = (users: UsersDataType[]):ShowMoreUsers => ({type: SHOW_MORE_USERS, users: users})
+export const setCurrentPageAC = (currentPage:number):SetCurrentPageType => ({type:'SET-CURRENT-PAGE',currentPage})
+export const setTotalCountAC=(totalCount:number)=>({type:'SET-TOTAL-COUNT',totalCount} as const)
+export const setIsFetchingAC=(isFetching:boolean)=>({type:'SET-FETCHING',isFetching} as const)
