@@ -2,6 +2,7 @@ import React from 'react';
 import s from "./Users.module.css";
 import defauleUserPhoto from "../../assets/defaultAvatarUser.png";
 import {UsersDataType} from "../../Redux/users-reducer";
+import {NavLink} from "react-router-dom";
 
 type UsersJsxPropsType = {
     totalUsersCount: number
@@ -40,9 +41,11 @@ const UsersJsx = (props: UsersJsxPropsType) => {
                 return (
                     <div key={user.id} className={s.usersContainer}>
                         <div className={s.FollowBlock}>
-                            <img className={s.img}
-                                 src={user.photos.small ? user.photos.small : defauleUserPhoto}
-                                 alt="img Follow"/>
+                            <NavLink to={'/profile/'+ user.id}>
+                                <img className={s.img}
+                                     src={user.photos.small ? user.photos.small : defauleUserPhoto}
+                                     alt="img User"/>
+                            </NavLink>
                             <button className={s.button}
                                     onClick={onClickHandler}>{user.followed ? 'Unfollow' : 'Follow'}</button>
                         </div>

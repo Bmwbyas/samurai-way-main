@@ -5,14 +5,17 @@ import s from './Profile.module.css'
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
 
 import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
+import {UserProfileType} from "../../Redux/profile-reduser";
 
 
+type ProfileType={
+    profile:UserProfileType|null
+}
 
-
-export const Profile = () => {
+export const Profile = (props:ProfileType) => {
     return (
         <div>
-            <ProfileInfo/>
+            <ProfileInfo profile={props.profile}/>
             <MyPostsContainer/>
         </div>
     );

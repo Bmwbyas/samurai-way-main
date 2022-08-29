@@ -25,8 +25,8 @@ type SetCurrentPageType={
     type:'SET-CURRENT-PAGE'
     currentPage:number
 }
-type SetTotalcountType=ReturnType<typeof setTotalCountAC>
-type SetIsFetchingType=ReturnType<typeof setIsFetchingAC>
+type SetTotalcountType=ReturnType<typeof setTotalCount>
+type SetIsFetchingType=ReturnType<typeof setIsFetching>
 type UsersReducerActionType = FollowUserActionType
     | ShowMoreUsers
     |SetCurrentPageType
@@ -71,8 +71,8 @@ export const usersReducer = (state = initialState, action: UsersReducerActionTyp
     }
 }
 
-export const changeFollowAC = (userID: number):FollowUserActionType => ({type: CHANGE_FOLLOW, userID: userID})
-export const setUsersAC = (users: UsersDataType[]):ShowMoreUsers => ({type: SHOW_MORE_USERS, users: users})
-export const setCurrentPageAC = (currentPage:number):SetCurrentPageType => ({type:'SET-CURRENT-PAGE',currentPage})
-export const setTotalCountAC=(totalCount:number)=>({type:'SET-TOTAL-COUNT',totalCount} as const)
-export const setIsFetchingAC=(isFetching:boolean)=>({type:'SET-FETCHING',isFetching} as const)
+export const changeFollow = (userID: number):FollowUserActionType => ({type: CHANGE_FOLLOW, userID: userID})
+export const setUsers = (users: UsersDataType[]):ShowMoreUsers => ({type: SHOW_MORE_USERS, users: users})
+export const setCurrentPage = (currentPage:number):SetCurrentPageType => ({type:'SET-CURRENT-PAGE',currentPage})
+export const setTotalCount=(totalCount:number)=>({type:'SET-TOTAL-COUNT',totalCount} as const)
+export const setIsFetching=(isFetching:boolean)=>({type:'SET-FETCHING',isFetching} as const)

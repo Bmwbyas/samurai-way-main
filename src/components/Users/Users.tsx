@@ -8,14 +8,6 @@ import defauleUserPhoto from './../../assets/defaultAvatarUser.png'
 
 const Users = (props:UsersPropsType) => {
 
-//     const getUsers=()=>{
-//         if (props.usersPage.usersData.length===0){
-//             axios.get("https://social-network.samuraijs.com/api/1.0/users")
-//                 .then(response=>{
-//                     props.setUsers(response.data.items)
-//                 });
-//     }
-// }
     useEffect(() => {
         axios.get("https://social-network.samuraijs.com/api/1.0/users")
             .then(response=>{
@@ -30,7 +22,7 @@ const Users = (props:UsersPropsType) => {
             <div style={{padding:'10px',fontSize:'20px'}}>Users</div>
             {props.usersPage.usersData.map(user=>{
                const onClickHandler=()=>{
-                   props.changeFollowed(user.id)
+                   props.changeFollow(user.id)
                }
 
                 return(
