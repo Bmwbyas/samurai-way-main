@@ -4,7 +4,7 @@ import preloader from "../../assets/defaultAvatarUser.png";
 export const Preloader = () => {
     return (
         <div>
-            <img src={preloader}/>
+            <img style={{width:'100px',height:'100px'}} src={preloader}/>
         </div>
     );
 };

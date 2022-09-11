@@ -1,8 +1,11 @@
 import React from 'react';
 import s from "./Users.module.css";
 import defauleUserPhoto from "../../assets/defaultAvatarUser.png";
-import {UsersDataType} from "../../Redux/users-reducer";
+import {setFollowingInProgress, UsersDataType} from "../../Redux/users-reducer";
 import {NavLink} from "react-router-dom";
+import axios from "axios";
+import {usersAPI} from "../../api/api";
+import {Preloader} from "../common/Preloader";
 
 type UsersJsxPropsType = {
     totalUsersCount: number
@@ -11,6 +14,8 @@ type UsersJsxPropsType = {
     currentPage: number
     usersData: UsersDataType[]
     changeFollowed: (id: number) => void
+    followingInProgress: number[]
+    setFollowingInProgress: (followingInProgressBoolean : boolean,userId:number) => void
 }
 
 const UsersJsx = (props: UsersJsxPropsType) => {
@@ -35,19 +40,45 @@ const UsersJsx = (props: UsersJsxPropsType) => {
             </div>
             {props.usersData.map(user => {
                 const onClickHandler = () => {
-                    props.changeFollowed(user.id)
+                    props.setFollowingInProgress(true,user.id)
+                    if (user.followed) {
+                        usersAPI.deleteUser(user.id)
+                            .then(data => {
+                                if (data.resultCode === 0) {
+                                    props.changeFollowed(user.id)
+
+                                }
+                                props.setFollowingInProgress(false,user.id)
+                            })
+                    } else {
+
+                        usersAPI.addFollowUser(user.id)
+                            .then(data => {
+                                if (data.resultCode === 0) {
+                                    props.changeFollowed(user.id)
+
+                                }
+                                props.setFollowingInProgress(false,user.id)
+                            });
+                    }
+
                 }
 
                 return (
                     <div key={user.id} className={s.usersContainer}>
                         <div className={s.FollowBlock}>
-                            <NavLink to={'/profile/'+ user.id}>
+                            <NavLink to={'/profile/' + user.id}>
                                 <img className={s.img}
                                      src={user.photos.small ? user.photos.small : defauleUserPhoto}
                                      alt="img User"/>
                             </NavLink>
-                            <button className={s.button}
-                                    onClick={onClickHandler}>{user.followed ? 'Unfollow' : 'Follow'}</button>
+                            <button
+                                className={s.button}
+                                disabled={props.followingInProgress.some(id=>id===user.id)}
+                                onClick={onClickHandler}
+                            >
+                                {user.followed ? 'Unfollow' : 'Follow'}
+                            </button>
                         </div>
                         <div className={s.containerUser}>
                             <div>

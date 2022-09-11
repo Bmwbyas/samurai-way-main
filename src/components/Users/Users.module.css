@@ -46,6 +46,9 @@
 .button:active{
     background-color: green;
 }
+.button:disabled{
+    background-color: red;
+}
 .location{
     display: grid;
     justify-content: end;
