@@ -3,6 +3,7 @@ import s from './Dialogs.module.css'
 import {DialogsItems} from "./DialogItem/DialogsItems";
 import {Messages} from "./Message/Messages";
 import {DialogsPropsType} from "./DialogsContainer";
+import {Redirect} from "react-router-dom";
 
 export const Dialogs = (props:DialogsPropsType) => {
 
@@ -13,6 +14,7 @@ export const Dialogs = (props:DialogsPropsType) => {
         let text=e.currentTarget.value
         props.updateNewMessage(text)
     }
+
     return (
         <div className={s.dialogs}>
 

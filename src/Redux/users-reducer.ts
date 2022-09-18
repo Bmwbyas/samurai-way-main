@@ -1,4 +1,6 @@
 import {usersAPI} from "../api/api";
+import {ThunkAction} from "redux-thunk";
+import {AppStateType} from "./redux-store";
 
 export type UsersDataType = {
     id: number
@@ -76,7 +78,7 @@ export const usersReducer = (state = initialState, action: UsersReducerActionTyp
                 ...state,
                 followingInProgress: action.followingInProgressBoolean
                     ? [...state.followingInProgress, action.userId]
-                    : state.followingInProgress.filter(id => id != action.userId)
+                    : state.followingInProgress.filter(id => id !== action.userId)
             }
         }
         default:
@@ -94,12 +96,42 @@ export const setFollowingInProgress = (followingInProgressBoolean: boolean, user
     followingInProgressBoolean, userId
 }) as const
 
-const getUsersThunkCreator=(currentPage:number,pageSize:number)=>{(dispatch:any)=>{
+
+type ThunkCreatorType = ThunkAction<any, AppStateType, unknown, UsersReducerActionType>
+// type DispatchThunkAC=Dispatch<UsersReducerActionType>
+
+//getUsersThunkCreator
+export const getUsers = (currentPage: number, pageSize: number): ThunkCreatorType => (dispatch) => {
     dispatch(setIsFetching(true))
-    usersAPI.getUsers(currentPage,pageSize)
+    return usersAPI.getUsers(currentPage, pageSize)
         .then(data => {
+
             dispatch(setUsers(data.items))
             dispatch(setTotalCount(data.totalCount))
             dispatch(setIsFetching(false))
         });
-}}
+}
+//change follow unfollow thunk creator
+export const changeFollowUnfollow = (user: UsersDataType): ThunkCreatorType => (dispatch) => {
+    dispatch(setFollowingInProgress(true, user.id))
+    if (user.followed) {
+        return usersAPI.deleteUser(user.id)
+            .then(data => {
+                if (data.resultCode === 0) {
+                    dispatch(changeFollow(user.id))
+
+                }
+                dispatch(setFollowingInProgress(false, user.id))
+            })
+    } else {
+
+        return usersAPI.addFollowUser(user.id)
+            .then(data => {
+                if (data.resultCode === 0) {
+                    dispatch(changeFollow(user.id))
+
+                }
+                dispatch(setFollowingInProgress(false, user.id))
+            });
+    }
+}

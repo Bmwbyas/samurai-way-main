@@ -2,13 +2,16 @@ import React from 'react';
 import s from './ProfileInfo.module.css'
 import {Preloader} from "../../common/Preloader";
 import {UserProfileType} from "../../../Redux/profile-reduser";
+import {ProfileStatus} from "./ProfileStatus";
+
 type ProfileInfoType={
     profile:UserProfileType|null
+    newStatus:string
 }
 
 
-export const ProfileInfo = (props:ProfileInfoType) => {
-    if (!props.profile){
+export const ProfileInfo:React.FC<ProfileInfoType>  = ({profile,newStatus}) => {
+    if (!profile){
         return <Preloader/>
     }
 
@@ -20,12 +23,12 @@ export const ProfileInfo = (props:ProfileInfoType) => {
                     alt="image Icon"/>
             </div>
             <div className={s.descriptionBlock}>
-                <img src={props.profile.photos.large} alt=""/>
-                <div>FullName: {props.profile.fullName}</div>
-                <div>Looking for a Job : {props.profile.lookingForAJob?'yes':'no no no'}</div>
-                <div>description: {props.profile.lookingForAJobDescription}</div>
-                <div>contacts: {props.profile.contacts.facebook}</div>
-
+                <img src={profile.photos.large} alt=""/>
+                <div>FullName: {profile.fullName}</div>
+                <div>Looking for a Job : {profile.lookingForAJob?'yes':'no no no'}</div>
+                <div>description: {profile.lookingForAJobDescription}</div>
+                <div>contacts: {profile.contacts.facebook}</div>
+                <ProfileStatus />
             </div>
         </>
     )

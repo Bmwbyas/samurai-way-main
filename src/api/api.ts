@@ -20,7 +20,20 @@ export const usersAPI = {
     addFollowUser(id: number) {
         return instance.post(`follow/${id}`)
             .then(response => response.data)
+    },
+    getProfile(userId: string) {
+        return instance.get(`profile/${userId}`)
+            .then(response => response.data)
+
+    }
+
+}
+export const authAPI = {
+    getAuthMe() {
+        return instance.get(`auth/me`)
+            .then(response => response.data)
     }
 }
+
 
 

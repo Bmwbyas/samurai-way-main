@@ -8,13 +8,13 @@ import defauleUserPhoto from './../../assets/defaultAvatarUser.png'
 
 const Users = (props:UsersPropsType) => {
 
-    useEffect(() => {
-        axios.get("https://social-network.samuraijs.com/api/1.0/users")
-            .then(response=>{
-                props.setUsers(response.data.items)
-            });
-        }
-    , [])
+    // useEffect(() => {
+    //     axios.get("https://social-network.samuraijs.com/api/1.0/users")
+    //         .then(response=>{
+    //             props.setUsers(response.data.items)
+    //         });
+    //     }
+    // , [])
 
     return (
         <div className={s.Users} >
