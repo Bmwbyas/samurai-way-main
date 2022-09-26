@@ -14,7 +14,7 @@ type MapStateToPropsType = {
     dialogsPage: DialogsPageStateType
 }
 type MapDispatchToPropsType = {
-    addMessage: () => void
+    addMessage: (value:string) => void
     updateNewMessage: (text: string) => void
 }
 export type DialogsPropsType = MapStateToPropsType & MapDispatchToPropsType
@@ -25,8 +25,8 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
 }
 let mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
     return {
-        addMessage: () => {
-            dispatch(addMessageActionCreator())
+        addMessage: (value:string) => {
+            dispatch(addMessageActionCreator(value))
         },
         updateNewMessage: (text: string) => {
             dispatch(onChangeMessageHandlerActionCreator(text))

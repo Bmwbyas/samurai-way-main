@@ -1,4 +1,5 @@
 import axios from "axios";
+import {UserProfileType} from "../Redux/profile-reduser";
 
 
 const instance = axios.create({
@@ -20,14 +21,22 @@ export const usersAPI = {
     addFollowUser(id: number) {
         return instance.post(`follow/${id}`)
             .then(response => response.data)
-    },
-    getProfile(userId: string) {
-        return instance.get(`profile/${userId}`)
-            .then(response => response.data)
-
     }
-
 }
+export const profileAPI={
+    getProfile(userId: string) {
+        return instance.get<UserProfileType>(`profile/${userId}`)
+            // .then(response => response.data)
+    },
+    getStatus(userId:string){
+        return instance.get<string>(`profile/status/${userId}`)
+            // .then(response => response.data)
+    },
+    updateStatus(newstatus:string){
+        return instance.put(`profile/status`,{status:newstatus})
+    }
+}
+
 export const authAPI = {
     getAuthMe() {
         return instance.get(`auth/me`)

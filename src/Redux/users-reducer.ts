@@ -97,7 +97,7 @@ export const setFollowingInProgress = (followingInProgressBoolean: boolean, user
 }) as const
 
 
-type ThunkCreatorType = ThunkAction<any, AppStateType, unknown, UsersReducerActionType>
+type ThunkCreatorType = ThunkAction<void, AppStateType, unknown, UsersReducerActionType>
 // type DispatchThunkAC=Dispatch<UsersReducerActionType>
 
 //getUsersThunkCreator
