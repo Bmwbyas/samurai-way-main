@@ -42,6 +42,7 @@ export class ProfileStatus extends React.Component<ProfileStatusPropsType> {
     }
 
     render() {
+        console.log(this.props.newStatus)
         return (
             <div>
                 {this.state.editStatus

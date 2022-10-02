@@ -7,13 +7,7 @@ import { SendMessageFormRedux} from "./Message/SendMessageForm";
 
 export const Dialogs = (props:DialogsPropsType) => {
 
-    // const addMessageHandler=()=>{
-    //     props.addMessage()
-    // }
-    // const onChangeMessageHandler=(e:ChangeEvent<HTMLTextAreaElement>)=>{
-    //     let text=e.currentTarget.value
-    //     props.updateNewMessage(text)
-    // }
+
     const addNewMessage=(formData:any)=>{
         props.addMessage(formData.newMessageText)
     }

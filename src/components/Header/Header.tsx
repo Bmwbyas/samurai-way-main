@@ -3,12 +3,17 @@ import './Header.module.css'
 import s from './Header.module.css'
 import {NavLink} from "react-router-dom";
 
+
 type HeaderPropsType = {
     isAuth: boolean
     login: string | null
+    logOutAuthUser:()=>void
+
 }
 export const Header = (props: HeaderPropsType) => {
-
+    const logOut=()=>{
+        props.logOutAuthUser()
+    }
     return (
         <header className={s.header}>
             <img
@@ -16,9 +21,9 @@ export const Header = (props: HeaderPropsType) => {
                 alt="logo"/>
             <div className={s.loginBlock}>
                 {props.isAuth
-                    ? props.login
+                    ? <div>{props.login} - <button onClick={logOut}>LogOut</button></div>
                     : <NavLink to={"/login"}>Login</NavLink>}
-            </div>
+            </div>11
         </header>
     );
 }

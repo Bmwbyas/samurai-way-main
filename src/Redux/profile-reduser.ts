@@ -32,15 +32,12 @@ export const ADD_POST = 'ADD-POST';
 export const UPDATE_NEW_POSTS_TEXT = 'UPDATE-NEW-POSTS-TEXT';
 
 type AddPostActionType = ReturnType<typeof addPostActionCreator>
-type UpdateNewPostTextActionType = {
-    type: 'UPDATE-NEW-POSTS-TEXT'
-    newText: string
-}
+
 export type SetUserProfileActionType = ReturnType<typeof setUserProfile>
 type ChangeStatusActionCreator = ReturnType<typeof setProfileStatus>
 
 type ProfileReducerActionType = AddPostActionType
-    | UpdateNewPostTextActionType
+
     | SetUserProfileActionType
     | ChangeStatusActionCreator
 
@@ -51,7 +48,7 @@ let initialState = {
         {id: 1, message: "Hi,how are you?", likesCount: 10},
         {id: 2, message: "It's my first post", likesCount: 16},
     ] as PostDataType[],
-    newStatus: 'status',
+    newStatus: '',
     profile: null as UserProfileType | null
 }
 
@@ -69,12 +66,7 @@ export const profileReducer = (state = initialState, action: ProfileReducerActio
                 ...state,
                 postData: [newPost, ...state.postData]
             };
-        // case UPDATE_NEW_POSTS_TEXT:
-        //     // state.newPostText = action.newText
-        //     return {
-        //         ...state,
-        //         newPostText: action.newText
-        //     };
+
         case "SET-USER-PROFILE": {
             return {
                 ...state,
@@ -85,7 +77,7 @@ export const profileReducer = (state = initialState, action: ProfileReducerActio
         case "SET-PROFILE-STATUS": {
             return {
                 ...state,
-                newStatus: action.status
+                newStatus: action.status===null?'status not found':action.status
             }
         }
         default:
@@ -95,7 +87,6 @@ export const profileReducer = (state = initialState, action: ProfileReducerActio
 }
 export const setProfileStatus = (status: string) => ({type: 'SET-PROFILE-STATUS', status} as const)
 export const addPostActionCreator = (newPost: string) => ({type: ADD_POST, newPost} as const)
-export const onPostChangeActionCreator = (text: string) => ({type: UPDATE_NEW_POSTS_TEXT, newText: text} as const)
 export const setUserProfile = (profile: UserProfileType) => ({type: 'SET-USER-PROFILE', profile} as const)
 
 

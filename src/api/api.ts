@@ -36,11 +36,16 @@ export const profileAPI={
         return instance.put(`profile/status`,{status:newstatus})
     }
 }
-
+export type SendLoginPropertyType={email:string,password:string,rememberMe:boolean}
 export const authAPI = {
     getAuthMe() {
         return instance.get(`auth/me`)
-            .then(response => response.data)
+    },
+    loginAuthMe(sendLogin:SendLoginPropertyType){
+        return instance.post(`auth/login`,sendLogin)
+    },
+    logOutAuthMe(){
+        return instance.delete(`auth/login`)
     }
 }
 
