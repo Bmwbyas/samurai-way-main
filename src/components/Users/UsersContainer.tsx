@@ -2,9 +2,11 @@ import React from 'react';
 import {AppStateType} from "../../Redux/redux-store";
 import {connect} from "react-redux";
 import {
-    changeFollow, changeFollowUnfollow, getUsers,
-    setFollowingInProgress, UsersDataType,
-    UsersPageStateType
+    changeFollow,
+    changeFollowUnfollow,
+    getUsers,
+    setFollowingInProgress,
+    UsersDataType
 } from "../../Redux/users-reducer";
 import UsersJsx from "./UsersJSX";
 import {Preloader} from "../common/Preloader";
@@ -12,11 +14,11 @@ import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {
     getCurrentPage,
-    getDataUsers,
     getFollowingInProgress,
     getIsFetching,
     getPageSize,
-    getTotalUsersCount
+    getTotalUsersCount,
+    getUsersSuperSelector
 } from "../../Redux/usersSelectors";
 
 
@@ -81,7 +83,7 @@ type MapDispatchToPropsType = typeof mapDispatchToProps
 // }
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
-        usersData: getDataUsers(state),
+        usersData: getUsersSuperSelector(state),
         pageSize: getPageSize(state),
         totalUsersCount: getTotalUsersCount(state),
         currentPage: getCurrentPage(state),

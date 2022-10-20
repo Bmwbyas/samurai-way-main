@@ -11,7 +11,6 @@ import {ProfileContainer} from "./components/Profile/ProfileContainer";
 import {HeaderContainer} from "./components/Header/Header.contaiter";
 import {LoginContainer} from "./components/Login/LoginContainer";
 import {connect} from "react-redux";
-import {AuthStateType, getAuthUserData} from "./Redux/auth-reducer";
 import {AppStateType} from "./Redux/redux-store";
 import {compose} from "redux";
 import {initializeApp} from "./Redux/app-reducer";
@@ -24,8 +23,9 @@ class App extends React.Component<AppPropsType> {
     }
 
     render() {
-        if(!this.props.initialized)
-        {return <Preloader/>}
+         if(!this.props.initialized){
+             return <Preloader/>
+         }
         return (
 
             <div className='app-wrapper'>

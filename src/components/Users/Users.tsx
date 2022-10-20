@@ -20,7 +20,7 @@ const Users = (props:UsersPropsType) => {
         <div className={s.Users} >
             {/*<button onClick={getUsers}>getUsers</button>*/}
             <div style={{padding:'10px',fontSize:'20px'}}>Users</div>
-            {props.usersPage.usersData.map(user=>{
+            {props.usersData.map(user=>{
                const onClickHandler=()=>{
                    props.changeFollow(user.id)
                }

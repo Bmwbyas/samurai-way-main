@@ -1,7 +1,5 @@
-import {authAPI, SendLoginPropertyType} from "../api/api";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
-import {FormAction, stopSubmit} from "redux-form";
 import {getAuthUserData} from "./auth-reducer";
 
 export  type AppStateInitialType = {
@@ -24,7 +22,6 @@ export const appReducer = (state = initialState, action: AppReducerActionType): 
                 initialized:true
             }
         }
-
         default:
             return state;
     }
@@ -33,7 +30,7 @@ const initializedSuccessApp = () => ({type: "APP/SET-INITIALIZED"}) as const
 
 
 //Thunk creator for login user
-type AppReducerThunkType = ThunkAction<any, AppStateType, unknown, AppReducerActionType>
+type AppReducerThunkType = ThunkAction<void, AppStateType, unknown, AppReducerActionType>
 
 export const initializeApp = (): AppReducerThunkType => (dispatch) => {
    let promise=dispatch(getAuthUserData())
