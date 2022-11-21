@@ -8,8 +8,6 @@ export type MessageDataType = {
 }
 
 
-export const ADD_MESSAGE = 'ADD-MESSAGE';
-
 type AddMessageActionType = ReturnType<typeof addMessageActionCreator>
 
 type DialogsReduсerActionType = AddMessageActionType
@@ -36,7 +34,7 @@ let initialState = {
 export const dialogsReducer = (state = initialState, action: DialogsReduсerActionType):DialogsPageStateType => {
 
     switch (action.type) {
-        case ADD_MESSAGE:
+        case 'DIALOGS/ADD-MESSAGE':
             let newMessage = {
                 id: 6,
                 message: action.text
@@ -52,4 +50,4 @@ export const dialogsReducer = (state = initialState, action: DialogsReduсerActi
     }
 }
 
-export const addMessageActionCreator = (text:string) => ({type: ADD_MESSAGE,text} as const)
+export const addMessageActionCreator = (text:string) => ({type: 'DIALOGS/ADD-MESSAGE',text} as const)

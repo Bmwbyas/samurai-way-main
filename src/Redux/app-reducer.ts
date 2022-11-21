@@ -26,14 +26,15 @@ export const appReducer = (state = initialState, action: AppReducerActionType): 
             return state;
     }
 }
-const initializedSuccessApp = () => ({type: "APP/SET-INITIALIZED"}) as const
+export const initializedSuccessApp = () => ({type: "APP/SET-INITIALIZED"}) as const
 
 
 //Thunk creator for login user
 type AppReducerThunkType = ThunkAction<void, AppStateType, unknown, AppReducerActionType>
 
-export const initializeApp = (): AppReducerThunkType => (dispatch) => {
-   let promise=dispatch(getAuthUserData())
-    promise.then(()=>{dispatch(initializedSuccessApp())})
+export const initializeApp = (): AppReducerThunkType =>  async (dispatch) => {
+   let promise= await dispatch(getAuthUserData())
+    dispatch(initializedSuccessApp())
+    // promise.then(()=>{dispatch(initializedSuccessApp())})
 
 }

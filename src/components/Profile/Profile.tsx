@@ -11,13 +11,16 @@ type ProfileType={
     profile:UserProfileType|null
     newStatus:string
     updateProfileStatus: (status: string) => void
+    isOwner:boolean
+    updateProfileData:(data:UserProfileType)=>void
+    savePhoto:(value:File)=>void
 }
 
-export const Profile:React.FC<ProfileType> = ({profile,newStatus,updateProfileStatus}) => {
+export const Profile:React.FC<ProfileType> = ({profile,newStatus,updateProfileData,savePhoto,updateProfileStatus,isOwner}) => {
 
     return (
-        <div>
-            <ProfileInfo profile={profile} newStatus={newStatus}     updateProfileStatus={updateProfileStatus}/>
+        <div className={s.pofileContainer}>
+            <ProfileInfo profile={profile}updateProfileData={updateProfileData} newStatus={newStatus}isOwner={isOwner} savePhoto={savePhoto}    updateProfileStatus={updateProfileStatus}/>
             <MyPostsContainer/>
         </div>
     );

@@ -1,0 +1,6 @@
+.vievStatus{
+    cursor: pointer;
+    padding-left: 15px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}

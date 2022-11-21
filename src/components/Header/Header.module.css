@@ -1,11 +1,56 @@
-.header{
-    grid-area: h;
-    background-color: blue;
+.headerContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 20px;
 }
-.header img {
-    width: 20px;
+
+.logoContainer {
+    align-items: center;
 }
-.loginBlock{
-    float:right;
-    background-color: #50ff32;
+
+.logoText {
+    position: relative;
+    color: white;
+    font-size: 20px;
+    padding-left: 57px;
+}
+
+.logoText::before {
+    position: absolute;
+    content: '';
+    width: 50px;
+    height: 50px;
+    background-size: contain;
+    background-image: url("../../assets/logo.png");
+    background-repeat: no-repeat;
+    left: 0px;
+    top: -36%;
+}
+
+.header {
+    height: 50px;
+}
+
+.headerAvatar {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 50px;
+    border-radius: 50%;
+}
+
+.styleNickname {
+    padding-right: 10px;
+    padding-left: 10px;
+    font-size: 20px;
+    color: white;
+
+}
+
+.loginBlock {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }

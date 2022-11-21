@@ -23,21 +23,21 @@ import {
 
 
 class UsersContainerWithAPI extends React.Component<UsersPropsType> {
+
     componentDidMount() {
-        this.props.getUsers(this.props.currentPage, this.props.pageSize)
+        const {currentPage,pageSize}=this.props
+        this.props.getUsers(currentPage, pageSize)
     }
 
     setCurrentPages = (pageNumber: number) => {
-        this.props.getUsers(pageNumber, this.props.pageSize)
+        const {pageSize}=this.props
+        this.props.getUsers(pageNumber, pageSize)
     }
 
     render() {
         return (
             <>
-
-                {this.props.isFetching
-                    ? <Preloader/>
-                    : null}
+                {this.props.isFetching&& <Preloader/>}
                 <UsersJsx
                     key={this.props.totalUsersCount}
                     usersData={this.props.usersData}
@@ -62,25 +62,10 @@ type MapStateToPropsType = {
     isFetching: boolean
     followingInProgress: number[]
 }
-// type MapDispatchToPropsType = {
-//     changeFollow: (userID: number) => void
-//     setUsers: (users: UsersDataType[]) => void
-//     setCurrentPage: (currentPage: number) => void
-//     setTotalUsersCount: (totalCount: number) => void
-//     setIsFetching: (isFetching: boolean) => void
-// }
+
 export type UsersPropsType = MapStateToPropsType & MapDispatchToPropsType
 type MapDispatchToPropsType = typeof mapDispatchToProps
-// const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
-//     return {
-//         usersData: state.usersPage.usersData,
-//         pageSize: state.usersPage.pageSize,
-//         totalUsersCount: state.usersPage.totalUsersCount,
-//         currentPage: state.usersPage.currentPage,
-//         isFetching: state.usersPage.isFetching,
-//         followingInProgress: state.usersPage.followingInProgress
-//     }
-// }
+
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
         usersData: getUsersSuperSelector(state),

@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {memo} from 'react';
 import './MyPosts.module.css'
 import s from './MyPosts.module.css'
 import {Post} from "./Post/Post";
 import {MyPostsPropsType} from "./MyPostsContainer";
-import {AddPostFormRedux} from "./AddPostForm";
+import {AddPostForm} from "./AddPostForm";
 
-export const MyPosts = (props: MyPostsPropsType) => {
+
+export const MyPosts=memo((props: MyPostsPropsType)=> {
+    console.log(props)
+
     const postElement = props.profilePage.postData.map(p =>
         <Post
             key={p.id}
@@ -13,20 +16,17 @@ export const MyPosts = (props: MyPostsPropsType) => {
             likesCount={p.likesCount}
         />);
 
-    const onAddPost=(formData:any)=>{
 
-        props.addPost(formData.addPost)
-    }
     return (
         <div className={s.postsBlock}>
             <h3>my posts</h3>
 
             <div>
-                <AddPostFormRedux onSubmit={onAddPost}/>
+                <AddPostForm addPost={props.addPost}/>
             </div>
             <div className={s.posts}>
                 {postElement}
             </div>
         </div>
     );
-}
+})

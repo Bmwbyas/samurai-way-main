@@ -1,17 +1,40 @@
 import React from 'react';
-import s from "../Dialogs.module.css";
-import {Field, reduxForm} from "redux-form";
-import {Textarea} from "../../common/FormsControl/FormsControl";
-import {maxLenghtCreator, required} from "../../../utils/validators/validators";
+import s from "../../Dialogs/Dialogs.module.css";
+import {Button, Input} from "antd";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
-let maxLenght=maxLenghtCreator(10)
 
-const SendMessageForm = (props:any) => {
+interface IFormInput {
+    message: string;
+
+}
+type AddMessageFormType ={
+    addNewMessage:(value:string)=>void
+}
+export const SendMessageForm:React.FC<AddMessageFormType> = ({addNewMessage}) => {
+
+    const {  control, handleSubmit} = useForm<IFormInput>();
+    const onSubmit: SubmitHandler<IFormInput> = data => {
+        addNewMessage(data.message)
+        console.log(data)
+    };
     return (
-        <form onSubmit={props.handleSubmit}>
-            <div><Field placeholder={'Enter your message'}   name={'newMessageText'} component={Textarea} validate={[required,maxLenght]}/></div>
-            <div> <button className={s.addMessage}>add Message</button></div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+                name="message"
+                control={control}
+                defaultValue=""
+                render={({ field }) => <Input {...field}  size="middle" placeholder="input text"/>}
+            />
+
+            <div >
+                <Button className={s.button} type="primary" htmlType="submit" size={"large"}>
+                    add message
+                </Button>
+            </div>
         </form>
+
     );
 };
-export const SendMessageFormRedux=reduxForm({form:'dialogAddMessageForm'})(SendMessageForm)
+
+

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Login} from "./Login";
 import {connect} from "react-redux";
-import {AuthStateType, loginAuthUser, logOutAuthUser} from "../../Redux/auth-reducer";
+import {loginAuthUser, logOutAuthUser} from "../../Redux/auth-reducer";
 import {AppStateType} from "../../Redux/redux-store";
 import {SendLoginPropertyType} from "../../api/api";
 
@@ -11,10 +11,11 @@ type MapDispatchToPropsType={
     logOutAuthUser:()=>void
 }
 const mapDispatchToProps={loginAuthUser,logOutAuthUser}
-type MapStateToPropsType={isAuth:boolean}
+type MapStateToPropsType={isAuth:boolean,captcha:string|null}
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
-        isAuth:state.auth.isAuth
+        isAuth:state.auth.isAuth,
+        captcha:state.auth.captcha
     }
 }
 

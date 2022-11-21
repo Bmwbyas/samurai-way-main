@@ -2,26 +2,41 @@ import React from "react";
 import {Profile} from "./Profile";
 import {connect} from "react-redux";
 import {AppStateType} from "../../Redux/redux-store";
-import {getUserProfile, UserProfileType, getProfileStatus, updateProfileStatus} from "../../Redux/profile-reduser";
+import {
+    getUserProfile,
+    UserProfileType,
+    getProfileStatus,
+    updateProfileStatus,
+    savePhoto, updateProfileData
+} from "../../Redux/profile-reduser";
 import { RouteComponentProps, withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
+import {setMyAvatar} from "../../Redux/auth-reducer";
 
 export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
-    componentDidMount() {
+    refreshProfile(){
         let userId = this.props.match.params.userId
         if(!userId){
-           if(typeof (this.props.userIdMe)==="number") userId=this.props.userIdMe.toString()
+            if(typeof (this.props.userIdMe)==="number") userId=this.props.userIdMe.toString()
             if(!userId)this.props.history.push('/login')
         }
+
         this.props.getUserProfile(userId)
         this.props.getProfileStatus(userId)
-       
     }
+    componentDidMount() {
+        this.refreshProfile()
+    }
+    componentDidUpdate(prevProps: Readonly<PropsTypeAPI>, prevState: Readonly<{}>, snapshot?: any) {
+        if(this.props.match.params.userId!==prevProps.match.params.userId)
+        this.refreshProfile()
+    }
+
     render() {
 
         return (
-            <Profile {...this.props} />
+            <Profile {...this.props} isOwner={!this.props.match.params.userId}updateProfileData={this.props.updateProfileData} savePhoto={this.props.savePhoto}/>
         )
     }
 }
@@ -49,7 +64,10 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
 let mapDispatchToProps = {
     getUserProfile,
     getProfileStatus,
-    updateProfileStatus
+    updateProfileStatus,
+    savePhoto,
+    updateProfileData,
+    setMyAvatar
 
 }
 // let WithUrlDataContainerComponent = withRouter(ProfileContainerAPI)

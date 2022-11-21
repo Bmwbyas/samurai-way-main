@@ -1,0 +1,25 @@
+.loginContainer{
+margin: 100px;
+    /*padding: 50px;*/
+    height: 75vh;
+
+}
+.title{
+    text-align: center;
+}
+.rememberMe{
+    height: 20px;
+    margin-bottom: 20px;
+}
+.errorMessage{
+    height: 20px;
+    color: red;
+}
+.buttonContainer{
+    display: flex;
+    justify-content: center;
+}
+.button {
+    width: 200px;
+
+}

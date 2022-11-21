@@ -1,42 +1,45 @@
 import React from 'react';
 import s from './Navbar.module.css'
 import {NavLink} from "react-router-dom";
-import {NavBarPropsType} from "./NavbarContainer";
 
-export const Navbar = (props: NavBarPropsType) => {
+import {Menu} from "antd";
+import {UploadOutlined, UserOutlined, VideoCameraOutlined} from "@ant-design/icons";
+import Sider from "antd/es/layout/Sider";
 
+export const Navbar = () => {
     return (
-        <nav className={s.nav}>
-            <div className={s.item}>
-                <NavLink to="/profile" activeClassName={s.active}>Profile</NavLink>
-            </div>
-            <div className={s.item}>
-                <NavLink to="/dialogs" activeClassName={s.active}>Messages</NavLink>
-            </div>
-            <div className={s.item}>
-                <NavLink to="/news" activeClassName={s.active}>News</NavLink>
-            </div>
-            <div className={s.item}>
-                <NavLink to="/music" activeClassName={s.active}>Music</NavLink>
-            </div>
-            <div className={s.item}>
-                <NavLink to="/setting" activeClassName={s.active}>Setting</NavLink>
-            </div>
-            <div className={s.item}>
-                <NavLink to="/users" activeClassName={s.active}>Users</NavLink>
-            </div>
+        <Sider theme="dark" style={{backgroundColor:'#f5f5f5'}} >
 
-            <div className={s.friends}>
-                <div className={s.item}>Friends</div>
-                <div className={s.friendsList}>
+            <Menu
+                style={{backgroundColor:'#f5f5f5',borderRight:'none'}}
+                theme="light"
+                mode={'vertical'}
+                defaultSelectedKeys={['1']}
+                items={[
+                    {
+                        key: '1',
+                        icon: <UserOutlined/>,
+                        label: <NavLink to="/profile">Profile</NavLink>,
+                    },
+                    {
+                        key: '2',
+                        icon: <VideoCameraOutlined/>,
+                        label: <NavLink to="/users">Users</NavLink>,
+                    },
+                    {
+                        key: '3',
+                        icon: <UploadOutlined/>,
+                        label: <NavLink to="/dialogs">Messages</NavLink>,
+                    },
+                ]}
+            />
 
-                    {props.navbarPage.navBarFriends.map((el, index) => {
-                        return (<div key={index} className={s.friendsItem}>
-                            <div className={s.circleFriends}></div>
-                            {el.name}
-                        </div>)
-                    })}
-                </div>
-            </div>
-        </nav>)
+        </Sider>
+        // <Sider style={{backgroundColor:'#f5f5f5'}}>
+        //     <NavLink to="/profile">Profile</NavLink>
+        //     <NavLink to="/users">Users</NavLink>
+        //     <NavLink to="/dialogs">Messages</NavLink>
+        //
+        // </Sider>
+    )
 }

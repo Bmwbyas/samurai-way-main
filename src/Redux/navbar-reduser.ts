@@ -1,6 +1,6 @@
 
 export type NavBarStateType=typeof initialState
-type NavBarFriendType={
+export type NavBarFriendType={
     id:number
     name:string
 }

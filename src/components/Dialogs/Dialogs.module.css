@@ -13,7 +13,7 @@
 }
 .dialog a{
     text-decoration: none;
-    color:white;
+    color:black;
 }
 
 .messages {
@@ -21,7 +21,7 @@
 }
 
 .message {
-color: white;
+color: black;
 }
 
 .dialogItems {

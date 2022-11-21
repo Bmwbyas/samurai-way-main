@@ -1,0 +1,29 @@
+.personalInfoContainer {
+    margin: 0;
+    padding: 0 15px;
+}
+.profileInfo {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 10px;
+}
+
+.name {
+    margin: 0;
+    margin-bottom: 10px;
+}
+.name span{
+    font-weight: normal;
+    margin: 0;
+    margin-bottom: 10px;
+}
+.aboutMe {
+    font-weight: bold;
+    margin: 0;
+}
+.contacts{
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
