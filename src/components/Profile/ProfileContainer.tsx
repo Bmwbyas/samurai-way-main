@@ -13,6 +13,7 @@ import {RouteComponentProps, withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {setMyAvatar} from "../../Redux/auth-reducer";
+import {getFriend, UsersDataType} from "../../Redux/users-reducer";
 
 export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
     refreshProfile() {
@@ -24,6 +25,7 @@ export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
 
         this.props.getUserProfile(+userId)
         this.props.getProfileStatus(+userId)
+        this.props.getFriend(1,100)
 
     }
 
@@ -38,6 +40,7 @@ export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
 
 
     render() {
+        console.log('profile')
 
         return (
             <Profile {...this.props} isOwner={this.props.userIdMe === this.props.profile?.userId} updateProfileData={this.props.updateProfileData}
@@ -54,6 +57,7 @@ type MapStateToPropsType = {
     isAuth: boolean
     newStatus: string
     userIdMe: number | null
+    friends:UsersDataType[]
 
 }
 type MapDispatchToPropsType = typeof mapDispatchToProps
@@ -64,8 +68,8 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
     profile: state.profilePage.profile,
     isAuth: state.auth.isAuth,
     newStatus: state.profilePage.newStatus,
-    userIdMe: state.auth.id
-
+    userIdMe: state.auth.id,
+    friends:state.usersPage.friends
 })
 let mapDispatchToProps = {
     getUserProfile,
@@ -73,7 +77,8 @@ let mapDispatchToProps = {
     updateProfileStatus,
     savePhoto,
     updateProfileData,
-    setMyAvatar
+    setMyAvatar,
+    getFriend
 
 }
 // let WithUrlDataContainerComponent = withRouter(ProfileContainerAPI)

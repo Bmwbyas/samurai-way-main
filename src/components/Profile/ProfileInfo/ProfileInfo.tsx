@@ -7,6 +7,9 @@ import defaultAvatarUser from "./../../../assets/defaultAvatarUser.png"
 import {ProfileUserData} from "./ProfileUserData/ProfileUserData";
 import {ProfileUserDataForm} from "./ProfileUserDataForm/ProfileUserDataForm";
 import {Col, Image, Row} from 'antd';
+import {UsersDataType} from "../../../Redux/users-reducer";
+import Friend from "./Friend/Friend";
+import defaultAvatar from '../../../assets/defaultAvatarUser.png'
 
 type ProfileInfoType = {
     profile: UserProfileType | null
@@ -15,7 +18,7 @@ type ProfileInfoType = {
     isOwner: boolean
     savePhoto: (value: File) => void
     updateProfileData: (data: UserUpdateProfileType) => void
-
+    friends: UsersDataType[]
 }
 
 export const ProfileInfo: React.FC<ProfileInfoType> = ({
@@ -25,6 +28,7 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                                                            savePhoto,
                                                            updateProfileStatus,
                                                            isOwner,
+                                                           friends
 
                                                        }) => {
     const [editMode, setEditMode] = useState(false)
@@ -39,11 +43,11 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
     }
     return (
         <div className={s.descriptionBlock}>
-            <Row gutter={16}>
+            <Row gutter={20}>
                 <Col className="gutter-row" span={15}>
 
                     <div className={s.profileInfoContainer}>
-                        <Row justify={"center"} ><h1>Personal Information</h1></Row>
+                        <Row justify={"center"}><h1>Personal Information</h1></Row>
                         <Row>
                             <Col span={12}>
                                 <ProfileStatusWithHooks updateProfileStatus={updateProfileStatus}
@@ -56,7 +60,7 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                             </Col>
                             <Col span={12}>
 
-                                <div  style={{ display:"flex", justifyContent: "center"}}>
+                                <div style={{display: "flex", justifyContent: "center"}}>
                                     <Image
                                         rootClassName={s.img}
                                         width={250}
@@ -65,7 +69,7 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                                     />
                                 </div>
                                 {isOwner &&
-                                    <div style={{display:"flex",justifyContent:"center"}}>
+                                    <div style={{display: "flex", justifyContent: "center"}}>
                                         <label>
                                             <input type="file" onChange={onMainPhotoSelected}
                                                    style={{display: 'none'}}/>
@@ -79,9 +83,15 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                 </Col>
                 <Col className="gutter-row" span={9}>
                     <div className={s.profileInfoContainer}>
-                        dd
-                    </div>
 
+                        <Row justify={"center"}><h1>Friends</h1></Row>
+                        <Row>
+
+                            <Row justify={"space-between"}>{friends.map((f) => {
+                                return <Friend key={f.id} id={f.id} name={f.name} photo={f.photos.small ?? defaultAvatar}/>
+                            })}</Row>
+                        </Row>
+                    </div>
                 </Col>
             </Row>
         </div>

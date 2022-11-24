@@ -44,7 +44,6 @@ class UsersContainerWithAPI extends React.Component<UsersPropsType> {
                     setCurrentPage={this.setCurrentPages}
                     currentPage={this.props.currentPage}
                     pageSize={this.props.pageSize}
-                    changeFollowed={this.props.changeFollow}
                     totalUsersCount={this.props.totalUsersCount}
                     followingInProgress={this.props.followingInProgress}
                     changeFollowUnfollow={this.props.changeFollowUnfollow}

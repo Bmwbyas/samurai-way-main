@@ -11,7 +11,6 @@ type UsersJsxPropsType = {
     setCurrentPage: (p: number) => void
     currentPage: number
     usersData: UsersDataType[]
-    changeFollowed: (id: number) => void
     followingInProgress: number[]
     changeFollowUnfollow: any
 }
@@ -19,8 +18,6 @@ type UsersJsxPropsType = {
 const UsersJsx: React.FC<UsersJsxPropsType> = ({
                                                    usersData,
                                                    totalUsersCount,
-                                                   changeFollowed
-                                                   ,
                                                    pageSize,
                                                    currentPage,
                                                    setCurrentPage,

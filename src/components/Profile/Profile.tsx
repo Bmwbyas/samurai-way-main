@@ -4,6 +4,7 @@ import s from './Profile.module.css'
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
 import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
 import {UserProfileType, UserUpdateProfileType} from "../../Redux/profile-reduser";
+import {UsersDataType} from "../../Redux/users-reducer";
 
 
 
@@ -14,15 +15,15 @@ type ProfileType={
     isOwner:boolean
     updateProfileData:(data:UserUpdateProfileType)=>void
     savePhoto:(value:File)=>void
-
+    friends:UsersDataType[]
 
 }
 
-export const Profile:React.FC<ProfileType> = ({profile,newStatus,updateProfileData,savePhoto,updateProfileStatus,isOwner}) => {
+export const Profile:React.FC<ProfileType> = ({profile,newStatus,updateProfileData,savePhoto,updateProfileStatus,isOwner,friends}) => {
 
     return (
         <div className={s.pofileContainer}>
-            <ProfileInfo profile={profile}  updateProfileData={updateProfileData} newStatus={newStatus} isOwner={isOwner} savePhoto={savePhoto}    updateProfileStatus={updateProfileStatus}/>
+            <ProfileInfo profile={profile} friends={friends} updateProfileData={updateProfileData} newStatus={newStatus} isOwner={isOwner} savePhoto={savePhoto}    updateProfileStatus={updateProfileStatus}/>
             <MyPostsContainer/>
         </div>
     );

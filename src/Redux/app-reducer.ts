@@ -33,7 +33,8 @@ export const initializedSuccessApp = () => ({type: "APP/SET-INITIALIZED"}) as co
 type AppReducerThunkType = ThunkAction<void, AppStateType, unknown, AppReducerActionType>
 
 export const initializeApp = (): AppReducerThunkType =>  async (dispatch) => {
-   let promise= await dispatch(getAuthUserData())
+   await dispatch(getAuthUserData())
+
     dispatch(initializedSuccessApp())
     // promise.then(()=>{dispatch(initializedSuccessApp())})
 

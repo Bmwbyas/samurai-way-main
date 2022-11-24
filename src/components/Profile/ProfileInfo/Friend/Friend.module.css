@@ -1,0 +1,19 @@
+.friendContainer{
+    margin: 10px;
+    width: 60px;
+    cursor: pointer;
+}
+.friendContainer a {
+    color: black;
+}
+.friendContainer:nth-child(4n){
+   margin-right: 0;
+}
+.ava{
+    width: 50px;
+}
+.name{
+
+    width: 60px;
+    overflow:hidden;
+}

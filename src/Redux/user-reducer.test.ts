@@ -35,7 +35,9 @@ beforeEach(() => {
         totalUsersCount: 0,
         currentPage: 1,
         isFetching: false,
-        followingInProgress: [] as number[]}
+        followingInProgress: [] as number[],
+        friends: []
+    }
 })
 
 test('Follow should be changed', () => {

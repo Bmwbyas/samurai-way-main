@@ -7,7 +7,7 @@ import {AddPostForm} from "./AddPostForm";
 
 
 export const MyPosts=memo((props: MyPostsPropsType)=> {
-    console.log(props)
+
 
     const postElement = props.profilePage.postData.map(p =>
         <Post

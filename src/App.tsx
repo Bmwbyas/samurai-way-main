@@ -49,6 +49,7 @@ class App extends React.Component<AppPropsType> {
 
                             </Content>
 
+
                 </Layout>
                 <Footer>Footer</Footer>
             </Layout>
