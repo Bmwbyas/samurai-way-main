@@ -42,9 +42,6 @@ export const Login: React.FC<LoginType> = ({loginAuthUser, isAuth, captcha}) => 
                         name="email"
                         control={control}
                         defaultValue=""
-                        rules={{
-                            required: {value: true, message: 'This field is required'},
-                        }}
                         render={({field}) => <Input  {...field} size="middle" placeholder="input email"
                                                      prefix={<UserOutlined/>}/>}
                     />
@@ -54,9 +51,6 @@ export const Login: React.FC<LoginType> = ({loginAuthUser, isAuth, captcha}) => 
                         name="password"
                         control={control}
                         defaultValue=""
-                        rules={{
-                            required: {value: true, message: 'This field is required'},
-                        }}
                         render={({field}) => <Input.Password {...field} placeholder="input password"
                                                              prefix={<LockOutlined className="site-form-item-icon"/>}/>}
                     />

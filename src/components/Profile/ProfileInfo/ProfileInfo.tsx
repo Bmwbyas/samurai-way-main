@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import s from './ProfileInfo.module.css'
 import {Preloader} from "../../common/Preloader";
-import {UserProfileType} from "../../../Redux/profile-reduser";
+import {UserProfileType, UserUpdateProfileType} from "../../../Redux/profile-reduser";
 import {ProfileStatusWithHooks} from "./ProfileStatus/ProfileStatusWithHooks";
 import defaultAvatarUser from "./../../../assets/defaultAvatarUser.png"
 import {ProfileUserData} from "./ProfileUserData/ProfileUserData";
 import {ProfileUserDataForm} from "./ProfileUserDataForm/ProfileUserDataForm";
-import {Col, Image, Row, UploadProps} from 'antd';
+import {Col, Image, Row} from 'antd';
 
 type ProfileInfoType = {
     profile: UserProfileType | null
@@ -14,7 +14,8 @@ type ProfileInfoType = {
     updateProfileStatus: (status: string) => void
     isOwner: boolean
     savePhoto: (value: File) => void
-    updateProfileData: (data: UserProfileType) => void
+    updateProfileData: (data: UserUpdateProfileType) => void
+
 }
 
 export const ProfileInfo: React.FC<ProfileInfoType> = ({
@@ -23,30 +24,19 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                                                            updateProfileData,
                                                            savePhoto,
                                                            updateProfileStatus,
-                                                           isOwner
+                                                           isOwner,
+
                                                        }) => {
     const [editMode, setEditMode] = useState(false)
     if (!profile) {
         return <Preloader/>
     }
-    const props: UploadProps = {
-        name: 'file',
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        headers: {
-            authorization: 'authorization-text',
-        },
-        onChange() {
-
-        },
-    };
 
     const onMainPhotoSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
             savePhoto(e.target.files[0])
         }
     }
-
-
     return (
         <div className={s.descriptionBlock}>
             <Row gutter={16}>
@@ -61,12 +51,12 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                                 {editMode ?
                                     <ProfileUserDataForm profile={profile} updateProfileData={updateProfileData}
                                                          setEditMode={setEditMode}/>
-                                    : <ProfileUserData setEditMode={setEditMode} profile={profile}/>}
+                                    : <ProfileUserData setEditMode={setEditMode} isOwner={isOwner} profile={profile}/>}
 
                             </Col>
                             <Col span={12}>
 
-                                <div style={{ display:"flex", justifyContent: "center"}}>
+                                <div  style={{ display:"flex", justifyContent: "center"}}>
                                     <Image
                                         rootClassName={s.img}
                                         width={250}
@@ -74,8 +64,6 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                                         alt="avatar"
                                     />
                                 </div>
-                                {/*<img className={s.img} src={profile.photos?.large || defaultAvatarUser}*/}
-                                {/*     alt="avatar"/>*/}
                                 {isOwner &&
                                     <div style={{display:"flex",justifyContent:"center"}}>
                                         <label>

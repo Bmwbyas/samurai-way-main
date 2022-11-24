@@ -1,4 +1,4 @@
-import React from 'react';
+
 import './MyPosts.module.css'
 import {addPostActionCreator,  ProfilePageStateType} from "../../../Redux/profile-reduser";
 import {MyPosts} from "./MyPosts";

@@ -9,37 +9,43 @@ import {
     updateProfileStatus,
     savePhoto, updateProfileData
 } from "../../Redux/profile-reduser";
-import { RouteComponentProps, withRouter} from "react-router-dom";
+import {RouteComponentProps, withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {setMyAvatar} from "../../Redux/auth-reducer";
 
 export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
-    refreshProfile(){
+    refreshProfile() {
         let userId = this.props.match.params.userId
-        if(!userId){
-            if(typeof (this.props.userIdMe)==="number") userId=this.props.userIdMe.toString()
-            if(!userId)this.props.history.push('/login')
+        if (!userId) {
+            if (typeof (this.props.userIdMe) === "number") userId = this.props.userIdMe.toString()
+            if (!userId) this.props.history.push('/login')
         }
 
-        this.props.getUserProfile(userId)
-        this.props.getProfileStatus(userId)
+        this.props.getUserProfile(+userId)
+        this.props.getProfileStatus(+userId)
+
     }
+
     componentDidMount() {
         this.refreshProfile()
     }
+
     componentDidUpdate(prevProps: Readonly<PropsTypeAPI>, prevState: Readonly<{}>, snapshot?: any) {
-        if(this.props.match.params.userId!==prevProps.match.params.userId)
-        this.refreshProfile()
+        if (this.props.match.params.userId !== prevProps.match.params.userId)
+            this.refreshProfile()
     }
+
 
     render() {
 
         return (
-            <Profile {...this.props} isOwner={!this.props.match.params.userId}updateProfileData={this.props.updateProfileData} savePhoto={this.props.savePhoto}/>
+            <Profile {...this.props} isOwner={this.props.userIdMe === this.props.profile?.userId} updateProfileData={this.props.updateProfileData}
+                     savePhoto={this.props.savePhoto}/>
         )
     }
 }
+
 type PathParamsType = {
     userId: string,
 }
@@ -47,7 +53,7 @@ type MapStateToPropsType = {
     profile: UserProfileType | null
     isAuth: boolean
     newStatus: string
-    userIdMe:number|null
+    userIdMe: number | null
 
 }
 type MapDispatchToPropsType = typeof mapDispatchToProps
@@ -58,7 +64,7 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
     profile: state.profilePage.profile,
     isAuth: state.auth.isAuth,
     newStatus: state.profilePage.newStatus,
-    userIdMe:state.auth.id
+    userIdMe: state.auth.id
 
 })
 let mapDispatchToProps = {

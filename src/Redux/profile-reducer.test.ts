@@ -2,7 +2,7 @@ import {
     addPostActionCreator, deletePost,
     PostDataType,
     ProfilePageStateType,
-    profileReducer,
+    profileReducer, savePhotoSuccess,
     setProfileStatus, setUserProfile,
     UserProfileType
 } from "./profile-reduser";
@@ -39,6 +39,7 @@ test('post should be added', () => {
 test('set user data should be added', () => {
     const endState = profileReducer(startState, setUserProfile(
         {
+            aboutMe: 'ddddd',
             userId: 6,
             lookingForAJob: false,
             lookingForAJobDescription: 'string',
@@ -61,4 +62,15 @@ test('set user data should be added', () => {
 
     expect(endState.profile?.userId).toBe(6);
     expect(endState.profile?.contacts?.vk).toBe('string');
+});
+test('set profile photo ', () => {
+    const endState = profileReducer(startState, savePhotoSuccess(
+        {
+            small: 'string',
+            large: 'num',
+        }
+    ))
+
+    expect(endState.profile?.photos.small).toBe('string');
+    expect(endState.profile?.photos.large).toBe('num');
 });

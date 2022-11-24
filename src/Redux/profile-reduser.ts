@@ -1,16 +1,17 @@
-import {profileAPI, usersAPI} from "../api/api";
+import {profileAPI} from "../api/api";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
 import {setMyAvatar, SetMyAvatarType} from "./auth-reducer";
-export type ContactsType ={
-    github: string|null
-    vk: string|null
-    facebook: string|null
-    instagram: string|null
-    twitter: string|null
-    website: string|null
-    youtube: string|null
-    mainLink: string|null
+
+export type ContactsType = {
+    github: string | null
+    vk: string | null
+    facebook: string | null
+    instagram: string | null
+    twitter: string | null
+    website: string | null
+    youtube: string | null
+    mainLink: string | null
 }
 export type PostDataType = {
     id: number
@@ -18,15 +19,27 @@ export type PostDataType = {
     likesCount: number
 }
 export type UserProfileType = {
+    userId: number | undefined
+    aboutMe: string | null
+    lookingForAJob: boolean
+    lookingForAJobDescription: string | null
+    fullName: string | null
+    contacts: ContactsType
+    photos: {
+        small: string | null
+        large: string | null
+    }
+}
+export type UserUpdateProfileType = {
     userId?: number | undefined
-    aboutMe?: string|undefined
+    aboutMe?: string | undefined
     lookingForAJob?: boolean
-    lookingForAJobDescription?: string|null
-    fullName?: string|null
+    lookingForAJobDescription?: string | null
+    fullName?: string | null
     contacts?: ContactsType
     photos?: {
-        small: string|null
-        large: string|null
+        small?: string | null
+        large?: string | null
     }
 }
 
@@ -42,7 +55,6 @@ type ProfileReducerActionType =
     | SetUserProfileActionType
     | ChangeStatusActionCreator
     | ReturnType<typeof savePhotoSuccess>
-    | ReturnType<typeof updateProfileDataSuccess>
     | SetMyAvatarType
 
 export type ProfilePageStateType = typeof initialState
@@ -64,39 +76,31 @@ export const profileReducer = (state = initialState, action: ProfileReducerActio
                 message: action.newPost,
                 likesCount: 0
             }
-            // state.postData.unshift(newPost)
-            // state.newPostText = ''
             return {
                 ...state,
                 postData: [newPost, ...state.postData]
-            };
+            }
 
-        case "PROFILE/SET-USER-PROFILE": {
+        case "PROFILE/SET-USER-PROFILE":
             return {
                 ...state,
                 profile: {...action.profile}
             }
-        }
-            ;
-        case "PROFILE/SET-PROFILE-STATUS": {
+
+
+        case "PROFILE/SET-PROFILE-STATUS":
             return {
                 ...state,
                 newStatus: action.status === null ? 'status not found' : action.status
             }
-        }
-            ;
-        case "PROFILE/DELETE-POST": {
-            return {...state, postData: state.postData.filter(p => p.id !== action.userID)}
-        }
-            ;
-        case "PROFILE/SAVE-PHOTO": {
-            return {...state, profile: {...state.profile, photos: action.photos}}
-        }
-            ;
 
-        case "PROFILE/UPDATE-USER-PROFILE-DATA": {
-            return {...state, profile: {...state.profile, ...action.profile}}
-        }
+
+        case "PROFILE/DELETE-POST":
+            return {...state, postData: state.postData.filter(p => p.id !== action.userID)}
+
+
+        case "PROFILE/SAVE-PHOTO":
+            return {...state, profile: {...state.profile!, ...action.photos}}
 
         default:
             return state;
@@ -112,30 +116,30 @@ export const savePhotoSuccess = (photos: { small: string, large: string }) => ({
     type: 'PROFILE/SAVE-PHOTO',
     photos
 }) as const
-export const updateProfileDataSuccess = (profile: UserProfileType) => ({
-    type: 'PROFILE/UPDATE-USER-PROFILE-DATA',
-    profile
-} as const)
+
 
 //thunk
 type ThunkCreatorType = ThunkAction<void, AppStateType, unknown, ProfileReducerActionType>
 
-export const getUserProfile = (userId: string): ThunkCreatorType => (dispatch, getState: () => AppStateType) => {
-    if (!userId) userId = ' '
-    // axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
+export const getUserProfile = (userId: number): ThunkCreatorType => (dispatch, getState: () => AppStateType) => {
     const myId = getState().auth.id
     const myAvatar = getState().auth.avatar
+    if (!userId) userId = myId!
+
+
     profileAPI.getProfile(userId)
         .then(response => {
-            if (response.data.userId === myId && myAvatar === null) {
-                dispatch(setMyAvatar(response.data.photos!.small))
+            if (response.data.userId === myId && myAvatar === null && response.data.photos) {
+                dispatch(setMyAvatar(response.data.photos.small ?? ''))
             }
-
+//a? a: b
+            //a?? b
             dispatch(setUserProfile(response.data))
         });
 }
-export const getProfileStatus = (userId: string): ThunkCreatorType => async (dispatch) => {
-    if (!userId) userId = ' '
+export const getProfileStatus = (userId: number): ThunkCreatorType => async (dispatch, getState: () => AppStateType) => {
+    const myId = getState().auth.id
+    if (!userId) userId = myId!
     const response = await profileAPI.getStatus(userId)
     dispatch(setProfileStatus(response.data))
 
@@ -152,13 +156,15 @@ export const savePhoto = (value: File): ThunkCreatorType => async (dispatch) => 
         dispatch(savePhotoSuccess(response.data.data.photos))
     }
 }
-export const updateProfileData = (newProfileData: UserProfileType): ThunkCreatorType => async (dispatch,getState: () => AppStateType) => {
+export const updateProfileData = (newProfileData: UserUpdateProfileType): ThunkCreatorType => async (dispatch, getState: () => AppStateType) => {
     try {
-        const userId=getState().profilePage.profile?.userId
+
+        const userId = getState().profilePage.profile!.userId
+
         const response = await profileAPI.updateUserData(newProfileData)
         if (response.data.resultCode === 0) {
-            dispatch(updateProfileDataSuccess(newProfileData))
-            // dispatch(getUserProfile(userId))
+            // dispatch(updateProfileDataSuccess(newProfileData))
+            dispatch(getUserProfile(userId!))
         }
     } catch (e) {
 

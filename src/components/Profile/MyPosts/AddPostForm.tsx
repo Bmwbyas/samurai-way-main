@@ -1,5 +1,5 @@
 import React from 'react';
-import s from "../../Dialogs/Dialogs.module.css";
+import s from "./MyPosts.module.css";
 import {Button, Input} from "antd";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
@@ -28,8 +28,8 @@ export const AddPostForm:React.FC<AddpostFormType> = ({addPost}) => {
             />
 
             <div >
-                <Button className={s.button} type="primary" htmlType="submit" size={"large"}>
-                    add post
+                <Button className={s.button} type="primary" htmlType="submit" size={"middle"}>
+                    Add post
                 </Button>
             </div>
         </form>

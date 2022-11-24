@@ -1,6 +1,6 @@
 import React from "react";
-import {NavLink} from "react-router-dom";
 import s from './Contact.module.css'
+import {Tooltip} from "antd";
 
 type ContactPropsType = {
     contactTitle: string
@@ -8,12 +8,18 @@ type ContactPropsType = {
 }
 export const Contact: React.FC<ContactPropsType> = ({contactTitle, contactValue}) => {
 
+
+
     return <div>
-        <a  href={contactValue?contactValue:'/404'} target="_blank">
-            <img className={s.navlink} src={contactTitle} alt="contactTitle"/>
-        </a>
 
-        {/*{contactValue === 'null' ? `${contactTitle}.com` : contactValue}*/}
+        {contactValue ?
+            <a href={contactValue ? contactValue : '/404'} target="_blank">
+                <img className={s.navlink} src={contactTitle} alt="contactTitle"/>
+            </a>
+            : <Tooltip  color={'#1369e1'} title="empty contact"><img style={{opacity:0.5}} className={s.navlink} src={contactTitle} alt="contactTitle"/></Tooltip >}
 
-    </div>
-}
+
+                {/*{contactValue === 'null' ? `${contactTitle}.com` : contactValue}*/}
+
+            </div>
+        }

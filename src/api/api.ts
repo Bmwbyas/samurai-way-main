@@ -1,5 +1,5 @@
 import axios from "axios";
-import {UserProfileType} from "../Redux/profile-reduser";
+import {UserProfileType, UserUpdateProfileType} from "../Redux/profile-reduser";
 import {UsersDataType} from "../Redux/users-reducer";
 
 
@@ -25,11 +25,11 @@ export const usersAPI = {
     }
 }
 export const profileAPI = {
-    getProfile(userId: string) {
+    getProfile(userId: number) {
         return instance.get<UserProfileType>(`profile/${userId}`)
         // .then(response => response.data)
     },
-    getStatus(userId: string) {
+    getStatus(userId: number) {
         return instance.get<string>(`profile/status/${userId}`)
         // .then(response => response.data)
     },
@@ -45,7 +45,7 @@ export const profileAPI = {
             }
         })
     },
-    updateUserData(newUserData: UserProfileType) {
+    updateUserData(newUserData: UserUpdateProfileType) {
         return instance.put<ResponseWithoutDataType>(`/profile`, newUserData)
     }
 

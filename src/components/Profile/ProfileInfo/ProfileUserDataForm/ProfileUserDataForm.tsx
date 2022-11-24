@@ -1,8 +1,16 @@
 import React from 'react';
-import {useForm, SubmitHandler} from "react-hook-form";
+import {Controller, SubmitHandler, useForm} from "react-hook-form";
 
-import {UserProfileType} from "../../../../Redux/profile-reduser";
-import {UseFormRegister} from "react-hook-form/dist/types/form";
+import {ContactsType, UserProfileType, UserUpdateProfileType} from "../../../../Redux/profile-reduser";
+import {Button, Input, Radio, Row} from "antd";
+import sLogin from "../../../Login/Login.module.css";
+import {yupResolver} from "@hookform/resolvers/yup/dist/yup";
+import {schemaProfile} from "./ValidateProfileForm/ValidateProfileForm";
+import TextArea from "antd/es/input/TextArea";
+import style from "../ProfileUserData/ProfileUserData.module.css";
+import s from "./ProfileUserDataForm.module.css"
+import {ContactForm} from "./ContactForm/ContactForm";
+
 
 type Inputs = {
     dataFromServer: {
@@ -33,9 +41,9 @@ type Inputs = {
     }
 };
 type ProfileUserDataFormPropsType = {
-    updateProfileData: (data: UserProfileType) => void
+    updateProfileData: (data: UserUpdateProfileType) => void
     setEditMode: (value: boolean) => void
-    profile: UserProfileType | null
+    profile: UserProfileType
 }
 
 
@@ -45,98 +53,135 @@ export const ProfileUserDataForm: React.FC<ProfileUserDataFormPropsType> = ({
                                                                                 updateProfileData
                                                                             }) => {
 
-    const {register, handleSubmit, watch, reset, formState: {errors, isValid}} = useForm<Inputs>({mode: "onBlur"});
-    const facebook = watch("contactsCheckbox.facebook")
-    const instagram = watch("contactsCheckbox.instagram")
-    const github = watch("contactsCheckbox.github")
-    const vk = watch("contactsCheckbox.vk")
-    const twitter = watch("contactsCheckbox.twitter")
-    const mainLink = watch("contactsCheckbox.mainLink")
-    const website = watch("contactsCheckbox.website")
-    const youtube = watch("contactsCheckbox.youtube")
+    const navigateToProfile = () => {
+        setEditMode(false)
+
+    }
+    const {
+        control, handleSubmit, watch,
+        reset, formState: {errors, isValid}
+    } = useForm<Inputs>(
+        {
+            mode: "onBlur",
+            resolver: yupResolver(schemaProfile)
+        }
+    );
+    const watchValue = {
+        facebook: watch("contactsCheckbox.facebook"),
+        instagram: watch("contactsCheckbox.instagram"),
+        github: watch("contactsCheckbox.github"),
+        vk: watch("contactsCheckbox.vk"),
+        twitter: watch("contactsCheckbox.twitter"),
+        mainLink: watch("contactsCheckbox.mainLink"),
+        website: watch("contactsCheckbox.website"),
+        youtube: watch("contactsCheckbox.youtube")
+    }
+    React.useEffect(() => {
+        const subscription = watch((value, {name, type}) => console.log(value, name, type));
+        return () => subscription.unsubscribe();
+    }, [watch]);
 
     const onSubmit: SubmitHandler<Inputs> = data => {
         setEditMode(false)
+        console.log(data)
         updateProfileData(data.dataFromServer)
         reset()
-        
+
     };
+
+    console.log(errors)
     return (
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <label>About me</label>
-            <input placeholder={profile!.aboutMe} {...register("dataFromServer.aboutMe", {
-                required: {value: true, message: 'This field is required'},
-            })} />
-            <label>FullName</label>
-            <input {...register("dataFromServer.fullName", {
-                required: {value: true, message: 'This field is required'},
-                minLength: {value: 3, message: 'length>3'},
-                maxLength: {value: 20, message: 'max length 20 symbol'}
-            })} />
-            {errors.dataFromServer?.fullName &&
-                <span style={{color: 'red'}}>{errors.dataFromServer?.fullName.message}</span>}
-            <label>LookingForAJob</label>
-            <input type={"checkbox"} {...register("dataFromServer.lookingForAJob", {required: true})}/>
-            {errors.dataFromServer?.lookingForAJob && <span style={{color: 'red'}}>This field is required</span>}
-            <input {...register("dataFromServer.lookingForAJobDescription", {required: true,})} />
-            {errors.dataFromServer?.lookingForAJobDescription &&
-                <span style={{color: 'red'}}>This field is required</span>}
-            <label>Contacts</label>
+        <form className={style.personalInfoContainer} onSubmit={handleSubmit(onSubmit)}>
 
-            <Contact register={register} valueFromWatch={facebook} placeholderCheckbox={"add facebook"}
-                     placeholderInput={'Enter your facebook'} nameCheckbox={"contactsCheckbox.facebook"}
-                     nameInput={"dataFromServer.contacts.facebook"}
-            />
-            <Contact register={register} valueFromWatch={instagram} placeholderCheckbox={"add instagram"}
-                     placeholderInput={'Enter your instagram'} nameCheckbox={"contactsCheckbox.instagram"}
-                     nameInput={"dataFromServer.contacts.instagram"}
-            />
-            <Contact register={register} valueFromWatch={github} placeholderCheckbox={"add github"}
-                     placeholderInput={'Enter your github'} nameCheckbox={"contactsCheckbox.github"}
-                     nameInput={"dataFromServer.contacts.github"}
-            />
-            <Contact register={register} valueFromWatch={vk} placeholderCheckbox={"add vk"}
-                     placeholderInput={'Enter your vk'} nameCheckbox={"contactsCheckbox.vk"}
-                     nameInput={"dataFromServer.contacts.vk"}
-            />
-            <Contact register={register} valueFromWatch={twitter} placeholderCheckbox={"add twitter"}
-                     placeholderInput={'Enter your twitter'} nameCheckbox={"contactsCheckbox.twitter"}
-                     nameInput={"dataFromServer.contacts.twitter"}
-            />
-            <Contact register={register} valueFromWatch={mainLink} placeholderCheckbox={"add mainLink"}
-                     placeholderInput={'Enter your mainLink'} nameCheckbox={"contactsCheckbox.mainLink"}
-                     nameInput={"dataFromServer.contacts.mainLink"}
-            />
-            <Contact register={register} valueFromWatch={website} placeholderCheckbox={"add website"}
-                     placeholderInput={'Enter your website'} nameCheckbox={"contactsCheckbox.website"}
-                     nameInput={"dataFromServer.contacts.website"}
-            />
-            <Contact register={register} valueFromWatch={youtube} placeholderCheckbox={"add youtube"}
-                     placeholderInput={'Enter your youtube'} nameCheckbox={"contactsCheckbox.youtube"}
-                     nameInput={"dataFromServer.contacts.youtube"}
-            />
 
-            <input type="submit" disabled={!isValid}/>
+            <Row>
+                <label className={s.label}>FullName</label>
+                <Controller
+                    name="dataFromServer.fullName"
+                    control={control}
+                    defaultValue={profile.fullName === null ? '' : profile.fullName}
+                    render={({field}) => <Input  {...field} size="small" placeholder="input your name"/>}
+                />
+            </Row>
+
+            <Row className={sLogin.errorMessage}>
+                {errors.dataFromServer?.fullName && errors.dataFromServer?.fullName.message}
+            </Row>
+
+            <Row>
+                <label className={s.label}>About me</label>
+                <Controller
+                    name="dataFromServer.aboutMe"
+                    control={control}
+                    defaultValue={profile.aboutMe === null ? '' : profile.aboutMe}
+                    render={({field}) => <TextArea {...field} placeholder="tell a few words about yourself"
+                                                   autoSize/>}
+                />
+
+            </Row>
+
+            <div className={sLogin.errorMessage}>
+                {errors.dataFromServer?.aboutMe && errors.dataFromServer?.aboutMe.message}
+            </div>
+
+            <Row>
+                <label className={s.label}>You looking for a job?</label>
+                <Controller
+                    name="dataFromServer.lookingForAJob"
+                    control={control}
+                    defaultValue={profile.lookingForAJob}
+                    render={({field: {onChange, value, ...restProps}}) =>
+                        <Radio.Group {...restProps} onChange={onChange} value={value}>
+                            <Radio value={true}>Yes</Radio>
+                            <Radio value={false}>No</Radio>
+                        </Radio.Group>}
+                />
+
+            </Row>
+
+            <div className={sLogin.errorMessage}>
+                {errors.dataFromServer?.lookingForAJob && errors.dataFromServer?.lookingForAJob.message}
+            </div>
+
+            <Row>
+                <label className={s.label}>Skills and work experience</label>
+                <Controller
+                    name="dataFromServer.lookingForAJobDescription"
+                    defaultValue={profile.lookingForAJobDescription === null ? '' : profile.lookingForAJobDescription}
+                    control={control}
+                    render={({field}) => <TextArea {...field} placeholder="List your skills and work experience"
+                                                   autoSize/>}
+                />
+            </Row>
+
+            <div className={sLogin.errorMessage}>
+                {errors.dataFromServer?.lookingForAJobDescription && errors.dataFromServer?.lookingForAJobDescription.message}
+            </div>
+
+            <label className={s.label}>Contacts</label>
+            {(Object.keys(profile.contacts!) as (keyof ContactsType)[])
+                .map((key) => {
+
+                    return <ContactForm key={key} name={key} control={control}
+                                    valueFromWatch={watchValue[key]}
+                                    nameCheckbox={`contactsCheckbox.${[key]}`}
+                                    nameInput={`dataFromServer.contacts.${[key]}`}
+                                    errors={errors?.dataFromServer?.contacts?.[key]}
+                    />
+                })
+            }
+
+            <Row className={s.buttonContainer}>
+                <Button className={s.submit}  type="primary" htmlType="submit" size={"small"}
+                        disabled={!isValid}>
+                    Submit
+                </Button>
+                <Button type="primary"  onClick={navigateToProfile} size={"small"}>
+                    Cancel
+                </Button>
+            </Row>
+
         </form>
     );
 };
-type ContactPropsType = {
-    register: UseFormRegister<Inputs>
-    nameCheckbox: any
-    nameInput: any
-    placeholderCheckbox?: string
-    placeholderInput?: string
-    valueFromWatch?: string
-}
-export const Contact: React.FC<ContactPropsType> = ({
-                                                        register, placeholderCheckbox, nameCheckbox, nameInput,
-                                                        placeholderInput, valueFromWatch
-                                                    }) => {
-
-    return (
-        <> <input placeholder={placeholderCheckbox} type={"checkbox"} {...register(nameCheckbox)} />
-            {valueFromWatch && <input placeholder={placeholderInput}  {...register(nameInput)} />}
-        </>
-    )
-}
