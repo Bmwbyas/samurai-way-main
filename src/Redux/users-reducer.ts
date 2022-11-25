@@ -25,6 +25,7 @@ type SetCurrentPageType = {
     type: 'USER/SET-CURRENT-PAGE'
     currentPage: number
 }
+type PaginationDataType = { pageSize?: number, currentPage?: number, totalUsersCount?: number }
 type SetTotalcountType = ReturnType<typeof setTotalCount>
 type SetIsFetchingType = ReturnType<typeof setIsFetching>
 type FollowingInProgressType = ReturnType<typeof setFollowingInProgress>
@@ -37,6 +38,9 @@ type UsersReducerActionType = FollowUserActionType
     | ReturnType<typeof addFriend>
     | ReturnType<typeof deleteFriend>
     | ReturnType<typeof setFriend>
+    | ReturnType<typeof setMoreFriends>
+    | ReturnType<typeof setPaginationDataFriend>
+    | ReturnType<typeof clearDataFriends>
 
 
 export type UsersPageStateType = typeof initialState
@@ -47,7 +51,8 @@ let initialState = {
     currentPage: 1,
     isFetching: false,
     followingInProgress: [] as number[],
-    friends: [] as UsersDataType[]
+    friends: [] as UsersDataType[],
+    friendsPagination: {pageSize: 4, currentPage: 1, totalUsersCount: 0}
 }
 
 export const usersReducer = (state = initialState, action: UsersReducerActionType): UsersPageStateType => {
@@ -89,7 +94,16 @@ export const usersReducer = (state = initialState, action: UsersReducerActionTyp
                 friends: state.friends.filter(f => f.id !== action.id)
             }
         case "USER/SET-FRIEND":
-        return {...state,friends: action.users}
+            return {...state, friends: action.users}
+        case 'USER/SET-MORE-FRIEND':
+            return {
+                ...state,
+                friendsPagination: {...state.friendsPagination, pageSize: state.friendsPagination.pageSize + 4}
+            }
+        case "USER/SET-TOTAL-COUNT-FRIEND":
+            return {...state, friendsPagination: {...state.friendsPagination, ...action.paginationData}}
+        case "USER/CLEAR-DATA-FRIENDS":
+            return {...state, friends: []}
         default:
             return state;
     }
@@ -111,10 +125,16 @@ export const setFollowingInProgress = (followingInProgressBoolean: boolean, user
 export const addFriend = (user: UsersDataType) => ({type: 'USER/ADD-FRIEND', user}) as const
 export const setFriend = (users: UsersDataType[]) => ({type: 'USER/SET-FRIEND', users}) as const
 export const deleteFriend = (id: number) => ({type: 'USER/DELETE-FRIEND', id}) as const
+export const setMoreFriends = () => ({type: 'USER/SET-MORE-FRIEND'}) as const
+export const setPaginationDataFriend = (paginationData: PaginationDataType) => ({
+    type: 'USER/SET-TOTAL-COUNT-FRIEND',
+    paginationData
+}) as const
+export const clearDataFriends = () => ({type: 'USER/CLEAR-DATA-FRIENDS'}) as const
 
 
 type ThunkCreatorType = ThunkAction<void, AppStateType, unknown, UsersReducerActionType>
-// type DispatchThunkAC=Dispatch<UsersReducerActionType>
+
 
 //getUsersThunkCreator
 export const getUsers = (currentPage: number, pageSize: number): ThunkCreatorType => async (dispatch) => {
@@ -126,11 +146,11 @@ export const getUsers = (currentPage: number, pageSize: number): ThunkCreatorTyp
     dispatch(setIsFetching(false))
 
 }
-export const getFriend = (currentPage?: number, pageSize?: number): ThunkCreatorType => async (dispatch) => {
+export const getFriend = (currentPage?: number, pageSize?: number, isFriends?: boolean): ThunkCreatorType => async (dispatch) => {
 
-    const response = await usersAPI.getUsers(currentPage, pageSize, true)
+    const response = await usersAPI.getUsers(currentPage, pageSize, isFriends)
     dispatch(setFriend(response.items))
-
+    dispatch(setPaginationDataFriend({totalUsersCount: response.totalCount}))
 }
 //change follow unfollow thunk creator
 export const changeFollowUnfollow = (user: UsersDataType): ThunkCreatorType => async (dispatch) => {

@@ -13,7 +13,13 @@ import {RouteComponentProps, withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {setMyAvatar} from "../../Redux/auth-reducer";
-import {getFriend, UsersDataType} from "../../Redux/users-reducer";
+import {
+    clearDataFriends,
+    getFriend,
+    setPaginationDataFriend,
+    setMoreFriends,
+    UsersDataType
+} from "../../Redux/users-reducer";
 
 export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
     refreshProfile() {
@@ -23,9 +29,10 @@ export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
             if (!userId) this.props.history.push('/login')
         }
 
+
         this.props.getUserProfile(+userId)
         this.props.getProfileStatus(+userId)
-        this.props.getFriend(1,100)
+
 
     }
 
@@ -34,17 +41,26 @@ export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
     }
 
     componentDidUpdate(prevProps: Readonly<PropsTypeAPI>, prevState: Readonly<{}>, snapshot?: any) {
-        if (this.props.match.params.userId !== prevProps.match.params.userId)
+        if (this.props.match.params.userId !== prevProps.match.params.userId
+            || this.props.friendsPagination.pageSize !== prevProps.friendsPagination.pageSize)
             this.refreshProfile()
+    }
+
+    componentWillUnmount() {
+        this.props.setPaginationDataFriend({currentPage: 1, pageSize: 4, totalUsersCount: 0})
+        this.props.clearDataFriends()
     }
 
 
     render() {
         console.log('profile')
-
         return (
-            <Profile {...this.props} isOwner={this.props.userIdMe === this.props.profile?.userId} updateProfileData={this.props.updateProfileData}
-                     savePhoto={this.props.savePhoto}/>
+            <Profile {...this.props} friendsPagination={this.props.friendsPagination}
+                     setMoreFriends={this.props.setMoreFriends}
+                     isOwner={this.props.userIdMe === this.props.profile?.userId}
+                     updateProfileData={this.props.updateProfileData}
+                     savePhoto={this.props.savePhoto}
+            />
         )
     }
 }
@@ -57,7 +73,12 @@ type MapStateToPropsType = {
     isAuth: boolean
     newStatus: string
     userIdMe: number | null
-    friends:UsersDataType[]
+    friends: UsersDataType[]
+    friendsPagination: {
+        pageSize: number
+        currentPage: number
+        totalUsersCount: number
+    }
 
 }
 type MapDispatchToPropsType = typeof mapDispatchToProps
@@ -69,7 +90,8 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
     isAuth: state.auth.isAuth,
     newStatus: state.profilePage.newStatus,
     userIdMe: state.auth.id,
-    friends:state.usersPage.friends
+    friendsPagination: state.usersPage.friendsPagination,
+    friends: state.usersPage.friends
 })
 let mapDispatchToProps = {
     getUserProfile,
@@ -78,11 +100,12 @@ let mapDispatchToProps = {
     savePhoto,
     updateProfileData,
     setMyAvatar,
-    getFriend
+    getFriend,
+    setMoreFriends,
+    setPaginationDataFriend,
+    clearDataFriends
 
 }
-// let WithUrlDataContainerComponent = withRouter(ProfileContainerAPI)
-// export const ProfileContainer= withAuthRedirect(connect(mapStateToProps,mapDispatchToProps)(WithUrlDataContainerComponent))
 
 export const ProfileContainer = compose<React.ComponentType>(
     connect(mapStateToProps, mapDispatchToProps),

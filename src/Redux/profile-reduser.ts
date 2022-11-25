@@ -2,6 +2,7 @@ import {profileAPI} from "../api/api";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
 import {setMyAvatar, SetMyAvatarType} from "./auth-reducer";
+import {getFriend} from "./users-reducer";
 
 export type ContactsType = {
     github: string | null
@@ -66,6 +67,7 @@ let initialState = {
     ] as PostDataType[],
     newStatus: '',
     profile: null as UserProfileType | null
+
 }
 
 export const profileReducer = (state = initialState, action: ProfileReducerActionType): ProfilePageStateType => {
@@ -138,10 +140,16 @@ export const getUserProfile = (userId: number): ThunkCreatorType => (dispatch, g
         });
 }
 export const getProfileStatus = (userId: number): ThunkCreatorType => async (dispatch, getState: () => AppStateType) => {
+
+    const currentPage=getState().usersPage.friendsPagination.currentPage
+    const pageSize=getState().usersPage.friendsPagination.pageSize
     const myId = getState().auth.id
     if (!userId) userId = myId!
+
+    const isFriend=userId === myId
     const response = await profileAPI.getStatus(userId)
     dispatch(setProfileStatus(response.data))
+    dispatch(getFriend(currentPage,pageSize,isFriend))
 
 }
 export const updateProfileStatus = (newStatus: string): ThunkCreatorType => async (dispatch) => {

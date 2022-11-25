@@ -36,7 +36,8 @@ beforeEach(() => {
         currentPage: 1,
         isFetching: false,
         followingInProgress: [] as number[],
-        friends: []
+        friends: [],
+        friendsPagination: {pageSize: 10,currentPage: 1,totalUsersCount: 0}
     }
 })
 

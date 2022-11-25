@@ -3,7 +3,7 @@ import './MyPosts.module.css'
 import s from './MyPosts.module.css'
 import {Post} from "./Post/Post";
 import {MyPostsPropsType} from "./MyPostsContainer";
-import {AddPostForm} from "./AddPostForm";
+import {AddPostForm} from "./AddPostForm/AddPostForm";
 
 
 export const MyPosts=memo((props: MyPostsPropsType)=> {
@@ -19,10 +19,9 @@ export const MyPosts=memo((props: MyPostsPropsType)=> {
 
     return (
         <div className={s.postsBlock}>
-            <h3>my posts</h3>
-
             <div>
-                <AddPostForm addPost={props.addPost}/>
+
+                <AddPostForm photo={props.profilePage.profile?.photos.small} name={props.profilePage.profile?.fullName} addPost={props.addPost}/>
             </div>
             <div className={s.posts}>
                 {postElement}

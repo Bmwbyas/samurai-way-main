@@ -17,6 +17,7 @@ import {withSuspense} from "./hoc/withSuspense";
 import {Layout} from 'antd';
 import {Navbar} from "./components/Navbar/Navbar";
 
+
 const {Content, Footer} = Layout;
 
 const DialogsContainer = lazy((): any => import('./components/Dialogs/DialogsContainer')
@@ -48,6 +49,7 @@ class App extends React.Component<AppPropsType> {
                                 <Route path='/' render={() => <Redirect to={'/login'}/>}/>
 
                             </Content>
+
 
 
                 </Layout>

@@ -6,10 +6,12 @@ import {ProfileStatusWithHooks} from "./ProfileStatus/ProfileStatusWithHooks";
 import defaultAvatarUser from "./../../../assets/defaultAvatarUser.png"
 import {ProfileUserData} from "./ProfileUserData/ProfileUserData";
 import {ProfileUserDataForm} from "./ProfileUserDataForm/ProfileUserDataForm";
-import {Col, Image, Row} from 'antd';
+import {Button, Col, Image, Row} from 'antd';
 import {UsersDataType} from "../../../Redux/users-reducer";
 import Friend from "./Friend/Friend";
 import defaultAvatar from '../../../assets/defaultAvatarUser.png'
+import {PlusCircleOutlined} from "@ant-design/icons";
+import {MyPostsContainer} from "../MyPosts/MyPostsContainer";
 
 type ProfileInfoType = {
     profile: UserProfileType | null
@@ -19,6 +21,12 @@ type ProfileInfoType = {
     savePhoto: (value: File) => void
     updateProfileData: (data: UserUpdateProfileType) => void
     friends: UsersDataType[]
+    setMoreFriends: () => void
+    friendsPagination: {
+        pageSize: number
+        currentPage: number
+        totalUsersCount: number
+    }
 }
 
 export const ProfileInfo: React.FC<ProfileInfoType> = ({
@@ -28,7 +36,10 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                                                            savePhoto,
                                                            updateProfileStatus,
                                                            isOwner,
-                                                           friends
+                                                           friends,
+                                                           setMoreFriends,
+                                                           friendsPagination
+
 
                                                        }) => {
     const [editMode, setEditMode] = useState(false)
@@ -41,9 +52,13 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
             savePhoto(e.target.files[0])
         }
     }
+    const showMoreUser = () => {
+        setMoreFriends()
+    }
+    const showButtonMoreFriends = friendsPagination.totalUsersCount / friendsPagination.pageSize > 1
     return (
         <div className={s.descriptionBlock}>
-            <Row gutter={20}>
+            <Row gutter={5}>
                 <Col className="gutter-row" span={15}>
 
                     <div className={s.profileInfoContainer}>
@@ -80,16 +95,25 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                             </Col>
                         </Row>
                     </div>
+                    <div className={s.profileInfoContainer}>
+                        <MyPostsContainer/>
+                    </div>
                 </Col>
                 <Col className="gutter-row" span={9}>
                     <div className={s.profileInfoContainer}>
 
                         <Row justify={"center"}><h1>Friends</h1></Row>
-                        <Row>
+                        <Row justify={"start"}>
 
-                            <Row justify={"space-between"}>{friends.map((f) => {
-                                return <Friend key={f.id} id={f.id} name={f.name} photo={f.photos.small ?? defaultAvatar}/>
+                            <Row>{friends.map((f) => {
+                                return <Friend key={f.id} id={f.id} name={f.name}
+                                               photo={f.photos.small ?? defaultAvatar}/>
                             })}</Row>
+                            {showButtonMoreFriends && <Row justify={"center"}>
+                                <Button style={{marginBottom: 15}} type={'primary'} onClick={showMoreUser}>Show more
+                                    friends <PlusCircleOutlined/>
+                                </Button>
+                            </Row>}
                         </Row>
                     </div>
                 </Col>
