@@ -27,7 +27,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = memo(({addPost, avatarProfile
     };
 
     return (
-        <div >
+        <div>
             <div className={style.profileInfoContainer}>
                 <div className={s.addPostContainer}>
                     <img className={s.avatar} src={avatar} alt="myAva"/>
@@ -35,17 +35,18 @@ export const MyPosts: React.FC<MyPostsPropsType> = memo(({addPost, avatarProfile
                         mind,{userName}? </Button>
                 </div>
             </div>
-            <Modal  open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={[]}>
+            <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={[]}>
 
-                <AddPostForm title='Create post' setIsModalOpen={setIsModalOpen} photo={profile?.photos.small} name={profile?.fullName} addPost={addPost}/>
+                <AddPostForm title='Create post' setIsModalOpen={setIsModalOpen} photo={profile?.photos.small}
+                             name={profile?.fullName} addPost={addPost}/>
             </Modal>
-            <div className={style.profileInfoContainer}>
-                <div className={s.posts}>
 
-                    <Posts avatarProfile={avatarProfile} postData={postData}/>
+            <div className={s.posts}>
 
-                </div>
+                <Posts avatarProfile={avatarProfile} postData={postData}/>
+
             </div>
+
         </div>
     );
 })

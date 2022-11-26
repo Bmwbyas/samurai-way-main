@@ -12,6 +12,7 @@ export const Posts:React.FC<PostsType> = ({postData,avatarProfile}) => {
             message={p.message}
             likesCount={p.likesCount}
             avatarProfile={avatarProfile}
+            name={'bla'}
         />)}
     </>
 };

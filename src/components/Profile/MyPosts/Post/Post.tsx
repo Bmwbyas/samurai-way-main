@@ -1,35 +1,52 @@
 import React from 'react';
 import './Post.module.css'
-import s from './Post.module.css'
+import {LikeOutlined,MessageOutlined} from '@ant-design/icons';
 import defaultAvatar from "../../../../assets/defaultAvatarUser.png";
-import {Button, Row} from "antd";
+import {Button, Col, Row, Statistic} from "antd";
+import style from "../../ProfileInfo/ProfileInfo.module.css";
+import styleMyPosts from "../MyPosts.module.css";
+import s from './Post.module.css'
 
 type PostPropsType = {
     message: string
     likesCount: number
     avatarProfile: string | null | undefined
+    name: string
 }
 
-export const Post: React.FC<PostPropsType> = ({avatarProfile, message, likesCount}) => {
+export const Post: React.FC<PostPropsType> = ({avatarProfile, message, likesCount, name}) => {
     const avatar = avatarProfile ?? defaultAvatar
     return (
-        <Row>
-            <Row>
-                <img
-                    src={avatar}
-                    alt="avatar"
-                />
-                <Row>
-                    name
-                </Row>
-            </Row>
-            <Row>{message}</Row>
-            <div>
-                <Button>like </Button>{likesCount}
-                <Button>message </Button>{likesCount}
-            </div>
+        <div className={style.profileInfoContainer}>
 
-        </Row>
+            <Row>
+                <Row align={"middle"} className={s.marginBottom}>
+                    <img className={styleMyPosts.avatar}
+                         src={avatar}
+                         alt="avatar"
+                    />
+                    <span> {name}</span>
+                </Row>
+
+
+
+            </Row>
+            <Row className={s.marginBottom}>{message}</Row>
+            <Row>
+                <Col>
+                    <Button type="ghost" ghost>
+                        <LikeOutlined /> <span>{likesCount}</span>
+                    </Button>
+                </Col>
+                <Col>
+                    <Button type="ghost" ghost>
+                        <MessageOutlined /> Comment
+                    </Button>
+                </Col>
+
+            </Row>
+
+        </div>
 
     );
 }
