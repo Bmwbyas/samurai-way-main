@@ -1,8 +1,10 @@
 import React from 'react';
-import s from "../MyPosts.module.css";
+import style from "../MyPosts.module.css";
+import s from "./AddPostForm.module.css";
 import {Button, Input, Row} from "antd";
 import {useForm, Controller, SubmitHandler} from "react-hook-form";
 import defaultAvatar from '../../../../assets/defaultAvatarUser.png'
+import TextArea from "antd/es/input/TextArea";
 
 
 interface IFormInput {
@@ -14,29 +16,45 @@ type AddpostFormType = {
     addPost: (value: string) => void
     name: string | null | undefined
     photo: string | null | undefined
+    title: string
+    setIsModalOpen: (value: boolean) => void
 }
-export const AddPostForm: React.FC<AddpostFormType> = ({addPost, name, photo}) => {
+export const AddPostForm: React.FC<AddpostFormType> = ({addPost, name, photo, title, setIsModalOpen}) => {
     const userName = name ?? 'guest'
-    const {control, handleSubmit} = useForm<IFormInput>();
+    const {control, reset, formState: {errors, isValid}, handleSubmit} = useForm<IFormInput>({mode: "onBlur"});
     const onSubmit: SubmitHandler<IFormInput> = data => {
         addPost(data.post)
+        setIsModalOpen(false)
+        reset()
 
     };
     const avatar = photo ?? defaultAvatar
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            <Row justify={"center"} className={s.title}>
+                {title}
+            </Row>
+
+            <Row align={"middle"} className={s.avatarContainer}>
+                <img className={style.avatar} src={avatar} alt=""/>
+                <span className={s.name}>{name}</span>
+            </Row>
             <Row>
-                <img src={avatar} alt=""/>
                 <Controller
                     name="post"
                     control={control}
-                    render={({field}) => <Input {...field} size="middle"
-                                                placeholder={`What's on your mind,${userName}`}/>}
+                    rules={{required: true}}
+                    render={({field}) => <TextArea className={s.textArea} {...field} size="middle"
+                                                   placeholder={`What's on your mind, ${userName}?`}/>}
                 />
-                <Button className={s.button} type="primary" htmlType="submit" size={"middle"}>
-                    Add post
+            </Row>
+
+            <Row justify={"center"}>
+                <Button type="primary" htmlType="submit" disabled={!isValid} size={"middle"}>
+                    Post
                 </Button>
             </Row>
+
         </form>
 
     );
