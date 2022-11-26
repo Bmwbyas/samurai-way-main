@@ -57,7 +57,7 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
     }
     const showButtonMoreFriends = friendsPagination.totalUsersCount / friendsPagination.pageSize > 1
     return (
-        <div className={s.descriptionBlock}>
+
             <Row gutter={5}>
                 <Col className="gutter-row" span={15}>
 
@@ -95,8 +95,8 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                             </Col>
                         </Row>
                     </div>
-                    <div className={s.profileInfoContainer}>
-                        <MyPostsContainer/>
+                    <div>
+                            <MyPostsContainer/>
                     </div>
                 </Col>
                 <Col className="gutter-row" span={9}>
@@ -118,7 +118,7 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                     </div>
                 </Col>
             </Row>
-        </div>
+
     )
 }
 

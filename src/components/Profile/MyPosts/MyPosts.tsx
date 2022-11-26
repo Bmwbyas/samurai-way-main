@@ -1,30 +1,50 @@
 import React, {memo} from 'react';
 import './MyPosts.module.css'
 import s from './MyPosts.module.css'
-import {Post} from "./Post/Post";
+import style from '../ProfileInfo/ProfileInfo.module.css'
 import {MyPostsPropsType} from "./MyPostsContainer";
 import {AddPostForm} from "./AddPostForm/AddPostForm";
+import {Posts} from "./Posts/Posts";
+import defaultAvatar from '../../../assets/defaultAvatarUser.png'
+import {Button, Modal} from "antd";
 
+export const MyPosts: React.FC<MyPostsPropsType> = memo(({addPost, avatarProfile, name, postData, profile}) => {
 
-export const MyPosts=memo((props: MyPostsPropsType)=> {
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const avatar = avatarProfile ?? defaultAvatar
+    const userName = name ?? 'guest'
 
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
 
-    const postElement = props.profilePage.postData.map(p =>
-        <Post
-            key={p.id}
-            message={p.message}
-            likesCount={p.likesCount}
-        />);
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
 
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
     return (
-        <div className={s.postsBlock}>
-            <div>
-
-                <AddPostForm photo={props.profilePage.profile?.photos.small} name={props.profilePage.profile?.fullName} addPost={props.addPost}/>
+        <div >
+            <div className={style.profileInfoContainer}>
+                <div className={s.addPostContainer}>
+                    <img className={s.avatar} src={avatar} alt="myAva"/>
+                    <Button className={s.button} onClick={showModal} size={"middle"} block>What's on your
+                        mind,{userName}? </Button>
+                </div>
             </div>
-            <div className={s.posts}>
-                {postElement}
+            <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+
+                <AddPostForm photo={profile?.photos.small} name={profile?.fullName} addPost={addPost}/>
+            </Modal>
+            <div className={style.profileInfoContainer}>
+                <div className={s.posts}>
+
+                    <Posts avatarProfile={avatarProfile} postData={postData}/>
+
+                </div>
             </div>
         </div>
     );

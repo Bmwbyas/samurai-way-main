@@ -1,13 +1,15 @@
-
 import './MyPosts.module.css'
-import {addPostActionCreator,  ProfilePageStateType} from "../../../Redux/profile-reduser";
+import {addPostActionCreator, PostDataType, UserProfileType} from "../../../Redux/profile-reduser";
 import {MyPosts} from "./MyPosts";
 import {AppStateType} from "../../../Redux/redux-store";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 
 type MapStateToPropsType={
-    profilePage:ProfilePageStateType
+    avatarProfile:string | null | undefined
+    postData:PostDataType[]
+    name:string |null | undefined
+    profile:UserProfileType | null
 }
 type MapDispatchToPropsType={
     addPost:(newPost:string)=>void
@@ -16,7 +18,10 @@ type MapDispatchToPropsType={
 export type MyPostsPropsType=MapStateToPropsType&MapDispatchToPropsType
 let mapStateToProps = (state: AppStateType):MapStateToPropsType => {
     return {
-        profilePage: state.profilePage
+        avatarProfile: state.profilePage.profile?.photos.small,
+        postData: state.profilePage.postData,
+        name:state.profilePage.profile?.fullName,
+        profile:state.profilePage.profile
     }
 }
 let mapDispatchToProps = (dispatch:Dispatch):MapDispatchToPropsType => {

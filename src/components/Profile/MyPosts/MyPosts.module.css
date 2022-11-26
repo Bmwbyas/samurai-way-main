@@ -1,9 +1,21 @@
 .postsBlock{
-    padding: 10px;
+    padding: 15px;
 }
 .posts{
     margin-top: 15px;
 }
 .button{
-    margin-top: 15px;
+    text-align: left;
+}
+.addPostContainer{
+    display: grid;
+    grid-template-columns: 1fr 10fr;
+    align-items: center;
+    justify-content: center;
+}
+.avatar{
+    margin-right: 10px;
+    width: 50px;
+    border-radius: 50%;
+
 }
