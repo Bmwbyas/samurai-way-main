@@ -5,3 +5,9 @@
     border-radius: 50%;
 
 }
+.sendButtonContainer{
+    padding-left: 5px;
+}
+.sendButton{
+    opacity: 0.5;
+}

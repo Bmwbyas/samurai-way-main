@@ -8,7 +8,7 @@ import {Posts} from "./Posts/Posts";
 import defaultAvatar from '../../../assets/defaultAvatarUser.png'
 import {Button, Modal} from "antd";
 
-export const MyPosts: React.FC<MyPostsPropsType> = memo(({addPost, avatarProfile, name, postData, profile}) => {
+export const MyPosts: React.FC<MyPostsPropsType> = memo(({addPost,addComment,commentData, avatarProfile, name, postData, profile}) => {
     const [loading, setLoading] = React.useState(false);
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const avatar = avatarProfile ?? defaultAvatar
@@ -25,6 +25,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = memo(({addPost, avatarProfile
     const handleCancel = () => {
         setIsModalOpen(false);
     };
+
 
     return (
         <div>
@@ -43,7 +44,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = memo(({addPost, avatarProfile
 
             <div className={s.posts}>
 
-                <Posts avatarProfile={avatarProfile} postData={postData}/>
+                <Posts commentData={commentData} avatarProfile={avatarProfile} postData={postData} addComment={addComment}/>
 
             </div>
 

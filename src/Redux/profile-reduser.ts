@@ -3,6 +3,7 @@ import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
 import {setMyAvatar, SetMyAvatarType} from "./auth-reducer";
 import {getFriend} from "./users-reducer";
+import {v1} from "uuid";
 
 export type ContactsType = {
     github: string | null
@@ -15,9 +16,17 @@ export type ContactsType = {
     mainLink: string | null
 }
 export type PostDataType = {
-    id: number
+    id: string
     message: string
     likesCount: number
+}
+type CommentType = {
+    id: string
+    comment: string
+    like: number
+}
+export type CommentsStateType = {
+    [key: string]: CommentType[]
 }
 export type UserProfileType = {
     userId: number | undefined
@@ -57,14 +66,20 @@ type ProfileReducerActionType =
     | ChangeStatusActionCreator
     | ReturnType<typeof savePhotoSuccess>
     | SetMyAvatarType
+    | ReturnType<typeof addComment>
 
 export type ProfilePageStateType = typeof initialState
-
+const id1 = v1()
+const id2 = v1()
 let initialState = {
     postData: [
-        {id: 1, message: "Hi,how are you?", likesCount: 10},
-        {id: 2, message: "It's my first post", likesCount: 16},
+        {id: id1, message: "Hi,how are you?", likesCount: 10},
+        {id: id2, message: "It's my first post", likesCount: 16},
     ] as PostDataType[],
+    commentData: {
+        [id1]: [{id: v1(), comment: 'blabla', like: 1}, {id: v1(), comment: 'trololo', like: 2}],
+        [id2]: [{id: v1(), comment: 'oi', like: 0}, {id: v1(), comment: 'tili', like: 3}]
+    } as CommentsStateType,
     newStatus: '',
     profile: null as UserProfileType | null
 
@@ -74,7 +89,7 @@ export const profileReducer = (state = initialState, action: ProfileReducerActio
     switch (action.type) {
         case 'PROFILE/ADD-POST':
             let newPost = {
-                id: 3,
+                id: v1(),
                 message: action.newPost,
                 likesCount: 0
             }
@@ -103,6 +118,13 @@ export const profileReducer = (state = initialState, action: ProfileReducerActio
 
         case "PROFILE/SAVE-PHOTO":
             return {...state, profile: {...state.profile!, ...action.photos}}
+        case "PROFILE/ADD-COMMENT":
+            const newComment:CommentType ={id:v1(),comment:action.payload.comment,like:0}
+            return {...state,
+                commentData:{...state.commentData,
+                    [action.payload.postId]:[...state.commentData[action.payload.postId],newComment]
+                }
+            }
 
         default:
             return state;
@@ -110,13 +132,18 @@ export const profileReducer = (state = initialState, action: ProfileReducerActio
 
 }
 //actions
-export const deletePost = (userID: number) => ({type: 'PROFILE/DELETE-POST', userID: userID}) as const
+export const deletePost = (userID: string) => ({type: 'PROFILE/DELETE-POST', userID}) as const
+
 export const setProfileStatus = (status: string) => ({type: 'PROFILE/SET-PROFILE-STATUS', status} as const)
 export const addPostActionCreator = (newPost: string) => ({type: 'PROFILE/ADD-POST', newPost} as const)
 export const setUserProfile = (profile: UserProfileType) => ({type: 'PROFILE/SET-USER-PROFILE', profile} as const)
 export const savePhotoSuccess = (photos: { small: string, large: string }) => ({
     type: 'PROFILE/SAVE-PHOTO',
     photos
+}) as const
+export const addComment = (payload: { postId: string, comment: string }) => ({
+    type: 'PROFILE/ADD-COMMENT',
+    payload
 }) as const
 
 
@@ -141,15 +168,15 @@ export const getUserProfile = (userId: number): ThunkCreatorType => (dispatch, g
 }
 export const getProfileStatus = (userId: number): ThunkCreatorType => async (dispatch, getState: () => AppStateType) => {
 
-    const currentPage=getState().usersPage.friendsPagination.currentPage
-    const pageSize=getState().usersPage.friendsPagination.pageSize
+    const currentPage = getState().usersPage.friendsPagination.currentPage
+    const pageSize = getState().usersPage.friendsPagination.pageSize
     const myId = getState().auth.id
     if (!userId) userId = myId!
 
-    const isFriend=userId === myId
+    const isFriend = userId === myId
     const response = await profileAPI.getStatus(userId)
     dispatch(setProfileStatus(response.data))
-    dispatch(getFriend(currentPage,pageSize,isFriend))
+    dispatch(getFriend(currentPage, pageSize, isFriend))
 
 }
 export const updateProfileStatus = (newStatus: string): ThunkCreatorType => async (dispatch) => {

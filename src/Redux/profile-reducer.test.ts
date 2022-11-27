@@ -6,6 +6,7 @@ import {
     setProfileStatus, setUserProfile,
     UserProfileType
 } from "./profile-reduser";
+import {v1} from "uuid";
 
 let startState: ProfilePageStateType;
 
@@ -13,16 +14,20 @@ beforeEach(() => {
 
     startState = {
         postData: [
-            {id: 1, message: "Hi,how are you?", likesCount: 10},
-            {id: 2, message: "It's my first post", likesCount: 16},
+            {id: 'id1', message: "Hi,how are you?", likesCount: 10},
+            {id: 'id2', message: "It's my first post", likesCount: 16},
         ] as PostDataType[],
+        commentData: {
+            ['id1']: [{id: v1(), comment: 'blabla', like: 1}, {id: v1(), comment: 'trololo', like: 2}],
+            ['id2']: [{id: v1(), comment: 'oi', like: 0}, {id: v1(), comment: 'tili', like: 3}]
+        },
         newStatus: '',
         profile: null as UserProfileType | null
 
     }
 })
 test('post should be deleted', () => {
-    const endState = profileReducer(startState, deletePost(1))
+    const endState = profileReducer(startState, deletePost('id1'))
 
     expect(endState.postData.length).toBe(1);
 });
