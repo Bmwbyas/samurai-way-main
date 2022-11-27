@@ -17,9 +17,10 @@ type AddpostFormType = {
     name: string | null | undefined
     photo: string | null | undefined
     postId:string
+    setShowComment:(value:boolean)=>void
 
 }
-export const CommentForm: React.FC<AddpostFormType> = ({addComment, name, photo,postId}) => {
+export const CommentForm: React.FC<AddpostFormType> = ({addComment, name, photo,setShowComment,postId}) => {
     const userName = name ?? 'guest'
     const {control, reset, formState: {errors, isValid}, handleSubmit} = useForm<IFormInput>({mode: "onBlur"});
     const onSubmit: SubmitHandler<IFormInput> = data => {
@@ -45,8 +46,8 @@ export const CommentForm: React.FC<AddpostFormType> = ({addComment, name, photo,
                         name="comment"
                         control={control}
                         rules={{required: true}}
-                        render={({field}) => <TextArea className={s.textArea} {...field}
-                                                       placeholder={`input your comment`} autoSize/>}
+                        render={({field}) => <TextArea  className={s.textArea} {...field}
+                                                      onClick={()=>setShowComment(true)} placeholder={`input your comment`} autoSize/>}
                     />
                 </Col>
 

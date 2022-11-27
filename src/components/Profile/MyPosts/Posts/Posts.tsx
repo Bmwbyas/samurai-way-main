@@ -6,10 +6,12 @@ type PostsType={
     avatarProfile:string | null | undefined
     addComment:(payload: {postId: string, comment: string}) => void
     commentData:CommentsStateType
+    toggleLike:(payload: { postId: string; id?: string; likeValue: number;}) =>void
 }
-export const Posts:React.FC<PostsType> = ({postData,commentData,avatarProfile,addComment}) => {
+export const Posts:React.FC<PostsType> = ({postData,commentData,toggleLike,avatarProfile,addComment}) => {
     return <> {postData.map(p =>
         <Post
+            toggleLike={toggleLike}
             commentData={commentData}
             message={p.message}
             key={p.id}

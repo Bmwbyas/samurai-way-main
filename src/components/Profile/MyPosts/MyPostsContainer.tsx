@@ -3,7 +3,7 @@ import {
     addComment,
     addPostActionCreator,
     CommentsStateType,
-    PostDataType,
+    PostDataType, toggleLike,
     UserProfileType
 } from "../../../Redux/profile-reduser";
 import {MyPosts} from "./MyPosts";
@@ -30,7 +30,9 @@ let mapStateToProps = (state: AppStateType):MapStateToPropsType => {
 }
 let mapDispatchToProps = {
     addComment,
-    addPost:addPostActionCreator
+    addPost:addPostActionCreator,
+    toggleLike
+
 
 }
 export const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts);

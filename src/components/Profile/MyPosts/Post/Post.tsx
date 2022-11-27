@@ -2,25 +2,46 @@ import React from 'react';
 import './Post.module.css'
 import {LikeOutlined, MessageOutlined} from '@ant-design/icons';
 import defaultAvatar from "../../../../assets/defaultAvatarUser.png";
-import {Button, Col, Row} from "antd";
+import {Button, Col, Divider, Row} from "antd";
 import style from "../../ProfileInfo/ProfileInfo.module.css";
 import styleMyPosts from "../MyPosts.module.css";
 import s from './Post.module.css'
 import {CommentForm} from "../CommentForm/CommentForm";
 import {CommentsStateType} from "../../../../Redux/profile-reduser";
+import {Comment} from "../Comment/Comment";
+import LikeButton from "../../../common/LikeButton/LikeButton";
 
 type PostPropsType = {
-    postId:string
+    postId: string
     message: string
     likesCount: number
     avatarProfile: string | null | undefined
     name: string
-    addComment:(payload: {postId: string, comment: string}) => void
-    commentData:CommentsStateType
+    addComment: (payload: { postId: string, comment: string }) => void
+    commentData: CommentsStateType
+    toggleLike:(payload: { postId: string; id?: string; likeValue: number;}) =>void
 }
 
-export const Post: React.FC<PostPropsType> = ({avatarProfile,postId,commentData,addComment, message, likesCount, name}) => {
+export const Post: React.FC<PostPropsType> = ({
+                                                  avatarProfile,
+                                                  postId,
+                                                  commentData,
+                                                  addComment,
+                                                  message,
+                                                  likesCount,
+                                                  name,
+                                                  toggleLike
+
+                                              }) => {
     const avatar = avatarProfile ?? defaultAvatar
+    const [showComment, setShowComment] = React.useState(true)
+    const showCommentHandler = () => {
+        setShowComment(!showComment)
+    }
+    const toggleLikePost=(like:number)=>{
+        toggleLike({postId,likeValue:like})
+    }
+
     return (
         <div className={style.profileInfoContainer}>
 
@@ -34,22 +55,20 @@ export const Post: React.FC<PostPropsType> = ({avatarProfile,postId,commentData,
                 </Row>
             </Row>
             <Row className={s.marginBottom}>{message}</Row>
-            <Row gutter={8} >
+            <Row gutter={8}>
                 <Col>
-                    <Button type="default" >
-                        <LikeOutlined /> <span>{likesCount}</span>
-                    </Button>
+
+                    <LikeButton  toggleLike={toggleLikePost}likesCount={likesCount}/>
                 </Col>
                 <Col>
-                    <Button type="default" >
+                    <Button onClick={showCommentHandler} type="default">
                         <MessageOutlined /> Comment
                     </Button>
                 </Col>
             </Row>
-                <CommentForm name={name} postId={postId} addComment={addComment} photo={avatarProfile} />
+            <CommentForm name={name} postId={postId} setShowComment={setShowComment} addComment={addComment} photo={avatarProfile}/>
 
-                {commentData[postId].map(c=><div key={c.id}>{c.comment}</div>)}
-
+            {showComment && commentData[postId].map(c =><Comment key={c.id} toggleLike={toggleLike} avatar={avatar} name={name} postId={postId} c={c}/>)}
 
 
         </div>

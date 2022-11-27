@@ -20,7 +20,7 @@ export type PostDataType = {
     message: string
     likesCount: number
 }
-type CommentType = {
+export type CommentType = {
     id: string
     comment: string
     like: number
@@ -67,6 +67,7 @@ type ProfileReducerActionType =
     | ReturnType<typeof savePhotoSuccess>
     | SetMyAvatarType
     | ReturnType<typeof addComment>
+    | ReturnType<typeof toggleLike>
 
 export type ProfilePageStateType = typeof initialState
 const id1 = v1()
@@ -125,6 +126,11 @@ export const profileReducer = (state = initialState, action: ProfileReducerActio
                     [action.payload.postId]:[...state.commentData[action.payload.postId],newComment]
                 }
             }
+        case "PROFILE/TOGGLE-LIKE":
+        return {...state,
+            commentData:{...state.commentData, [action.payload.postId]:state.commentData[action.payload.postId]
+                .map(c=>c.id===action.payload.id?{...c,like:c.like+action.payload.likeValue}:c)}
+        }
 
         default:
             return state;
@@ -145,6 +151,10 @@ export const addComment = (payload: { postId: string, comment: string }) => ({
     type: 'PROFILE/ADD-COMMENT',
     payload
 }) as const
+export const toggleLike = (payload:{postId:string,id?:string, likeValue:number}) => ({
+    type: 'PROFILE/TOGGLE-LIKE',payload
+}) as const
+
 
 
 //thunk
