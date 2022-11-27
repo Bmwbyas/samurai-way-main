@@ -6,6 +6,7 @@ import {Button, Col, Row, Statistic} from "antd";
 import style from "../../ProfileInfo/ProfileInfo.module.css";
 import styleMyPosts from "../MyPosts.module.css";
 import s from './Post.module.css'
+import {CommentForm} from "../CommentForm/CommentForm";
 
 type PostPropsType = {
     message: string
@@ -27,9 +28,6 @@ export const Post: React.FC<PostPropsType> = ({avatarProfile, message, likesCoun
                     />
                     <span> {name}</span>
                 </Row>
-
-
-
             </Row>
             <Row className={s.marginBottom}>{message}</Row>
             <Row>
@@ -43,8 +41,10 @@ export const Post: React.FC<PostPropsType> = ({avatarProfile, message, likesCoun
                         <MessageOutlined /> Comment
                     </Button>
                 </Col>
-
             </Row>
+
+                <CommentForm name={name} addComment={(v:string)=>{}} photo={avatarProfile} />
+
 
         </div>
 
