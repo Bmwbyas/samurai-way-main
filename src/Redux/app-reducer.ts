@@ -1,6 +1,7 @@
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
 import {getAuthUserData} from "./auth-reducer";
+import {getUserProfile} from "./profile-reduser";
 
 export  type AppStateInitialType = {
     initialized:boolean
@@ -32,8 +33,10 @@ export const initializedSuccessApp = () => ({type: "APP/SET-INITIALIZED"}) as co
 //Thunk creator for login user
 type AppReducerThunkType = ThunkAction<void, AppStateType, unknown, AppReducerActionType>
 
-export const initializeApp = (): AppReducerThunkType =>  async (dispatch) => {
-   await dispatch(getAuthUserData())
+export const initializeApp = (): AppReducerThunkType =>  async (dispatch, getState:()=>AppStateType) => {
+await dispatch(getAuthUserData())
+    // const id=getState().auth.id
+    // const res2= await dispatch(getUserProfile(id!))
 
     dispatch(initializedSuccessApp())
     // promise.then(()=>{dispatch(initializedSuccessApp())})

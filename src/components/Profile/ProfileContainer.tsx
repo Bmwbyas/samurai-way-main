@@ -18,7 +18,7 @@ import {
     getFriend,
     setPaginationDataFriend,
     setMoreFriends,
-    UsersDataType
+    UsersDataType, getUnknown
 } from "../../Redux/users-reducer";
 
 export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
@@ -32,6 +32,7 @@ export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
 
         this.props.getUserProfile(+userId)
         this.props.getProfileStatus(+userId)
+        this.props.getUnknown()
 
 
     }
@@ -42,7 +43,7 @@ export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
 
     componentDidUpdate(prevProps: Readonly<PropsTypeAPI>, prevState: Readonly<{}>, snapshot?: any) {
         if (this.props.match.params.userId !== prevProps.match.params.userId
-            || this.props.friendsPagination.pageSize !== prevProps.friendsPagination.pageSize)
+            || this.props.friendsPagination.pageSize !== prevProps.friendsPagination.pageSize )
             this.refreshProfile()
     }
 
@@ -59,7 +60,7 @@ export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
                      setMoreFriends={this.props.setMoreFriends}
                      isOwner={this.props.userIdMe === this.props.profile?.userId}
                      updateProfileData={this.props.updateProfileData}
-                     savePhoto={this.props.savePhoto}
+                     savePhoto={this.props.savePhoto}usersUnknown={this.props.usersUnknown}
             />
         )
     }
@@ -79,6 +80,7 @@ type MapStateToPropsType = {
         currentPage: number
         totalUsersCount: number
     }
+    usersUnknown:UsersDataType[]
 
 }
 type MapDispatchToPropsType = typeof mapDispatchToProps
@@ -91,7 +93,8 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
     newStatus: state.profilePage.newStatus,
     userIdMe: state.auth.id,
     friendsPagination: state.usersPage.friendsPagination,
-    friends: state.usersPage.friends
+    friends: state.usersPage.friends,
+    usersUnknown:state.usersPage.usersUnknown
 })
 let mapDispatchToProps = {
     getUserProfile,
@@ -103,7 +106,8 @@ let mapDispatchToProps = {
     getFriend,
     setMoreFriends,
     setPaginationDataFriend,
-    clearDataFriends
+    clearDataFriends,
+    getUnknown
 
 }
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import './Post.module.css'
-import {LikeOutlined, MessageOutlined} from '@ant-design/icons';
+import {MessageOutlined} from '@ant-design/icons';
 import defaultAvatar from "../../../../assets/defaultAvatarUser.png";
-import {Button, Col, Divider, Row} from "antd";
+import {Button, Col, Row} from "antd";
 import style from "../../ProfileInfo/ProfileInfo.module.css";
 import styleMyPosts from "../MyPosts.module.css";
 import s from './Post.module.css'
@@ -34,6 +34,7 @@ export const Post: React.FC<PostPropsType> = ({
 
                                               }) => {
     const avatar = avatarProfile ?? defaultAvatar
+    
     const [showComment, setShowComment] = React.useState(true)
     const showCommentHandler = () => {
         setShowComment(!showComment)

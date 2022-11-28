@@ -12,7 +12,6 @@ const LikeButton:React.FC<LikeButtonType> = ({likesCount,toggleLike}) => {
         if(like)toggleLike(1)
         else toggleLike(-1)
         setLike(!like)
-
     }
     return (
 

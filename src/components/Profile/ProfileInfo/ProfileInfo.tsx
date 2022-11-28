@@ -8,10 +8,11 @@ import {ProfileUserData} from "./ProfileUserData/ProfileUserData";
 import {ProfileUserDataForm} from "./ProfileUserDataForm/ProfileUserDataForm";
 import {Button, Col, Image, Row} from 'antd';
 import {UsersDataType} from "../../../Redux/users-reducer";
-import Friend from "./Friend/Friend";
+import SingleUser from "./SingleUser/SingleUser";
 import defaultAvatar from '../../../assets/defaultAvatarUser.png'
 import {PlusCircleOutlined} from "@ant-design/icons";
 import {MyPostsContainer} from "../MyPosts/MyPostsContainer";
+import {NavLink} from "react-router-dom";
 
 type ProfileInfoType = {
     profile: UserProfileType | null
@@ -27,6 +28,7 @@ type ProfileInfoType = {
         currentPage: number
         totalUsersCount: number
     }
+    usersUnknown:UsersDataType[]
 }
 
 export const ProfileInfo: React.FC<ProfileInfoType> = ({
@@ -38,7 +40,8 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                                                            isOwner,
                                                            friends,
                                                            setMoreFriends,
-                                                           friendsPagination
+                                                           friendsPagination,
+                                                           usersUnknown
 
 
                                                        }) => {
@@ -106,8 +109,8 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                         <Row justify={"start"}>
 
                             <Row>{friends.map((f) => {
-                                return <Friend key={f.id} id={f.id} name={f.name}
-                                               photo={f.photos.small ?? defaultAvatar}/>
+                                return <SingleUser key={f.id} id={f.id} name={f.name}
+                                                   photo={f.photos.small ?? defaultAvatar}/>
                             })}</Row>
                             {showButtonMoreFriends && <Row justify={"center"}>
                                 <Button style={{marginBottom: 15}} type={'primary'} onClick={showMoreUser}>Show more
@@ -115,6 +118,20 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                                 </Button>
                             </Row>}
                         </Row>
+                    </div>
+                    <div className={s.profileInfoContainer}>
+                        <Row justify={"center"}>
+                            <NavLink style={{color:"black"}} to={'/users'}>
+                                <h1>People may you know</h1>
+                            </NavLink>
+                        </Row>
+                        <Row justify={"start"}>
+                            <Row>{usersUnknown.map((f) => {
+                                return <SingleUser key={f.id} id={f.id} name={f.name}
+                                                   photo={f.photos.small ?? defaultAvatar}/>
+                            })}</Row>
+                        </Row>
+
                     </div>
                 </Col>
             </Row>

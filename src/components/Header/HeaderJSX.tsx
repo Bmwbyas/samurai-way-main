@@ -17,6 +17,7 @@ export const HeaderJSX: React.FC<HeaderPropsType> = ({isAuth, logOutAuthUser, lo
     const logOut = () => {
         logOutAuthUser()
     }
+    const viewAvatar=avatar??defaultAvatarUser
     return (
         <Header className={s.headerContainer}>
             <div className={s.logoContainer}>
@@ -25,7 +26,7 @@ export const HeaderJSX: React.FC<HeaderPropsType> = ({isAuth, logOutAuthUser, lo
             <div className={s.loginBlock}>
                 <div className={s.headerAvatar}>
                     {isAuth ?
-                        <img className={s.avatar} src={avatar||defaultAvatarUser} alt="logo"/>
+                        <img className={s.avatar} src={viewAvatar} alt="logo"/>
                         : <Avatar size={50} icon={<UserOutlined/>}/>}
                     <span className={s.styleNickname}>{login}</span>
                 </div>

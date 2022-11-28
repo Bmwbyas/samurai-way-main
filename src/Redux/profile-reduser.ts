@@ -29,7 +29,7 @@ export type CommentsStateType = {
     [key: string]: CommentType[]
 }
 export type UserProfileType = {
-    userId: number | undefined
+    userId: number| undefined
     aboutMe: string | null
     lookingForAJob: boolean
     lookingForAJobDescription: string | null
@@ -96,7 +96,10 @@ export const profileReducer = (state = initialState, action: ProfileReducerActio
             }
             return {
                 ...state,
-                postData: [newPost, ...state.postData]
+                postData: [newPost, ...state.postData],
+                commentData: { ...state.commentData,
+                [newPost.id]:[]
+                }
             }
 
         case "PROFILE/SET-USER-PROFILE":
@@ -118,19 +121,35 @@ export const profileReducer = (state = initialState, action: ProfileReducerActio
 
 
         case "PROFILE/SAVE-PHOTO":
-            return {...state, profile: {...state.profile!, ...action.photos}}
+
+            return {...state, profile: action.payload}
         case "PROFILE/ADD-COMMENT":
-            const newComment:CommentType ={id:v1(),comment:action.payload.comment,like:0}
-            return {...state,
-                commentData:{...state.commentData,
-                    [action.payload.postId]:[...state.commentData[action.payload.postId],newComment]
+            const newComment: CommentType = {id: v1(), comment: action.payload.comment, like: 0}
+            return {
+                ...state,
+                commentData: {
+                    ...state.commentData,
+                    [action.payload.postId]: [...state.commentData[action.payload.postId], newComment]
                 }
             }
         case "PROFILE/TOGGLE-LIKE":
-        return {...state,
-            commentData:{...state.commentData, [action.payload.postId]:state.commentData[action.payload.postId]
-                .map(c=>c.id===action.payload.id?{...c,like:c.like+action.payload.likeValue}:c)}
-        }
+            if (action.payload.id) {
+                return {
+                    ...state,
+                    commentData: {
+                        ...state.commentData, [action.payload.postId]: state.commentData[action.payload.postId]
+                            .map(c => c.id === action.payload.id ? {...c, like: c.like + action.payload.likeValue} : c)
+                    }
+                }
+            } else {
+                return {
+                    ...state,
+                    postData: state.postData.map(p => p.id === action.payload.postId ? {
+                        ...p,
+                        likesCount: p.likesCount+action.payload.likeValue
+                    } : p)
+                }
+            }
 
         default:
             return state;
@@ -143,18 +162,17 @@ export const deletePost = (userID: string) => ({type: 'PROFILE/DELETE-POST', use
 export const setProfileStatus = (status: string) => ({type: 'PROFILE/SET-PROFILE-STATUS', status} as const)
 export const addPostActionCreator = (newPost: string) => ({type: 'PROFILE/ADD-POST', newPost} as const)
 export const setUserProfile = (profile: UserProfileType) => ({type: 'PROFILE/SET-USER-PROFILE', profile} as const)
-export const savePhotoSuccess = (photos: { small: string, large: string }) => ({
+export const savePhotoSuccess = (payload: UserProfileType) => ({
     type: 'PROFILE/SAVE-PHOTO',
-    photos
+    payload
 }) as const
 export const addComment = (payload: { postId: string, comment: string }) => ({
     type: 'PROFILE/ADD-COMMENT',
     payload
 }) as const
-export const toggleLike = (payload:{postId:string,id?:string, likeValue:number}) => ({
-    type: 'PROFILE/TOGGLE-LIKE',payload
+export const toggleLike = (payload: { postId: string, id?: string, likeValue: number }) => ({
+    type: 'PROFILE/TOGGLE-LIKE', payload
 }) as const
-
 
 
 //thunk
@@ -195,10 +213,14 @@ export const updateProfileStatus = (newStatus: string): ThunkCreatorType => asyn
         dispatch(setProfileStatus(newStatus))
     }
 }
-export const savePhoto = (value: File): ThunkCreatorType => async (dispatch) => {
+export const savePhoto = (value: File): ThunkCreatorType => async (dispatch, getState:()=>AppStateType) => {
     const response = await profileAPI.savePhoto(value)
     if (response.data.resultCode === 0) {
-        dispatch(savePhotoSuccess(response.data.data.photos))
+        const oldProfile=getState().profilePage.profile
+        const newProfile={...oldProfile!}
+        newProfile.photos=response.data.data.photos
+
+        dispatch(savePhotoSuccess(newProfile))
     }
 }
 export const updateProfileData = (newProfileData: UserUpdateProfileType): ThunkCreatorType => async (dispatch, getState: () => AppStateType) => {

@@ -1,6 +1,7 @@
 import {usersAPI} from "../api/api";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
+import {getRandomInt} from "../components/common/IntegerRandom/IntegerRandom";
 
 export type UsersDataType = {
     id: number
@@ -41,6 +42,7 @@ type UsersReducerActionType = FollowUserActionType
     | ReturnType<typeof setMoreFriends>
     | ReturnType<typeof setPaginationDataFriend>
     | ReturnType<typeof clearDataFriends>
+    | ReturnType<typeof setUserUnknown>
 
 
 export type UsersPageStateType = typeof initialState
@@ -52,7 +54,8 @@ let initialState = {
     isFetching: false,
     followingInProgress: [] as number[],
     friends: [] as UsersDataType[],
-    friendsPagination: {pageSize: 4, currentPage: 1, totalUsersCount: 0}
+    friendsPagination: {pageSize: 4, currentPage: 1, totalUsersCount: 0},
+    usersUnknown: [] as UsersDataType[]
 }
 
 export const usersReducer = (state = initialState, action: UsersReducerActionType): UsersPageStateType => {
@@ -104,6 +107,8 @@ export const usersReducer = (state = initialState, action: UsersReducerActionTyp
             return {...state, friendsPagination: {...state.friendsPagination, ...action.paginationData}}
         case "USER/CLEAR-DATA-FRIENDS":
             return {...state, friends: []}
+        case "USER/USER-UNKNOWN":
+            return {...state, usersUnknown: action.users}
         default:
             return state;
     }
@@ -131,6 +136,7 @@ export const setPaginationDataFriend = (paginationData: PaginationDataType) => (
     paginationData
 }) as const
 export const clearDataFriends = () => ({type: 'USER/CLEAR-DATA-FRIENDS'}) as const
+export const setUserUnknown = (users:UsersDataType[]) => ({type: 'USER/USER-UNKNOWN',users}) as const
 
 
 type ThunkCreatorType = ThunkAction<void, AppStateType, unknown, UsersReducerActionType>
@@ -146,6 +152,15 @@ export const getUsers = (currentPage: number, pageSize: number): ThunkCreatorTyp
     dispatch(setIsFetching(false))
 
 }
+
+export const getUnknown = (): ThunkCreatorType => async (dispatch) => {
+    const currentPage=getRandomInt(1,30)
+    const pageSize=8
+    const response = await usersAPI.getUsers(currentPage, pageSize, false)
+    dispatch(setUserUnknown(response.items))
+    dispatch(setPaginationDataFriend({totalUsersCount: response.totalCount}))
+}
+
 export const getFriend = (currentPage?: number, pageSize?: number, isFriends?: boolean): ThunkCreatorType => async (dispatch) => {
 
     const response = await usersAPI.getUsers(currentPage, pageSize, isFriends)

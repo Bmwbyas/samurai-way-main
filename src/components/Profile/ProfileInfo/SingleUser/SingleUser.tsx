@@ -8,7 +8,7 @@ type FriendsPropsType = {
     photo: string
     id:number
 }
-const Friend: React.FC<FriendsPropsType> = ({name, photo,id}) => {
+const SingleUser: React.FC<FriendsPropsType> = ({name, photo,id}) => {
     return (
 
         <div className={s.friendContainer}>
@@ -22,4 +22,4 @@ const Friend: React.FC<FriendsPropsType> = ({name, photo,id}) => {
     );
 };
 
-export default Friend;
+export default SingleUser;

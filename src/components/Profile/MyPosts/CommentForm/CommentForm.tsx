@@ -25,7 +25,7 @@ export const CommentForm: React.FC<AddpostFormType> = ({addComment, name, photo,
     const {control, reset, formState: {errors, isValid}, handleSubmit} = useForm<IFormInput>({mode: "onBlur"});
     const onSubmit: SubmitHandler<IFormInput> = data => {
         addComment({postId,comment:data.comment})
-
+        reset()
     };
     const avatar = photo ?? defaultAvatar
     const disableSendMessage=!isValid?s.sendButton:''

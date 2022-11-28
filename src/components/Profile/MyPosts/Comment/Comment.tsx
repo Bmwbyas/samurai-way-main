@@ -17,7 +17,7 @@ export const Comment: React.FC<CommentsPropsType> = ({c, postId,toggleLike, name
         toggleLike({postId,id:c.id,likeValue})
     }
     return <>
-        <Divider/>
+        <Divider style={{margin:10}}/>
         <Row align={"middle"} style={{marginBottom: 10}}>
             <Col span={2}>
                 <Row justify={"center"}>
