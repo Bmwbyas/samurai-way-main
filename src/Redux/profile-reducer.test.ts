@@ -71,8 +71,25 @@ test('set user data should be added', () => {
 test('set profile photo ', () => {
     const endState = profileReducer(startState, savePhotoSuccess(
         {
-            small: 'string',
-            large: 'num',
+            aboutMe: 'ddddd',
+            userId: 6,
+            lookingForAJob: false,
+            lookingForAJobDescription: 'string',
+            fullName: 'string',
+            contacts: {
+                github: 'string',
+                vk: 'string',
+                facebook: 'string',
+                instagram: 'string',
+                twitter: 'string',
+                website: 'string',
+                youtube: 'string',
+                mainLink: 'string',
+            },
+            photos: {
+                small: 'string',
+                large: 'num',
+            }
         }
     ))
 
