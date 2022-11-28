@@ -1,7 +1,7 @@
 import {profileAPI} from "../api/api";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
-import {setMyAvatar, SetMyAvatarType} from "./auth-reducer";
+ import {setMyAvatar, SetMyAvatarType} from "./auth-reducer";
 import {getFriend} from "./users-reducer";
 import {v1} from "uuid";
 
@@ -180,14 +180,11 @@ type ThunkCreatorType = ThunkAction<void, AppStateType, unknown, ProfileReducerA
 
 export const getUserProfile = (userId: number): ThunkCreatorType => (dispatch, getState: () => AppStateType) => {
     const myId = getState().auth.id
-    const myAvatar = getState().auth.avatar
     if (!userId) userId = myId!
-
-
     profileAPI.getProfile(userId)
         .then(response => {
-            if (response.data.userId === myId && myAvatar === null && response.data.photos) {
-                dispatch(setMyAvatar(response.data.photos.small ?? ''))
+            if (response.data.userId === myId ) {
+                    dispatch(setMyAvatar(response.data.photos.small ?? ''))
             }
 //a? a: b
             //a?? b
@@ -216,10 +213,13 @@ export const updateProfileStatus = (newStatus: string): ThunkCreatorType => asyn
 export const savePhoto = (value: File): ThunkCreatorType => async (dispatch, getState:()=>AppStateType) => {
     const response = await profileAPI.savePhoto(value)
     if (response.data.resultCode === 0) {
+        const myId = getState().auth.id
         const oldProfile=getState().profilePage.profile
-        const newProfile={...oldProfile!}
-        newProfile.photos=response.data.data.photos
+        const newProfile={...oldProfile!,photos:response.data.data.photos}
 
+        if (newProfile.userId === myId ) {
+            dispatch(setMyAvatar(response.data.data.photos.small))
+        }
         dispatch(savePhotoSuccess(newProfile))
     }
 }

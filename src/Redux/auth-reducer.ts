@@ -15,7 +15,7 @@ type SetUserDataType = ReturnType<typeof setUserData>
 type SetCaptchaType = ReturnType<typeof setCaptcha>
 export type SetMyAvatarType = ReturnType<typeof setMyAvatar>
 
-type AuthReducerActionType =SetMyAvatarType| SetCaptchaType | SetUserDataType | FormAction
+type AuthReducerActionType = SetMyAvatarType|SetCaptchaType | SetUserDataType | FormAction
 
 
 let initialState: AuthStateType = {
