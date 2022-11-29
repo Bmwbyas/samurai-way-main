@@ -8,32 +8,29 @@ import TextArea from "antd/es/input/TextArea";
 import {SendOutlined} from '@ant-design/icons';
 
 interface IFormInput {
-    comment: string;
+    text: string;
 
 }
 
 type AddpostFormType = {
-    addComment:(payload: {postId: string, comment: string}) => void
+    submitForm:(text: string) => void
     name: string | null | undefined
     photo: string | null | undefined
-    postId:string
-    setShowComment:(value:boolean)=>void
+
+    // setShowComment?:(value:boolean)=>void
 
 }
-export const CommentForm: React.FC<AddpostFormType> = ({addComment, name, photo,setShowComment,postId}) => {
-    const userName = name ?? 'guest'
-    const {control, reset, formState: {errors, isValid}, handleSubmit} = useForm<IFormInput>({mode: "onBlur"});
+export const CommentForm: React.FC<AddpostFormType> = ({submitForm, name, photo}) => {
+    const {control, reset, formState: { isValid}, handleSubmit} = useForm<IFormInput>({mode: "onBlur"});
     const onSubmit: SubmitHandler<IFormInput> = data => {
-        addComment({postId,comment:data.comment})
+        submitForm(data.text)
         reset()
     };
     const avatar = photo ?? defaultAvatar
     const disableSendMessage=!isValid?s.sendButton:''
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-
-
-
             <Row >
                 <Divider />
                 <Col span={2} >
@@ -43,11 +40,11 @@ export const CommentForm: React.FC<AddpostFormType> = ({addComment, name, photo,
                 </Col>
                 <Col span={19}>
                     <Controller
-                        name="comment"
+                        name="text"
                         control={control}
                         rules={{required: true}}
                         render={({field}) => <TextArea  className={s.textArea} {...field}
-                                                      onClick={()=>setShowComment(true)} placeholder={`input your comment`} autoSize/>}
+                                                       placeholder={`input your comment`} autoSize/>}
                     />
                 </Col>
 
@@ -60,8 +57,6 @@ export const CommentForm: React.FC<AddpostFormType> = ({addComment, name, photo,
                     </Row>
                 </Col>
             </Row>
-
-
         </form>
 
     );

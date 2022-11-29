@@ -16,7 +16,8 @@ import {Preloader} from "./components/common/Preloader";
 import {withSuspense} from "./hoc/withSuspense";
 import {Layout} from 'antd';
 import {Navbar} from "./components/Navbar/Navbar";
-import {Dialog} from "./components/Dialogs/Dialog/Dialog";
+import {DialogContainer} from "./components/Dialogs/Dialog/DialogContainer";
+
 
 
 const {Content, Footer} = Layout;
@@ -44,7 +45,7 @@ class App extends React.Component<AppPropsType> {
                                 <Route path='/music' component={Music}/>
                                 <Route path='/setting' component={Setting}/>
                                 <Route path='/dialogs' render={withSuspense(DialogsContainer)}/>
-                                <Route path='/dialog/:userId' render={()=><Dialog/>}/>
+                                <Route path='/dialog/:userId?' render={()=><DialogContainer/>}/>
                                 <Route path='/profile/:userId?' render={()=><ProfileContainer/>}/>
                                 <Route path='/users' render={() => <UsersContainer/>}/>
                                 <Route path='/login' render={() => <LoginContainer/>}/>

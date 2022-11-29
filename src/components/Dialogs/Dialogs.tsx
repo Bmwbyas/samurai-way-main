@@ -12,13 +12,12 @@ export const Dialogs: React.FC<DialogsPropsType> = ({friends, myAvatar,}) => {
 
     const friendsData = friends.map((f) => {
         const avatar = f.photos.small ?? defaultAvatar
-        return <SingleUser key={f.id} id={f.id} name={f.name} photo={avatar}/>
+        return <SingleUser key={f.id} navigate={'/dialog/'} id={f.id} name={f.name} photo={avatar}/>
     })
     const messages = friends.map((f) => {
             const myAvatarValue = myAvatar ?? defaultAvatar
             const avatar = f.photos.small ?? defaultAvatar
-            const vievDialog = () => {
-            }
+
             return <Messege key={f.id} avatar={avatar} myAvatarValue={myAvatarValue} f={f} message={'motya'}/>
         }
     )
@@ -26,7 +25,7 @@ export const Dialogs: React.FC<DialogsPropsType> = ({friends, myAvatar,}) => {
     return (
         <>
 
-            <Row>
+            <Row style={{marginTop:20}}>
                 <Col className="gutter-row" span={15}>
                     <div className={sProfilePage.profileInfoContainer}>
                         <Row>

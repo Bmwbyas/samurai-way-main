@@ -109,7 +109,7 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                         <Row justify={"start"}>
 
                             <Row>{friends.map((f) => {
-                                return <SingleUser key={f.id} id={f.id} name={f.name}
+                                return <SingleUser key={f.id} id={f.id} navigate={'/profile/'} name={f.name}
                                                    photo={f.photos.small ?? defaultAvatar}/>
                             })}</Row>
                             {showButtonMoreFriends && <Row justify={"center"}>
@@ -127,7 +127,7 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                         </Row>
                         <Row justify={"start"}>
                             <Row>{usersUnknown.map((f) => {
-                                return <SingleUser key={f.id} id={f.id} name={f.name}
+                                return <SingleUser key={f.id} navigate={'/profile/'} id={f.id} name={f.name}
                                                    photo={f.photos.small ?? defaultAvatar}/>
                             })}</Row>
                         </Row>

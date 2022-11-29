@@ -1,22 +1,17 @@
 import {
-    addMessageActionCreator,
-    DialogsDataType,
+    addMessage,
     DialogsPageStateType,
     dialogsReducer,
     MessageDataType
 } from "./dialogs-reduser";
 
+
 let startState: DialogsPageStateType ;
 
 beforeEach(() => {
 
-    startState = { dialogsData: [
-            {id: 1, name: 'Dimych'},
-            {id: 2, name: 'Andrey'},
-            {id: 3, name: 'Sveta'},
-            {id: 4, name: 'Valera'},
-            {id: 5, name: 'Victor'}
-        ] as DialogsDataType[],
+    startState = {
+
         messagesData: [
             {id: 1, message: 'Hi'},
             {id: 2, message: 'it-kamasutra'},
@@ -29,7 +24,7 @@ beforeEach(() => {
 })
 
 test('auth data should be changed', () => {
-    const endState = dialogsReducer(startState, addMessageActionCreator('text'))
+    const endState = dialogsReducer(startState, addMessage('text'))
 
     expect(endState.messagesData[5].id).toBe(6);
     expect(endState.messagesData[5].message).toBe('text');

@@ -7,12 +7,13 @@ type FriendsPropsType = {
     name: string
     photo: string
     id:number
+    navigate:string
 }
-const SingleUser: React.FC<FriendsPropsType> = ({name, photo,id}) => {
+const SingleUser: React.FC<FriendsPropsType> = ({name, photo,id,navigate}) => {
     return (
 
         <div className={s.friendContainer}>
-            <NavLink to={'/profile/' + id}>
+            <NavLink to={navigate + id}>
             <Tooltip color={'#1369e1'} title={name}>
                 <Row justify={"center"}><img className={s.ava} src={photo} alt="lz"/></Row>
                 <Row justify={"center"} className={s.name}>{name}</Row>

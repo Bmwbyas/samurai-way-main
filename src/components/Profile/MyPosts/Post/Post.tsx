@@ -42,7 +42,9 @@ export const Post: React.FC<PostPropsType> = ({
     const toggleLikePost=(like:number)=>{
         toggleLike({postId,likeValue:like})
     }
-
+    const addCommentHandler=(text:string)=>{
+        addComment({postId,comment:text})
+    }
     return (
         <div className={style.profileInfoContainer}>
 
@@ -59,7 +61,7 @@ export const Post: React.FC<PostPropsType> = ({
             <Row gutter={8}>
                 <Col>
 
-                    <LikeButton  toggleLike={toggleLikePost}likesCount={likesCount}/>
+                    <LikeButton  toggleLike={toggleLikePost} likesCount={likesCount}/>
                 </Col>
                 <Col>
                     <Button onClick={showCommentHandler} type="default">
@@ -67,7 +69,7 @@ export const Post: React.FC<PostPropsType> = ({
                     </Button>
                 </Col>
             </Row>
-            <CommentForm name={name} postId={postId} setShowComment={setShowComment} addComment={addComment} photo={avatarProfile}/>
+            <CommentForm name={name}   submitForm={addCommentHandler} photo={avatarProfile}/>
 
             {showComment && commentData[postId].map(c =><Comment key={c.id} toggleLike={toggleLike} avatar={avatar} name={name} postId={postId} c={c}/>)}
 
