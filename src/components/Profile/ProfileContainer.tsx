@@ -16,8 +16,6 @@ import {setMyAvatar} from "../../Redux/auth-reducer";
 import {
     clearDataFriends,
     getFriend,
-    setPaginationDataFriend,
-    setMoreFriends,
     UsersDataType, getUnknown
 } from "../../Redux/users-reducer";
 
@@ -42,25 +40,18 @@ export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
     }
 
     componentDidUpdate(prevProps: Readonly<PropsTypeAPI>, prevState: Readonly<{}>, snapshot?: any) {
-        if (this.props.match.params.userId !== prevProps.match.params.userId
-            || this.props.friendsPagination.pageSize !== prevProps.friendsPagination.pageSize )
+        if (this.props.match.params.userId !== prevProps.match.params.userId)
             this.refreshProfile()
     }
-
-    componentWillUnmount() {
-        this.props.setPaginationDataFriend({currentPage: 1, pageSize: 4, totalUsersCount: 0})
-
-    }
-
 
     render() {
         console.log('profile')
         return (
-            <Profile {...this.props} friendsPagination={this.props.friendsPagination}
-                     setMoreFriends={this.props.setMoreFriends}
+            <Profile {...this.props}
+
                      isOwner={this.props.userIdMe === this.props.profile?.userId}
                      updateProfileData={this.props.updateProfileData}
-                     savePhoto={this.props.savePhoto}usersUnknown={this.props.usersUnknown}
+                     savePhoto={this.props.savePhoto} usersUnknown={this.props.usersUnknown}
             />
         )
     }
@@ -75,11 +66,6 @@ type MapStateToPropsType = {
     newStatus: string
     userIdMe: number | null
     friends: UsersDataType[]
-    friendsPagination: {
-        pageSize: number
-        currentPage: number
-        totalUsersCount: number
-    }
     usersUnknown:UsersDataType[]
 
 }
@@ -92,7 +78,6 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
     isAuth: state.auth.isAuth,
     newStatus: state.profilePage.newStatus,
     userIdMe: state.auth.id,
-    friendsPagination: state.usersPage.friendsPagination,
     friends: state.usersPage.friends,
     usersUnknown:state.usersPage.usersUnknown
 })
@@ -104,8 +89,6 @@ let mapDispatchToProps = {
     updateProfileData,
     setMyAvatar,
     getFriend,
-    setMoreFriends,
-    setPaginationDataFriend,
     clearDataFriends,
     getUnknown
 

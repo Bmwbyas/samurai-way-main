@@ -22,12 +22,6 @@ type ProfileInfoType = {
     savePhoto: (value: File) => void
     updateProfileData: (data: UserUpdateProfileType) => void
     friends: UsersDataType[]
-    setMoreFriends: () => void
-    friendsPagination: {
-        pageSize: number
-        currentPage: number
-        totalUsersCount: number
-    }
     usersUnknown:UsersDataType[]
 }
 
@@ -39,26 +33,28 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                                                            updateProfileStatus,
                                                            isOwner,
                                                            friends,
-                                                           setMoreFriends,
-                                                           friendsPagination,
+
                                                            usersUnknown
 
 
                                                        }) => {
     const [editMode, setEditMode] = useState(false)
+    const [sizePortion,setSizePortion]=React.useState(4)
     if (!profile) {
         return <Preloader/>
     }
+    const totalCountFriends=friends.length
 
+    const friendPortion=friends.slice(0,sizePortion)
+    const showMoreUser = () => {
+        setSizePortion(sizePortion+4)
+    }
+    const showButtonMoreFriends = totalCountFriends / sizePortion > 1
     const onMainPhotoSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
             savePhoto(e.target.files[0])
         }
     }
-    const showMoreUser = () => {
-        setMoreFriends()
-    }
-    const showButtonMoreFriends = friendsPagination.totalUsersCount / friendsPagination.pageSize > 1
     return (
 
             <Row gutter={5}>
@@ -108,7 +104,7 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                         <Row justify={"center"}><h1>Friends</h1></Row>
                         <Row justify={"start"}>
 
-                            <Row>{friends.map((f) => {
+                            <Row>{friendPortion.map((f) => {
                                 return <SingleUser key={f.id} id={f.id} navigate={'/profile/'} name={f.name}
                                                    photo={f.photos.small ?? defaultAvatar}/>
                             })}</Row>
