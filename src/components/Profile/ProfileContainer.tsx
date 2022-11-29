@@ -49,7 +49,7 @@ export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
 
     componentWillUnmount() {
         this.props.setPaginationDataFriend({currentPage: 1, pageSize: 4, totalUsersCount: 0})
-        this.props.clearDataFriends()
+
     }
 
 

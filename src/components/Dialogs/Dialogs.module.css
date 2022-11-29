@@ -1,38 +1,4 @@
-.dialogs {
-    display: grid;
-
-    grid-template-columns: 2fr 10fr;
-}
-
-.dialog {
-
-}
-.dialog img{
-    width: 30px;
-    border-radius: 50%;
-}
-.dialog a{
-    text-decoration: none;
-    color:black;
-}
-
-.messages {
-    padding: 10px;
-}
-
-.message {
-color: black;
-}
-
-.dialogItems {
-
-    padding: 10px;
-    color: white;
-}
-.dialogItems .active{
-    color: gold;
-}
-.addMessage{
-    margin-left: 10px;
-    width :80px;
+.dialogContainer {
+    margin: 0;
+    padding: 0;
 }

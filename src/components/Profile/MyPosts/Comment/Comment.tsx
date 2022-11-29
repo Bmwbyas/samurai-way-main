@@ -25,7 +25,7 @@ export const Comment: React.FC<CommentsPropsType> = ({c, postId,toggleLike, name
                 </Row>
             </Col>
             <Col span={19}>
-                <span className={s.name}> {name}</span>
+                <span > {name}</span>
             </Col>
         </Row>
 

@@ -1,0 +1,8 @@
+.messageContainer{
+    cursor: pointer;
+    border-radius: 5px;
+    color: black;
+}
+.messageContainer:hover{
+    background-color: #bae0ff;
+}

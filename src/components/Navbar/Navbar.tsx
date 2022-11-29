@@ -1,5 +1,5 @@
 import React from 'react';
-import s from './Navbar.module.css'
+
 import {NavLink} from "react-router-dom";
 
 import {Menu} from "antd";
@@ -29,7 +29,7 @@ export const Navbar = () => {
                     {
                         key: '3',
                         icon: <UploadOutlined/>,
-                        label: <NavLink to="/dialogs">Messages</NavLink>,
+                        label: <NavLink to="/dialogs">Messenger</NavLink>,
                     },
                 ]}
             />

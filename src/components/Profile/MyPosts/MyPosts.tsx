@@ -14,7 +14,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = memo(({
                                                              avatarProfile, name, postData,
                                                              profile
                                                          }) => {
-    const [loading, setLoading] = React.useState(false);
+
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const avatar = avatarProfile ?? defaultAvatar
     const userName = name ?? 'guest'
@@ -48,13 +48,12 @@ export const MyPosts: React.FC<MyPostsPropsType> = memo(({
             </Modal>
 
             <div className={s.posts}>
-
                 <Posts toggleLike={toggleLike}
                        commentData={commentData}
                        avatarProfile={avatarProfile}
                        postData={postData}
-                       addComment={addComment}/>
-
+                       addComment={addComment}
+                />
             </div>
 
         </div>
