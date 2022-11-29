@@ -1,5 +1,5 @@
 import React from 'react';
-import { DialogsPageStateType,} from "../../Redux/dialogs-reduser";
+import {addTochedUser,  touchedUsers,} from "../../Redux/dialogs-reduser";
 import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
 import {AppStateType} from "../../Redux/redux-store";
@@ -9,21 +9,23 @@ import {UsersDataType} from "../../Redux/users-reducer";
 
 
 type MapStateToPropsType = {
-    dialogsPage: DialogsPageStateType
+    tochedUsers: touchedUsers[]
     friends: UsersDataType[]
     myAvatar:string| null | undefined
+    message:string
 }
 type MapDispatchToPropsType = typeof mapDispatchToProps
 export type DialogsPropsType = MapStateToPropsType & MapDispatchToPropsType
 let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
-        dialogsPage: state.dialogsPage,
+        tochedUsers: state.dialogsPage.touchedUsers,
         friends:state.usersPage.friends,
-        myAvatar:state.auth.avatar
+        myAvatar:state.auth.avatar,
+        message:state.dialogsPage.messagesData[0].message
     }
 }
 let mapDispatchToProps = {
-
+    addTochedUser
 }
 
 export const DialogsContainer= compose<React.ComponentType>(

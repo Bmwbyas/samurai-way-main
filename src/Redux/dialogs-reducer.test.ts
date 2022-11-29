@@ -6,12 +6,12 @@ import {
 } from "./dialogs-reduser";
 
 
-let startState: DialogsPageStateType ;
+let startState: DialogsPageStateType;
 
 beforeEach(() => {
 
     startState = {
-
+        touchedUsers: [{id:1,name:'vasya'}],
         messagesData: [
             {id: 1, message: 'Hi'},
             {id: 2, message: 'it-kamasutra'},

@@ -1,4 +1,9 @@
-.dialogContainer {
-    margin: 0;
-    padding: 0;
+.allChat{
+    border-radius: 5px;
+    padding: 5px;
+}
+.allChat:hover{
+    background-color: #bae0ff;
+    border-radius: 5px;
+    padding: 5px;
 }

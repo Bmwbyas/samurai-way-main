@@ -6,16 +6,18 @@ import {UsersDataType} from "../../../Redux/users-reducer";
 import s from "./Message.module.css"
 import {NavLink} from "react-router-dom";
 
+
 type MessegePropsType = {
     avatar: string
     myAvatarValue: string
     f: UsersDataType
     message: string
+    addTochedUser:(data:{id:number,name:string})=>void
 }
-export const Messege: React.FC<MessegePropsType> = ({avatar, myAvatarValue, f, message}) => {
+export const Messege: React.FC<MessegePropsType> = ({avatar, myAvatarValue, f, message,addTochedUser}) => {
 
 
-    return <NavLink to={'/dialog/' + f.id}>
+    return <NavLink to={'/dialog/' + f.id} onClick={()=>addTochedUser({id:f.id,name:f.name})} >
         <Row className={s.messageContainer} >
 
             <Col span={2}>

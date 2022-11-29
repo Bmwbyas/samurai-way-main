@@ -13,13 +13,11 @@ interface IFormInput {
 }
 
 type AddpostFormType = {
-    submitForm:(text: string) => void
+    submitForm: (text: string) => void
     name: string | null | undefined
     photo: string | null | undefined
-
-    // setShowComment?:(value:boolean)=>void
-
 }
+
 export const CommentForm: React.FC<AddpostFormType> = ({submitForm, name, photo}) => {
     const {control, reset, formState: { isValid}, handleSubmit} = useForm<IFormInput>({mode: "onBlur"});
     const onSubmit: SubmitHandler<IFormInput> = data => {
@@ -47,7 +45,6 @@ export const CommentForm: React.FC<AddpostFormType> = ({submitForm, name, photo}
                                                        placeholder={`input your comment`} autoSize/>}
                     />
                 </Col>
-
 
                 <Col span={3} >
                     <Row className={s.sendButtonContainer}>

@@ -1,0 +1,7 @@
+.name{
+    padding: 10px;
+    border-radius: 5px;
+}
+.name:hover{
+    background-color: #bae0ff;
+}
