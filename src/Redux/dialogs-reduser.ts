@@ -3,7 +3,7 @@ export type MessageDataType = {
     message: string
     isMeMessage: boolean
 }
-export type touchedUsers={
+export type TouchedUsers ={
     id:number
     name:string
 }
@@ -14,7 +14,7 @@ type DialogsReducerActionType = ReturnType<typeof addMessage>|ReturnType<typeof 
 export type DialogsPageStateType = typeof initialState
 
 let initialState = {
-    touchedUsers:[] as touchedUsers[],
+    touchedUsers:[] as TouchedUsers[],
     messagesData: [
         {id: 5, isMeMessage: true, message: 'Hi'},
         {id: 4, isMeMessage: false, message: 'it-kamasutra'},
@@ -49,5 +49,5 @@ export const dialogsReducer = (state = initialState, action: DialogsReducerActio
 }
 //actions
 export const addMessage = (text: string) => ({type: 'DIALOGS/ADD-MESSAGE', text} as const)
-export const addTochedUser = (data:touchedUsers) => ({type: 'DIALOGS/ADD-TOCHED-USER', payload:data} as const)
+export const addTochedUser = (data:TouchedUsers) => ({type: 'DIALOGS/ADD-TOCHED-USER', payload:data} as const)
 

@@ -4,10 +4,11 @@ import sProfilePage from "../../Profile/ProfileInfo/ProfileInfo.module.css";
 import {Col, Row} from "antd";
 import {LeftOutlined} from "@ant-design/icons";
 import sCommentForm from "../../Profile/MyPosts/CommentForm/CommentForm.module.css";
-import defaultAvatarUser from "./../../../assets/defaultAvatarUser.png"
 import {SingleDialog} from "./SingleDialog/SingleDialog";
 import {CommentForm} from "../../Profile/MyPosts/CommentForm/CommentForm";
-import {MessageDataType} from "../../../Redux/dialogs-reduser";
+import {MessageDataType, TouchedUsers} from "../../../Redux/dialogs-reduser";
+import {NavDialogs} from "../NavDialogs/NavDialogs";
+import {viewAvatar} from "../../../utils/ViewAvatar/viewAvatar";
 
 
 type DialogPropsType = {
@@ -18,16 +19,18 @@ type DialogPropsType = {
     myUserName: string | null
     addMessage: (text: string) => void
     dialogsData: MessageDataType[]
+    tochedUsers: TouchedUsers[]
+
 }
 export const Dialog: React.FC<DialogPropsType> = ({
                                                       addMessage, dialogsData,
                                                       userName, avatar, myAvatar,
-                                                      myUserName,
+                                                      myUserName,tochedUsers
                                                   }) => {
 
 
-    const avatarValue = avatar ?? defaultAvatarUser
-    const myAvatarValue = myAvatar ?? defaultAvatarUser
+    const avatarValue = viewAvatar(avatar)
+    const myAvatarValue = viewAvatar(myAvatar)
     const dialogsUsers = dialogsData.map(d => <SingleDialog key={d.id} isMeMessage={d.isMeMessage}
                                                             myUserName={myUserName}
                                                             message={d.message} myAvatarValue={myAvatarValue}
@@ -52,7 +55,7 @@ export const Dialog: React.FC<DialogPropsType> = ({
                 </div>
             </Col>
             <Col className="gutter-row" span={9}>
-                <Row>All chat</Row>
+                <NavDialogs tochedUsers={tochedUsers}/>
             </Col>
         </Row>
     );

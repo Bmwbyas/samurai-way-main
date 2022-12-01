@@ -4,12 +4,13 @@ import React from "react";
 import SingleUser from "../../Profile/ProfileInfo/SingleUser/SingleUser";
 import {UsersDataType} from "../../../Redux/users-reducer";
 import s from './FriendsList.module.css'
-import {vievAvatar} from "../../../utils/ViewAvatar/viewAvatar";
+import {viewAvatar} from "../../../utils/ViewAvatar/viewAvatar";
 
 type FriendsListType = {
     friends: UsersDataType[]
+    addTochedUser: (data: { id: number, name: string }) => void
 }
-export const FriendsList: React.FC<FriendsListType> = ({friends}) => {
+export const FriendsList: React.FC<FriendsListType> = ({friends,addTochedUser}) => {
     const standartPortion = 7
     const [sizePortion, setSizePortion] = React.useState(standartPortion)
     const [prevSizePortion, setPrevSizePortion] = React.useState(0)
@@ -30,8 +31,8 @@ export const FriendsList: React.FC<FriendsListType> = ({friends}) => {
         setPrevSizePortion(prevSizePortion + standartPortion)
     }
     const friendsData = friendPortion.map((f) => {
-        const avatar = vievAvatar(f.photos.small)
-        return <SingleUser key={f.id} navigate={'/dialog/'} id={f.id} name={f.name} photo={avatar}/>
+        const avatar = viewAvatar(f.photos.small)
+        return <SingleUser key={f.id} addTochedUser={addTochedUser} navigate={'/dialog/'} id={f.id} name={f.name} photo={avatar}/>
     })
 
     return (

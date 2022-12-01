@@ -11,10 +11,10 @@ type MessegePropsType = {
     avatar: string
     myAvatarValue: string
     f: UsersDataType
-    message: string
+    messege: string
     addTochedUser:(data:{id:number,name:string})=>void
 }
-export const Messege: React.FC<MessegePropsType> = ({avatar, myAvatarValue, f, message,addTochedUser}) => {
+export const Messege: React.FC<MessegePropsType> = ({avatar, myAvatarValue, f, messege,addTochedUser}) => {
 
 
     return <NavLink to={'/dialog/' + f.id} onClick={()=>addTochedUser({id:f.id,name:f.name})} >
@@ -36,7 +36,7 @@ export const Messege: React.FC<MessegePropsType> = ({avatar, myAvatarValue, f, m
                         </Row>
                     </Col>
                     <Col span={19}>
-                        <span> {message}</span>
+                        <span> {messege}</span>
                     </Col>
                 </Row>
 

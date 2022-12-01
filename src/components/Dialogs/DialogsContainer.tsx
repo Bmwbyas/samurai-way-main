@@ -1,5 +1,5 @@
 import React from 'react';
-import {addTochedUser,  touchedUsers,} from "../../Redux/dialogs-reduser";
+import {addTochedUser,  TouchedUsers,} from "../../Redux/dialogs-reduser";
 import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
 import {AppStateType} from "../../Redux/redux-store";
@@ -9,7 +9,7 @@ import {UsersDataType} from "../../Redux/users-reducer";
 
 
 type MapStateToPropsType = {
-    tochedUsers: touchedUsers[]
+    tochedUsers: TouchedUsers[]
     friends: UsersDataType[]
     myAvatar:string| null | undefined
     message:string

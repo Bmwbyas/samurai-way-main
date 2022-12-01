@@ -8,12 +8,17 @@ type FriendsPropsType = {
     photo: string
     id:number
     navigate:string
+    addTochedUser?: (data: { id: number, name: string }) => void
 }
-const SingleUser: React.FC<FriendsPropsType> = ({name, photo,id,navigate}) => {
+const SingleUser: React.FC<FriendsPropsType> = ({name, photo,id,navigate,addTochedUser}) => {
+    const addTochedUserHandler =()=>{
+
+        addTochedUser && addTochedUser({id,name})
+    }
     return (
 
         <div className={s.friendContainer}>
-            <NavLink to={navigate + id}>
+            <NavLink to={navigate + id} onClick={addTochedUserHandler}>
             <Tooltip color={'#1369e1'} title={name}>
                 <Row justify={"center"}><img className={s.ava} src={photo} alt="lz"/></Row>
                 <Row justify={"center"} className={s.name}>{name}</Row>
