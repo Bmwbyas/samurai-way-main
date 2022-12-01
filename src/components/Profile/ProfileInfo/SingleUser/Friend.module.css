@@ -2,9 +2,14 @@
     margin: 10px;
     width: 60px;
     cursor: pointer;
+    border-radius: 5px;
 }
 .friendContainer a {
     color: black;
+}
+.friendContainer:hover{
+    background-color: #bae0ff;
+
 }
 /*.friendContainer:nth-child(4n){*/
 /*   margin-right: 0;*/

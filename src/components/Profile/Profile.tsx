@@ -4,6 +4,7 @@ import s from './Profile.module.css'
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
 import {UserProfileType, UserUpdateProfileType} from "../../Redux/profile-reduser";
 import {UsersDataType} from "../../Redux/users-reducer";
+import { Skeleton } from 'antd';
 
 
 type ProfileType={
@@ -23,8 +24,9 @@ export const Profile:React.FC<ProfileType> = ({profile,newStatus,usersUnknown,up
 
     return (
         <div className={s.pofileContainer}>
+            <Skeleton loading={!profile}  >
             <ProfileInfo  usersUnknown={usersUnknown} profile={profile}  friends={friends} updateProfileData={updateProfileData} newStatus={newStatus} isOwner={isOwner} savePhoto={savePhoto}    updateProfileStatus={updateProfileStatus}/>
-
+                </Skeleton  >
         </div>
     );
 }

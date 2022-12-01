@@ -38,6 +38,9 @@ export const dialogsReducer = (state = initialState, action: DialogsReducerActio
                 messagesData: [newMessage,...state.messagesData]
             };
         case "DIALOGS/ADD-TOCHED-USER":
+            if(state.touchedUsers.find(t=>t.id===action.payload.id)){
+                return {...state}
+            }
             return {...state,touchedUsers: [...state.touchedUsers,action.payload]}
 
         default:

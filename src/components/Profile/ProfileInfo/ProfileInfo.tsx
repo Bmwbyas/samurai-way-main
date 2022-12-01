@@ -33,19 +33,14 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                                                            updateProfileStatus,
                                                            isOwner,
                                                            friends,
-
                                                            usersUnknown
-
-
                                                        }) => {
+
     const [editMode, setEditMode] = useState(false)
     const [sizePortion,setSizePortion]=React.useState(4)
-    if (!profile) {
-        return <Preloader/>
-    }
     const totalCountFriends=friends.length
-
     const friendPortion=friends.slice(0,sizePortion)
+
     const showMoreUser = () => {
         setSizePortion(sizePortion+4)
     }
@@ -54,6 +49,9 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
         if (e.target.files?.length) {
             savePhoto(e.target.files[0])
         }
+    }
+    if (!profile) {
+        return <Preloader/>
     }
     return (
 
@@ -131,7 +129,6 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                     </div>
                 </Col>
             </Row>
-
     )
 }
 

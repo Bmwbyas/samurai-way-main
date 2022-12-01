@@ -1,11 +1,14 @@
 import React from 'react';
-import preloader from "../../assets/defaultAvatarUser.png";
+
+import {Row, Space, Spin} from "antd";
 
 export const Preloader = () => {
     return (
-        <div>
-            <img style={{width:'100px',height:'100px'}} src={preloader} alt={'loading'}/>
-        </div>
+        <Row justify={"center"} align={"middle"} style={{height:'100vh'}}>
+            <Space size="large">
+                <Spin size="large"/>
+            </Space>
+        </Row>
     );
 };
 
