@@ -1,5 +1,5 @@
 import React from 'react';
-import s from "../../Dialogs/Dialogs.module.css";
+import s from "../../../Dialogs.module.css";
 import {Button, Input} from "antd";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 

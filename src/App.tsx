@@ -20,7 +20,7 @@ import {DialogContainer} from "./components/Dialogs/Dialog/DialogContainer";
 
 
 
-const {Content, Footer} = Layout;
+const {Content} = Layout;
 
 const DialogsContainer = lazy((): any => import('./components/Dialogs/DialogsContainer')
     .then(({DialogsContainer}) => ({default: DialogsContainer})));
@@ -56,7 +56,7 @@ class App extends React.Component<AppPropsType> {
 
 
                 </Layout>
-                <Footer>Footer</Footer>
+
             </Layout>
         );
     }

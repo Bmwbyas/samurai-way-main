@@ -21,4 +21,6 @@
 
     width: 60px;
     overflow:hidden;
+    word-break: break-word;
+    text-align: center;
 }

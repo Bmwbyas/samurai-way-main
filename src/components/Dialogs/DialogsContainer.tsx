@@ -21,7 +21,7 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         tochedUsers: state.dialogsPage.touchedUsers,
         friends:state.usersPage.friends,
         myAvatar:state.auth.avatar,
-        message:state.dialogsPage.messagesData[0].message
+        message:state.dialogsPage.messagesData[state.dialogsPage.messagesData.length-1].message
     }
 }
 let mapDispatchToProps = {

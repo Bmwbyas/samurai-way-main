@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import {Col, Divider, Row} from "antd";
-import styleMyPosts from "../../Profile/MyPosts/MyPosts.module.css";
-import sCommentForm from "../../Profile/MyPosts/CommentForm/CommentForm.module.css";
-import {UsersDataType} from "../../../Redux/users-reducer";
+import styleMyPosts from "../../../Profile/MyPosts/MyPosts.module.css";
+import sCommentForm from "../../../Profile/MyPosts/CommentForm/CommentForm.module.css";
+import {UsersDataType} from "../../../../Redux/users-reducer";
 import s from "./Message.module.css"
 import {NavLink} from "react-router-dom";
 
@@ -13,12 +13,14 @@ type MessegePropsType = {
     f: UsersDataType
     messege: string
     addTochedUser:(data:{id:number,name:string})=>void
+
+
 }
-export const Messege: React.FC<MessegePropsType> = ({avatar, myAvatarValue, f, messege,addTochedUser}) => {
+export const Messege =forwardRef<any,MessegePropsType> (({avatar, myAvatarValue, f, messege,addTochedUser},ref) => {
 
 
-    return <NavLink to={'/dialog/' + f.id} onClick={()=>addTochedUser({id:f.id,name:f.name})} >
-        <Row className={s.messageContainer} >
+    return <NavLink  to={'/dialog/' + f.id} ref={ref} onClick={()=>addTochedUser({id:f.id,name:f.name})} >
+        <Row  className={s.messageContainer} >
 
             <Col span={2}>
                 <img className={styleMyPosts.avatar}
@@ -27,7 +29,6 @@ export const Messege: React.FC<MessegePropsType> = ({avatar, myAvatarValue, f, m
                 />
             </Col>
             <Col span={22}>
-
                 <Row> {f.name} </Row>
                 <Row align={"middle"} style={{marginBottom: 10}}>
                     <Col span={2}>
@@ -39,12 +40,9 @@ export const Messege: React.FC<MessegePropsType> = ({avatar, myAvatarValue, f, m
                         <span> {messege}</span>
                     </Col>
                 </Row>
-
             </Col>
-
-
         </Row>
         <Divider style={{margin: 10}}/>
     </NavLink>
-};
+})
 
