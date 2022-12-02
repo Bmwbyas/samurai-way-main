@@ -20,7 +20,7 @@ const SingleUser: React.FC<FriendsPropsType> = ({name, photo,id,navigate,addToch
         <div className={s.friendContainer}>
             <NavLink to={navigate + id} onClick={addTochedUserHandler}>
             <Tooltip color={'#1369e1'} title={name}>
-                <Row justify={"center"}><img className={s.ava} src={photo} alt="lz"/></Row>
+                <Row justify={"center"}><img className={s.ava} src={photo} alt="ava"/></Row>
                 <Row justify={"center"} className={s.name}>{name}</Row>
             </Tooltip>
             </NavLink>

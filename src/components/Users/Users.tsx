@@ -1,54 +1,60 @@
-import React, {useEffect} from 'react';
-import s from './Users.module.css'
-import {UsersPropsType} from "./UsersContainer";
-import axios from "axios";
-import defauleUserPhoto from './../../assets/defaultAvatarUser.png'
+import React from 'react';
+import s from "./Users.module.css";
+import {UsersDataType} from "../../Redux/users-reducer";
+import {Paginator} from "./Paginator";
+import {User} from "./User/User";
+import sProfilePage from "../Profile/ProfileInfo/ProfileInfo.module.css";
+import {Col, Row, Space} from "antd";
 
 
+type UsersJsxPropsType = {
+    totalUsersCount: number
+    pageSize: number
+    setCurrentPage: (p: number) => void
+    currentPage: number
+    usersData: UsersDataType[]
+    followingInProgress: number[]
+    changeFollowUnfollow: any
+}
 
-const Users = (props:UsersPropsType) => {
-
-    // useEffect(() => {
-    //     axios.get("https://social-network.samuraijs.com/api/1.0/users")
-    //         .then(response=>{
-    //             props.setUsers(response.data.items)
-    //         });
-    //     }
-    // , [])
+const Users: React.FC<UsersJsxPropsType> = ({
+                                                usersData,
+                                                totalUsersCount,
+                                                pageSize,
+                                                currentPage,
+                                                setCurrentPage,
+                                                changeFollowUnfollow,
+                                                followingInProgress
+                                            }) => {
 
     return (
-        <div className={s.Users} >
-            {/*<button onClick={getUsers}>getUsers</button>*/}
-            <div style={{padding:'10px',fontSize:'20px'}}>Users</div>
-            {props.usersData.map(user=>{
-               const onClickHandler=()=>{
-                   props.changeFollow(user.id)
-               }
 
-                return(
-                    <div key={user.id} className={s.usersContainer}>
-                        <div className={s.FollowBlock}>
-                            <img className={s.img}
-                                 src={user.photos.small?user.photos.small:defauleUserPhoto}
-                                 alt="img Follow"/>
-                            <button className={s.button} onClick={onClickHandler}>{user.followed?'Unfollow':'Follow'}</button>
-                        </div>
-                        <div className={s.containerUser}>
-                            <div>
-                                <div>{user.name}</div>
-                                <div className={s.description}>{'user.description'}</div>
-                            </div>
-                            <div className={s.location}>
-                                <div >{'user.location.country'}</div>
-                                <div>{'user.location.city'}</div>
-                            </div>
-                        </div>
+        <Row style={{marginTop: 20}}>
+            <Col className="gutter-row" span={15}>
+                <div className={sProfilePage.profileInfoContainer}>
+                    {/*<Paginator portionSize={10}*/}
+                    {/*           pageSize={pageSize} totalItemsCount={totalUsersCount}*/}
+                    {/*           currentPage={currentPage} setCurrentPage={setCurrentPage}*/}
+                    {/*/>*/}
+                    {usersData.map(user => {
+                        const onClickHandler = () => {
+                            changeFollowUnfollow(user)
+                        }
 
-                    </div>
-                )
-            })}
-            <button className={`${s.button} ${s.buttonShowMore}`} onClick={()=>{}}>Show more</button>
-        </div>
+                        return (
+                            <User key={user.id} user={user} followingInProgress={followingInProgress}
+                                  onClickHandler={onClickHandler}/>
+                        )
+                    })}
+                </div>
+            </Col>
+            <Col className="gutter-row" span={9}>
+                <div className={sProfilePage.profileInfoContainer}>
+                    <Row>hhh</Row>
+                </div>
+            </Col>
+        </Row>
+
     );
 };
 

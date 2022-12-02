@@ -8,7 +8,7 @@ import {
     setFollowingInProgress,
     UsersDataType
 } from "../../Redux/users-reducer";
-import UsersJsx from "./UsersJSX";
+import Users from "./Users";
 import {Preloader} from "../common/Preloader";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
@@ -38,7 +38,7 @@ class UsersContainerWithAPI extends React.Component<UsersPropsType> {
         return (
             <>
                 {this.props.isFetching&& <Preloader/>}
-                <UsersJsx
+                <Users
                     key={this.props.totalUsersCount}
                     usersData={this.props.usersData}
                     setCurrentPage={this.setCurrentPages}
