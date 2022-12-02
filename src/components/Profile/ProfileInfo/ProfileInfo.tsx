@@ -8,7 +8,7 @@ import {ProfileUserData} from "./ProfileUserData/ProfileUserData";
 import {ProfileUserDataForm} from "./ProfileUserDataForm/ProfileUserDataForm";
 import {Button, Col, Image, Row} from 'antd';
 import {UsersDataType} from "../../../Redux/users-reducer";
-import SingleUser from "./SingleUser/SingleUser";
+import SingleUser from "../../common/SingleUser/SingleUser";
 import defaultAvatar from '../../../assets/defaultAvatarUser.png'
 import {PlusCircleOutlined} from "@ant-design/icons";
 import {MyPostsContainer} from "../MyPosts/MyPostsContainer";

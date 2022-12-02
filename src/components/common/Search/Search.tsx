@@ -1,5 +1,5 @@
 import React from 'react';
-import s from './autoComlete.module.css';
+import s from './Search.module.css';
 import {Anchor, AutoComplete, Input, Row, SelectProps} from 'antd';
 import {UsersDataType} from "../../../Redux/users-reducer";
 import {NavLink} from "react-router-dom";

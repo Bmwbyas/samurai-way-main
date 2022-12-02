@@ -1,7 +1,7 @@
 import {Col, Row} from "antd";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import React from "react";
-import SingleUser from "../../Profile/ProfileInfo/SingleUser/SingleUser";
+import SingleUser from "../../common/SingleUser/SingleUser";
 import {UsersDataType} from "../../../Redux/users-reducer";
 import s from './FriendsList.module.css'
 import {viewAvatar} from "../../../utils/ViewAvatar/viewAvatar";

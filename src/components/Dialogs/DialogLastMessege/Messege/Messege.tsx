@@ -20,24 +20,24 @@ export const Messege =forwardRef<any,MessegePropsType> (({avatar, myAvatarValue,
 
 
     return <NavLink  to={'/dialog/' + f.id} ref={ref} onClick={()=>addTochedUser({id:f.id,name:f.name})} >
-        <Row  className={s.messageContainer} >
+        <Row justify={"space-evenly"} className={s.messageContainer} >
 
-            <Col span={2}>
+            <Col >
                 <img className={styleMyPosts.avatar}
                      src={avatar}
                      alt="avatar"
                 />
             </Col>
-            <Col span={22}>
+            <Col >
                 <Row> {f.name} </Row>
                 <Row align={"middle"} style={{marginBottom: 10}}>
-                    <Col span={2}>
+                    <Col >
                         <Row justify={"center"}>
                             <img className={sCommentForm.avatar} src={myAvatarValue} alt="avatar"/>
                         </Row>
                     </Col>
-                    <Col span={19}>
-                        <span> {messege}</span>
+                    <Col >
+                        <span className={s.messege}> {messege}</span>
                     </Col>
                 </Row>
             </Col>
