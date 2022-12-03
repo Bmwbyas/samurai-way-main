@@ -7,19 +7,21 @@ import sCommentForm from "../../Profile/MyPosts/CommentForm/CommentForm.module.c
 import {viewAvatar} from "../../../utils/ViewAvatar/viewAvatar";
 
 type SearchPropsType = {
-    friends: UsersDataType[]
-    addTochedUser: (data: { id: number, name: string }) => void
+    data: UsersDataType[]
+    addTochedUser?: (data: { id: number, name: string }) => void
+    placeholder:string
+    getSearchUsers?:(term:string)=>void
 }
-export const Search: React.FC<SearchPropsType> = ({friends, addTochedUser}) => {
+export const SearchAutoComplite: React.FC<SearchPropsType> = ({data, addTochedUser,placeholder,getSearchUsers}) => {
 
     const [options, setOptions] = React.useState<SelectProps<object>['options']>([]);
 
     const searchResult = (text: string) => {
-        const result = friends.filter((f) => f.name.toLowerCase().includes(text))
+        const result = data.filter((f) => f.name.toLowerCase().includes(text))
 
         return result.map(r => {
             const addTochedUserHandler = () => {
-                addTochedUser({id: r.id, name: r.name})
+                addTochedUser && addTochedUser({id: r.id, name: r.name})
             }
             const avatar = viewAvatar(r.photos.small)
             return ({
@@ -35,8 +37,12 @@ export const Search: React.FC<SearchPropsType> = ({friends, addTochedUser}) => {
         })
     }
 
-    const handleSearch = (value: string) => {
-        setOptions(value ? searchResult(value) : []);
+    const handleSearch =  (value: string) => {
+
+         setOptions(value ? searchResult(value) : []);
+    };
+    const onSelect = (value: string) => {
+        getSearchUsers && getSearchUsers(value)
     };
 
     return (
@@ -46,8 +52,9 @@ export const Search: React.FC<SearchPropsType> = ({friends, addTochedUser}) => {
                 options={options}
                 className={s.autoComlete}
                 onSearch={handleSearch}
+                onSelect={onSelect}
             >
-                <Input.Search placeholder="find friend dialog" enterButton/>
+                <Input.Search  placeholder={placeholder} enterButton/>
             </AutoComplete>
         </Anchor>
 

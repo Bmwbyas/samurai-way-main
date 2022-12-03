@@ -17,6 +17,7 @@ import {withSuspense} from "./hoc/withSuspense";
 import {Layout} from 'antd';
 import {Navbar} from "./components/Navbar/Navbar";
 import {DialogContainer} from "./components/Dialogs/Dialog/DialogContainer";
+import {routes} from "./Routes/Routes";
 
 
 const {Content} = Layout;
@@ -39,14 +40,14 @@ class App extends React.Component<AppPropsType> {
                 <Layout>
                     {this.props.isAuth && <Navbar/>}
                     <Content>
-                        <Route path='/news' component={News}/>
-                        <Route path='/music' component={Music}/>
-                        <Route path='/setting' component={Setting}/>
-                        <Route path='/dialogs' render={withSuspense(DialogsContainer)}/>
-                        <Route path='/dialog/:userId?' render={() => <DialogContainer/>}/>
-                        <Route path='/profile/:userId?' render={() => <ProfileContainer/>}/>
-                        <Route path='/users' render={() => <UsersContainer/>}/>
-                        <Route path='/login' render={() => <LoginContainer/>}/>
+                        {/*<Route path='/news' component={News}/>*/}
+                        {/*<Route path='/music' component={Music}/>*/}
+                        {/*<Route path='/setting' component={Setting}/>*/}
+                        <Route path={routes.dialogs} render={withSuspense(DialogsContainer)}/>
+                        <Route path={routes.dialog} render={() => <DialogContainer/>}/>
+                        <Route path={routes.profile} render={() => <ProfileContainer/>}/>
+                        <Route path={routes.users} render={() => <UsersContainer/>}/>
+                        <Route path={routes.login} render={() => <LoginContainer/>}/>
                         <Route path='/' render={() => <Redirect to={'/login'}/>}/>
 
                     </Content>

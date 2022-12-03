@@ -1,10 +1,10 @@
 import React from 'react';
 import s from "./Users.module.css";
 import {UsersDataType} from "../../Redux/users-reducer";
-import {Paginator} from "./Paginator";
 import {User} from "./User/User";
 import sProfilePage from "../Profile/ProfileInfo/ProfileInfo.module.css";
-import {Col, Row, Space} from "antd";
+import {Col, Divider, Row} from "antd";
+import {SearchUser} from "../common/SearchUser/SearchUser";
 
 
 type UsersJsxPropsType = {
@@ -13,8 +13,10 @@ type UsersJsxPropsType = {
     setCurrentPage: (p: number) => void
     currentPage: number
     usersData: UsersDataType[]
+
     followingInProgress: number[]
     changeFollowUnfollow: any
+    getSearchUsers: (term:string)=>void
 }
 
 const Users: React.FC<UsersJsxPropsType> = ({
@@ -24,18 +26,24 @@ const Users: React.FC<UsersJsxPropsType> = ({
                                                 currentPage,
                                                 setCurrentPage,
                                                 changeFollowUnfollow,
-                                                followingInProgress
+                                                followingInProgress,
+                                                getSearchUsers
                                             }) => {
 
     return (
 
-        <Row style={{marginTop: 20}}>
+        <Row  style={{marginTop: 20}}>
             <Col className="gutter-row" span={15}>
                 <div className={sProfilePage.profileInfoContainer}>
                     {/*<Paginator portionSize={10}*/}
                     {/*           pageSize={pageSize} totalItemsCount={totalUsersCount}*/}
                     {/*           currentPage={currentPage} setCurrentPage={setCurrentPage}*/}
                     {/*/>*/}
+                    <Row >All Users   <span className={s.totalCountUsers}>{totalUsersCount}</span> </Row>
+                    <Divider style={{margin: 10}}/>
+                    <SearchUser getSearchUsers={getSearchUsers}/>
+                    <Divider style={{margin: 10}}/>
+
                     {usersData.map(user => {
                         const onClickHandler = () => {
                             changeFollowUnfollow(user)

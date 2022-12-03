@@ -10,9 +10,11 @@ const instance = axios.create({
 })
 
 export const usersAPI = {
-    getUsers(currentPage?: number, pageSize?: number,isFriends?:boolean) {
-        return instance.get<UsersResponseType>(`users?page=${currentPage}
-        &count=${pageSize}&friend=${isFriends}`)
+    getUsers(params:{page?: number, count?: number,friend?:boolean,term?:string}) {
+        // return instance.get<UsersResponseType>(`users?page=${data.page}
+        // &count=${data.count}&friend=${data.friend}`)
+        //     .then(response => response.data)
+        return instance.get<UsersResponseType>('users',{params})
             .then(response => response.data)
     },
     deleteFollowUser(id: number) {

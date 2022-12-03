@@ -43,6 +43,7 @@ type UsersReducerActionType = FollowUserActionType
     | ReturnType<typeof setUserUnknown>
 
 
+
 export type UsersPageStateType = typeof initialState
 let initialState = {
     usersData: [] as UsersDataType[],
@@ -52,7 +53,8 @@ let initialState = {
     isFetching: false,
     followingInProgress: [] as number[],
     friends: [] as UsersDataType[],
-    usersUnknown: [] as UsersDataType[]
+    usersUnknown: [] as UsersDataType[],
+
 }
 
 export const usersReducer = (state = initialState, action: UsersReducerActionType): UsersPageStateType => {
@@ -100,10 +102,13 @@ export const usersReducer = (state = initialState, action: UsersReducerActionTyp
             return {...state, friends: []}
         case "USER/USER-UNKNOWN":
             return {...state, usersUnknown: action.users}
+
         default:
             return state;
     }
 }
+
+//actions
 
 export const changeFollow = (userID: number): FollowUserActionType => ({type: 'USER/CHANGE-FOLLOW', userID: userID})
 export const setUsers = (users: UsersDataType[]): SetUsers => ({type: 'USER/SET-USERS', users: users})
@@ -122,17 +127,25 @@ export const addFriend = (user: UsersDataType) => ({type: 'USER/ADD-FRIEND', use
 export const setFriend = (users: UsersDataType[]) => ({type: 'USER/SET-FRIEND', users}) as const
 export const deleteFriend = (id: number) => ({type: 'USER/DELETE-FRIEND', id}) as const
 export const clearDataFriends = () => ({type: 'USER/CLEAR-DATA-FRIENDS'}) as const
-export const setUserUnknown = (users:UsersDataType[]) => ({type: 'USER/USER-UNKNOWN',users}) as const
+export const setUserUnknown = (users: UsersDataType[]) => ({type: 'USER/USER-UNKNOWN', users}) as const
+
 
 
 type ThunkCreatorType = ThunkAction<void, AppStateType, unknown, UsersReducerActionType>
 
+//thunks
 
-//getUsersThunkCreator
+export const getSearchUsers = (term: string): ThunkCreatorType => async (dispatch) => {
+
+    const data = await usersAPI.getUsers({term})
+    dispatch(setUsers(data.items))
+
+}
+
 export const getUsers = (currentPage: number, pageSize: number): ThunkCreatorType => async (dispatch) => {
     dispatch(setIsFetching(true))
     dispatch(setCurrentPage(currentPage))
-    const data = await usersAPI.getUsers(currentPage, pageSize)
+    const data = await usersAPI.getUsers({page: currentPage, count: pageSize})
     dispatch(setUsers(data.items))
     dispatch(setTotalCount(data.totalCount))
     dispatch(setIsFetching(false))
@@ -140,20 +153,20 @@ export const getUsers = (currentPage: number, pageSize: number): ThunkCreatorTyp
 }
 
 export const getUnknown = (): ThunkCreatorType => async (dispatch) => {
-    const currentPage=getRandomInt(1,30)
-    const pageSize=8
-    const response = await usersAPI.getUsers(currentPage, pageSize, false)
+    const currentPage = getRandomInt(1, 30)
+    const pageSize = 8
+    const response = await usersAPI.getUsers({page: currentPage, count: pageSize, friend: false})
     dispatch(setUserUnknown(response.items))
 
 }
 
-export const getFriend = (  isFriends?: boolean): ThunkCreatorType => async (dispatch) => {
+export const getFriend = (isFriends?: boolean): ThunkCreatorType => async (dispatch) => {
 
-    const response = await usersAPI.getUsers(1, 100, isFriends)
+    const response = await usersAPI.getUsers({page: 1, count: 100, friend: isFriends})
     dispatch(setFriend(response.items))
 
 }
-//change follow unfollow thunk creator
+
 export const changeFollowUnfollow = (user: UsersDataType): ThunkCreatorType => async (dispatch) => {
     dispatch(setFollowingInProgress(true, user.id))
     if (user.followed) {

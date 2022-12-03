@@ -3,7 +3,7 @@ import {AppStateType} from "../../Redux/redux-store";
 import {connect} from "react-redux";
 import {
     changeFollow,
-    changeFollowUnfollow,
+    changeFollowUnfollow, getSearchUsers,
     getUsers,
     setFollowingInProgress,
     UsersDataType
@@ -47,6 +47,8 @@ class UsersContainerWithAPI extends React.Component<UsersPropsType> {
                     totalUsersCount={this.props.totalUsersCount}
                     followingInProgress={this.props.followingInProgress}
                     changeFollowUnfollow={this.props.changeFollowUnfollow}
+
+                    getSearchUsers={this.props.getSearchUsers}
                 />
             </>
         );
@@ -55,6 +57,7 @@ class UsersContainerWithAPI extends React.Component<UsersPropsType> {
 
 type MapStateToPropsType = {
     usersData: UsersDataType[]
+
     pageSize: number
     totalUsersCount: number
     currentPage: number
@@ -72,7 +75,8 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         totalUsersCount: getTotalUsersCount(state),
         currentPage: getCurrentPage(state),
         isFetching: getIsFetching(state),
-        followingInProgress: getFollowingInProgress(state)
+        followingInProgress: getFollowingInProgress(state),
+
     }
 }
 
@@ -80,7 +84,8 @@ const mapDispatchToProps = {
     changeFollow,
     setFollowingInProgress,
     getUsers,
-    changeFollowUnfollow
+    changeFollowUnfollow,
+    getSearchUsers
 }
 
 // export const UsersContainer = withAuthRedirect(connect(mapStateToProps, mapDispatchToProps)(UsersContainerWithAPI))
