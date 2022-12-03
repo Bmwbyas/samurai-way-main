@@ -17,6 +17,7 @@ type UsersJsxPropsType = {
     followingInProgress: number[]
     changeFollowUnfollow: any
     getSearchUsers: (term:string)=>void
+    isLoading:boolean
 }
 
 const Users: React.FC<UsersJsxPropsType> = ({
@@ -27,7 +28,8 @@ const Users: React.FC<UsersJsxPropsType> = ({
                                                 setCurrentPage,
                                                 changeFollowUnfollow,
                                                 followingInProgress,
-                                                getSearchUsers
+                                                getSearchUsers,
+                                                isLoading
                                             }) => {
 
     return (
@@ -41,7 +43,7 @@ const Users: React.FC<UsersJsxPropsType> = ({
                     {/*/>*/}
                     <Row >All Users   <span className={s.totalCountUsers}>{totalUsersCount}</span> </Row>
                     <Divider style={{margin: 10}}/>
-                    <SearchUser getSearchUsers={getSearchUsers}/>
+                    <SearchUser getSearchUsers={getSearchUsers} isLoading={isLoading}/>
                     <Divider style={{margin: 10}}/>
 
                     {usersData.map(user => {

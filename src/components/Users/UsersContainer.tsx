@@ -47,7 +47,7 @@ class UsersContainerWithAPI extends React.Component<UsersPropsType> {
                     totalUsersCount={this.props.totalUsersCount}
                     followingInProgress={this.props.followingInProgress}
                     changeFollowUnfollow={this.props.changeFollowUnfollow}
-
+                    isLoading={this.props.isLoading}
                     getSearchUsers={this.props.getSearchUsers}
                 />
             </>
@@ -62,6 +62,7 @@ type MapStateToPropsType = {
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
+    isLoading: boolean
     followingInProgress: number[]
 }
 
@@ -76,7 +77,7 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         currentPage: getCurrentPage(state),
         isFetching: getIsFetching(state),
         followingInProgress: getFollowingInProgress(state),
-
+        isLoading:state.usersPage.isLoading
     }
 }
 

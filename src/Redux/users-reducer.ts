@@ -41,6 +41,7 @@ type UsersReducerActionType = FollowUserActionType
     | ReturnType<typeof setFriend>
     | ReturnType<typeof clearDataFriends>
     | ReturnType<typeof setUserUnknown>
+|ReturnType<typeof toggleIsLoading>
 
 
 
@@ -54,6 +55,7 @@ let initialState = {
     followingInProgress: [] as number[],
     friends: [] as UsersDataType[],
     usersUnknown: [] as UsersDataType[],
+    isLoading:false
 
 }
 
@@ -102,7 +104,8 @@ export const usersReducer = (state = initialState, action: UsersReducerActionTyp
             return {...state, friends: []}
         case "USER/USER-UNKNOWN":
             return {...state, usersUnknown: action.users}
-
+        case "USER/TOGGLE-LOADING":
+        return {...state,isLoading:action.isLoading}
         default:
             return state;
     }
@@ -128,6 +131,7 @@ export const setFriend = (users: UsersDataType[]) => ({type: 'USER/SET-FRIEND', 
 export const deleteFriend = (id: number) => ({type: 'USER/DELETE-FRIEND', id}) as const
 export const clearDataFriends = () => ({type: 'USER/CLEAR-DATA-FRIENDS'}) as const
 export const setUserUnknown = (users: UsersDataType[]) => ({type: 'USER/USER-UNKNOWN', users}) as const
+export const toggleIsLoading = (isLoading: boolean) => ({type: 'USER/TOGGLE-LOADING', isLoading}) as const
 
 
 
@@ -136,10 +140,10 @@ type ThunkCreatorType = ThunkAction<void, AppStateType, unknown, UsersReducerAct
 //thunks
 
 export const getSearchUsers = (term: string): ThunkCreatorType => async (dispatch) => {
-
+    dispatch  (toggleIsLoading(true))
     const data = await usersAPI.getUsers({term})
     dispatch(setUsers(data.items))
-
+    dispatch  (toggleIsLoading(false))
 }
 
 export const getUsers = (currentPage: number, pageSize: number): ThunkCreatorType => async (dispatch) => {

@@ -37,7 +37,7 @@ beforeEach(() => {
         isFetching: false,
         followingInProgress: [] as number[],
         friends: [],
-
+        isLoading:false,
         usersUnknown: []
     }
 })

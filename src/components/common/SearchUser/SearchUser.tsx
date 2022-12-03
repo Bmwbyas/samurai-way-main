@@ -3,8 +3,9 @@ import Search from "antd/es/input/Search";
 
 type SearchUserType = {
     getSearchUsers: (term: string) => void
+    isLoading:boolean
 }
-export const SearchUser: React.FC<SearchUserType> = ({getSearchUsers}) => {
+export const SearchUser: React.FC<SearchUserType> = ({getSearchUsers,isLoading}) => {
 
     const onSearch = (value: string) => getSearchUsers && getSearchUsers(value)
 
@@ -15,7 +16,8 @@ export const SearchUser: React.FC<SearchUserType> = ({getSearchUsers}) => {
             enterButton="Search"
             size="middle"
             onSearch={onSearch}
-            loading={false}
+            loading={isLoading}
+            disabled={isLoading}
         />
     );
 };
