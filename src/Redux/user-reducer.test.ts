@@ -2,7 +2,7 @@ import {
     changeFollow,
     setCurrentPage, setFollowingInProgress, setIsFetching,
     setTotalCount,
-    setUsers,
+    setUsers, updateUsersParams,
     UsersDataType,
     UsersPageStateType,
     usersReducer
@@ -12,7 +12,9 @@ let startState: UsersPageStateType ;
 
 beforeEach(() => {
 
-    startState = { usersData: [{ id: 1,
+    startState = {
+        getUsersParams: {count:6},
+        usersData: [{ id: 1,
             name: 'string',
             followed: false,
             status: null,
@@ -46,6 +48,15 @@ test('Follow should be changed', () => {
     const endState = usersReducer(startState, changeFollow(1))
 
     expect(endState.usersData[0].followed).toBe(true);
+
+});
+test('get user params should be changed', () => {
+    const endState = usersReducer(startState, updateUsersParams({page:3,term:'a',friend:false,count:3}))
+
+    expect(endState.getUsersParams.friend).toBe(false);
+    expect(endState.getUsersParams.page).toBe(3);
+    expect(endState.getUsersParams.term).toBe('a');
+    expect(endState.getUsersParams.count).toBe(3);
 
 });
 test('user should be set', () => {

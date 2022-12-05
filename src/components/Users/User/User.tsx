@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import s from "./User.module.css";
 import {UsersDataType} from "../../../Redux/users-reducer";
 import {NavLink} from "react-router-dom";
 import {viewAvatar} from "../../../utils/ViewAvatar/viewAvatar";
 import {Button, Col, Divider, Row} from "antd";
+import {routes} from "../../../Routes/Routes";
 
 
 type UsersJsxPropsType = {
@@ -12,21 +13,21 @@ type UsersJsxPropsType = {
     onClickHandler: () => void
 }
 
-export const User: React.FC<UsersJsxPropsType> = ({user, followingInProgress, onClickHandler}) => {
+export const User = forwardRef<any,UsersJsxPropsType> (({user, followingInProgress, onClickHandler},ref) => {
 
     const avatar = viewAvatar(user.photos.small)
     return (
-        <div key={user.id} className={s.usersContainer}>
+        <div key={user.id} ref={ref} className={s.usersContainer}>
             <Row gutter={10}>
                 <Col>
-                    <NavLink to={'/profile/' + user.id}>
+                    <NavLink to={routes.toProfile + user.id}>
                         <img className={s.avatar}
                              src={avatar}
                              alt="img User"/>
                     </NavLink>
                 </Col>
                 <Col>
-                    <Row><NavLink to={'/profile/' + user.id}>
+                    <Row><NavLink to={routes.toProfile + user.id}>
                         <span className={s.name}>{user.name}</span>
                     </NavLink></Row>
                    <Row> <Button
@@ -35,11 +36,8 @@ export const User: React.FC<UsersJsxPropsType> = ({user, followingInProgress, on
                         disabled={followingInProgress.some(id => id === user.id)}
                         onClick={onClickHandler}
                     >
-                        {user.followed ? 'Unfollow' : 'Add Friend'}
+                        {user.followed ? 'Unfriend' : 'Add Friend'}
                     </Button></Row>
-                </Col>
-                <Col>
-                    About me {user.uniqueUrlName}
                 </Col>
 
             </Row>
@@ -47,6 +45,6 @@ export const User: React.FC<UsersJsxPropsType> = ({user, followingInProgress, on
         </div>
 
     );
-};
+});
 
 

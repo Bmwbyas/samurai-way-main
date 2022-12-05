@@ -10,7 +10,7 @@ const instance = axios.create({
 })
 
 export const usersAPI = {
-    getUsers(params:{page?: number, count?: number,friend?:boolean,term?:string}) {
+    getUsers(params:GetUsersParamsType) {
         // return instance.get<UsersResponseType>(`users?page=${data.page}
         // &count=${data.count}&friend=${data.friend}`)
         //     .then(response => response.data)
@@ -71,7 +71,11 @@ export const securityAPI = {
     }
 }
 
-
+export type GetUsersParamsType={
+    page?: number
+    count?: number
+    friend?:boolean|null
+    term?:string|null}
 export type SavePhotoType={
     resultCode: number
     messages: string[]

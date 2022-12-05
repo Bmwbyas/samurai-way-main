@@ -5,6 +5,7 @@ import sCommentForm from "../../../Profile/MyPosts/CommentForm/CommentForm.modul
 import {UsersDataType} from "../../../../Redux/users-reducer";
 import s from "./Message.module.css"
 import {NavLink} from "react-router-dom";
+import {routes} from "../../../../Routes/Routes";
 
 
 type MessegePropsType = {
@@ -19,7 +20,7 @@ type MessegePropsType = {
 export const Messege =forwardRef<any,MessegePropsType> (({avatar, myAvatarValue, f, messege,addTochedUser},ref) => {
 
 
-    return <NavLink  to={'/dialog/' + f.id} ref={ref} onClick={()=>addTochedUser({id:f.id,name:f.name})} >
+    return <NavLink  to={routes.toDialog + f.id} ref={ref} onClick={()=>addTochedUser({id:f.id,name:f.name})} >
         <Row justify={"space-evenly"} className={s.messageContainer} >
 
             <Col >

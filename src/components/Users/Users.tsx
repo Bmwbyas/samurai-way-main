@@ -3,21 +3,23 @@ import s from "./Users.module.css";
 import {UsersDataType} from "../../Redux/users-reducer";
 import {User} from "./User/User";
 import sProfilePage from "../Profile/ProfileInfo/ProfileInfo.module.css";
-import {Col, Divider, Row} from "antd";
+import {Col, Divider, Pagination, Row} from "antd";
 import {SearchUser} from "../common/SearchUser/SearchUser";
 
 
 type UsersJsxPropsType = {
     totalUsersCount: number
     pageSize: number
-    setCurrentPage: (p: number) => void
+    setPaginationValue: (params: { page: number, count: number }) => void
     currentPage: number
     usersData: UsersDataType[]
-
     followingInProgress: number[]
     changeFollowUnfollow: any
-    getSearchUsers: (term:string)=>void
-    isLoading:boolean
+    getSearchUsers: (term: string) => void
+    isLoading: boolean
+    // getUsers: (params:GetUsersParamsType) => void
+    // updateUsersParams:(params:GetUsersParamsType)=>void
+    // getUsersParams:GetUsersParamsType
 }
 
 const Users: React.FC<UsersJsxPropsType> = ({
@@ -25,37 +27,37 @@ const Users: React.FC<UsersJsxPropsType> = ({
                                                 totalUsersCount,
                                                 pageSize,
                                                 currentPage,
-                                                setCurrentPage,
+                                                setPaginationValue,
                                                 changeFollowUnfollow,
                                                 followingInProgress,
                                                 getSearchUsers,
-                                                isLoading
+                                                isLoading,
+
                                             }) => {
+    // console.log('Users Component render')
+    const onChangePaginationValue = (page: number, pageSize: number) => setPaginationValue({page, count: pageSize})
+
 
     return (
 
-        <Row  style={{marginTop: 20}}>
+        <Row style={{marginTop: 20}}>
             <Col className="gutter-row" span={15}>
                 <div className={sProfilePage.profileInfoContainer}>
-                    {/*<Paginator portionSize={10}*/}
-                    {/*           pageSize={pageSize} totalItemsCount={totalUsersCount}*/}
-                    {/*           currentPage={currentPage} setCurrentPage={setCurrentPage}*/}
-                    {/*/>*/}
-                    <Row >All Users   <span className={s.totalCountUsers}>{totalUsersCount}</span> </Row>
+
+                    <Row>All Users <span className={s.totalCountUsers}>{totalUsersCount}</span> </Row>
                     <Divider style={{margin: 10}}/>
                     <SearchUser getSearchUsers={getSearchUsers} isLoading={isLoading}/>
                     <Divider style={{margin: 10}}/>
 
-                    {usersData.map(user => {
+                    {usersData.map((user) => {
                         const onClickHandler = () => {
                             changeFollowUnfollow(user)
                         }
-
-                        return (
-                            <User key={user.id} user={user} followingInProgress={followingInProgress}
-                                  onClickHandler={onClickHandler}/>
-                        )
+                        return <User key={user.id} user={user} followingInProgress={followingInProgress}
+                                     onClickHandler={onClickHandler}/>
                     })}
+                    <Pagination defaultCurrent={currentPage} onChange={onChangePaginationValue}
+                                defaultPageSize={pageSize} total={totalUsersCount}/>
                 </div>
             </Col>
             <Col className="gutter-row" span={9}>

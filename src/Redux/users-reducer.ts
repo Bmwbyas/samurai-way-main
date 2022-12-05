@@ -1,4 +1,4 @@
-import {usersAPI} from "../api/api";
+import {GetUsersParamsType, usersAPI} from "../api/api";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
 import {getRandomInt} from "../components/common/IntegerRandom/IntegerRandom";
@@ -42,13 +42,21 @@ type UsersReducerActionType = FollowUserActionType
     | ReturnType<typeof clearDataFriends>
     | ReturnType<typeof setUserUnknown>
 |ReturnType<typeof toggleIsLoading>
+|ReturnType<typeof clearUsers>
+|ReturnType<typeof updateUsersParams>
 
 
 
 export type UsersPageStateType = typeof initialState
 let initialState = {
+    getUsersParams: {
+        page:1,
+        count:8,
+        term:null,
+        friend:null
+    } as GetUsersParamsType,
     usersData: [] as UsersDataType[],
-    pageSize: 5,
+    pageSize: 10,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: false,
@@ -72,7 +80,7 @@ export const usersReducer = (state = initialState, action: UsersReducerActionTyp
 
 
         case 'USER/SET-USERS':
-            return {...state, usersData: [...action.users]}
+            return {...state, usersData:action.users}
 
         case 'USER/SET-CURRENT-PAGE':
             return {...state, currentPage: action.currentPage}
@@ -106,6 +114,10 @@ export const usersReducer = (state = initialState, action: UsersReducerActionTyp
             return {...state, usersUnknown: action.users}
         case "USER/TOGGLE-LOADING":
         return {...state,isLoading:action.isLoading}
+        case "USER/CLEAR-USERS":
+        return {...state,usersData: []}
+        case "USER/UPDATE-USERS-PARAMS":
+            return {...state,getUsersParams: {...state.getUsersParams,...action.payload}}
         default:
             return state;
     }
@@ -113,8 +125,8 @@ export const usersReducer = (state = initialState, action: UsersReducerActionTyp
 
 //actions
 
-export const changeFollow = (userID: number): FollowUserActionType => ({type: 'USER/CHANGE-FOLLOW', userID: userID})
-export const setUsers = (users: UsersDataType[]): SetUsers => ({type: 'USER/SET-USERS', users: users})
+export const changeFollow = (userID: number): FollowUserActionType => ({type: 'USER/CHANGE-FOLLOW', userID})
+export const setUsers = (users: UsersDataType[]): SetUsers => ({type: 'USER/SET-USERS', users})
 export const setCurrentPage = (currentPage: number): SetCurrentPageType => ({
     type: 'USER/SET-CURRENT-PAGE',
     currentPage
@@ -132,6 +144,8 @@ export const deleteFriend = (id: number) => ({type: 'USER/DELETE-FRIEND', id}) a
 export const clearDataFriends = () => ({type: 'USER/CLEAR-DATA-FRIENDS'}) as const
 export const setUserUnknown = (users: UsersDataType[]) => ({type: 'USER/USER-UNKNOWN', users}) as const
 export const toggleIsLoading = (isLoading: boolean) => ({type: 'USER/TOGGLE-LOADING', isLoading}) as const
+export const clearUsers = () => ({type: 'USER/CLEAR-USERS'}) as const
+export const updateUsersParams = (params:GetUsersParamsType) => ({type: 'USER/UPDATE-USERS-PARAMS',payload:params}) as const
 
 
 
@@ -142,16 +156,29 @@ type ThunkCreatorType = ThunkAction<void, AppStateType, unknown, UsersReducerAct
 export const getSearchUsers = (term: string): ThunkCreatorType => async (dispatch) => {
     dispatch  (toggleIsLoading(true))
     const data = await usersAPI.getUsers({term})
+    dispatch(clearUsers())
     dispatch(setUsers(data.items))
     dispatch  (toggleIsLoading(false))
 }
 
-export const getUsers = (currentPage: number, pageSize: number): ThunkCreatorType => async (dispatch) => {
+
+
+export const getUsers = (paramsGetUsers:GetUsersParamsType): ThunkCreatorType => async (dispatch, getState:()=>AppStateType) => {
+
     dispatch(setIsFetching(true))
-    dispatch(setCurrentPage(currentPage))
-    const data = await usersAPI.getUsers({page: currentPage, count: pageSize})
-    dispatch(setUsers(data.items))
-    dispatch(setTotalCount(data.totalCount))
+    // dispatch(setCurrentPage(currentPage))
+    let getParamsStore=getState().usersPage.getUsersParams
+    let params:GetUsersParamsType={
+        ...getParamsStore,...paramsGetUsers
+    }
+    // if(term){
+    //     params={...params,term}
+    // }
+
+    const data = await usersAPI.getUsers(params)
+
+        dispatch(setUsers(data.items))
+        dispatch(setTotalCount(data.totalCount))
     dispatch(setIsFetching(false))
 
 }

@@ -13,6 +13,7 @@ import defaultAvatar from '../../../assets/defaultAvatarUser.png'
 import {PlusCircleOutlined} from "@ant-design/icons";
 import {MyPostsContainer} from "../MyPosts/MyPostsContainer";
 import {NavLink} from "react-router-dom";
+import {routes} from "../../../Routes/Routes";
 
 type ProfileInfoType = {
     profile: UserProfileType | null
@@ -103,7 +104,7 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                         <Row justify={"start"}>
 
                             <Row>{friendPortion.map((f) => {
-                                return <SingleUser key={f.id} id={f.id} navigate={'/profile/'} name={f.name}
+                                return <SingleUser key={f.id} id={f.id} navigate={routes.toProfile} name={f.name}
                                                    photo={f.photos.small ?? defaultAvatar}/>
                             })}</Row>
                             {showButtonMoreFriends && <Row justify={"center"}>
@@ -115,13 +116,13 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                     </div>
                     <div className={s.profileInfoContainer}>
                         <Row justify={"center"}>
-                            <NavLink style={{color:"black"}} to={'/users'}>
+                            <NavLink style={{color:"black"}} to={routes.users}>
                                 <h1>People may you know</h1>
                             </NavLink>
                         </Row>
                         <Row justify={"start"}>
                             <Row>{usersUnknown.map((f) => {
-                                return <SingleUser key={f.id} navigate={'/profile/'} id={f.id} name={f.name}
+                                return <SingleUser key={f.id} navigate={routes.toProfile} id={f.id} name={f.name}
                                                    photo={f.photos.small ?? defaultAvatar}/>
                             })}</Row>
                         </Row>
