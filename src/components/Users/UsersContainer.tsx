@@ -24,7 +24,7 @@ import {GetUsersParamsType} from "../../api/api";
 import {Skeleton} from "antd";
 
 
-class UsersContainerWithAPI extends React.Component<UsersPropsType> {
+class UsersContainerWithAPI extends React.PureComponent<UsersPropsType> {
 
     componentDidMount() {
         const {pageSize} = this.props
@@ -54,6 +54,7 @@ class UsersContainerWithAPI extends React.Component<UsersPropsType> {
                         changeFollowUnfollow={this.props.changeFollowUnfollow}
                         isLoading={this.props.isLoading}
                         defaultSearchValue={this.props.defaultSearchValue}
+                        friends={this.props.friends}
 
                     />
                 </Skeleton>
@@ -72,6 +73,7 @@ type MapStateToPropsType = {
     followingInProgress: number[]
     getUsersParams: GetUsersParamsType
     defaultSearchValue: string | null | undefined
+    friends:UsersDataType[]
 }
 
 export type UsersPropsType = MapStateToPropsType & MapDispatchToPropsType
@@ -87,7 +89,8 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         followingInProgress: getFollowingInProgress(state),
         isLoading: state.usersPage.isLoading,
         getUsersParams: state.usersPage.getUsersParams,
-        defaultSearchValue: state.usersPage.getUsersParams.term
+        defaultSearchValue: state.usersPage.getUsersParams.term,
+        friends:state.usersPage.friends
     }
 }
 

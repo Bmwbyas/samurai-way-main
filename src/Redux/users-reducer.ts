@@ -191,6 +191,7 @@ export const getFriend = (isFriends?: boolean): ThunkCreatorType => async (dispa
 
 }
 
+
 export const changeFollowUnfollow = (user: UsersDataType): ThunkCreatorType => async (dispatch) => {
     dispatch(setFollowingInProgress(true, user.id))
     if (user.followed) {

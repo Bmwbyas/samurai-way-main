@@ -2,26 +2,32 @@ import React from 'react';
 import {Row, Tooltip} from "antd";
 import s from './Friend.module.css'
 import {NavLink} from "react-router-dom";
+import {UsersDataType} from "../../../Redux/users-reducer";
 
 type FriendsPropsType = {
-    name: string
+
     photo: string
-    id:number
+
+    user:UsersDataType
     navigate:string
     addTochedUser?: (data: { id: number, name: string }) => void
+    unfriend?:(user: UsersDataType)=>void
 }
-const SingleUser: React.FC<FriendsPropsType> = ({name, photo,id,navigate,addTochedUser}) => {
+const SingleUser: React.FC<FriendsPropsType> = ({ photo,navigate,addTochedUser,unfriend,user}) => {
     const addTochedUserHandler =()=>{
 
-        addTochedUser && addTochedUser({id,name})
+        addTochedUser && addTochedUser({id:user.id,name:user.name})
     }
+    const unfriendsUser=()=>{
+        console.log('click')
+        unfriend && unfriend(user)}
     return (
 
-        <div className={s.friendContainer}>
-            <NavLink to={navigate + id} onClick={addTochedUserHandler}>
-            <Tooltip color={'#1369e1'} title={name}>
+        <div className={s.friendContainer} onClick={unfriendsUser}>
+            <NavLink to={navigate + user.id} onClick={addTochedUserHandler}>
+            <Tooltip color={'#1369e1'} title={user.name}>
                 <Row justify={"center"}><img className={s.ava} src={photo} alt="ava"/></Row>
-                <Row justify={"center"} className={s.name}>{name}</Row>
+                <Row justify={"center"}  className={s.name}>{user.name}</Row>
             </Tooltip>
             </NavLink>
         </div>

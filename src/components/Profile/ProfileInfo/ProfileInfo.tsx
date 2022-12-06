@@ -106,7 +106,7 @@ const avatar=viewAvatar(profile!.photos.large)
 
                         <Row>{friendPortion.map((f) => {
                             const avatar = viewAvatar(f.photos.small)
-                            return <SingleUser key={f.id} id={f.id} navigate={routes.toProfile} name={f.name}
+                            return <SingleUser key={f.id}  navigate={routes.toProfile}  user={f}
                                                photo={avatar}/>
                         })}</Row>
                         {showButtonMoreFriends && <Row justify={"center"}>
@@ -125,7 +125,7 @@ const avatar=viewAvatar(profile!.photos.large)
                     <Row justify={"start"}>
                         <Row>{usersUnknown.map((f) => {
                             const avatar = viewAvatar(f.photos.small)
-                            return <SingleUser key={f.id} navigate={routes.toProfile} id={f.id} name={f.name}
+                            return <SingleUser key={f.id} navigate={routes.toProfile} user={f}
                                                photo={avatar}/>
                         })}</Row>
                     </Row>

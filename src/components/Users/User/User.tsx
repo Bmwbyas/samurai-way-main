@@ -7,13 +7,13 @@ import {Button, Col, Divider, Row} from "antd";
 import {routes} from "../../../Routes/Routes";
 
 
-type UsersJsxPropsType = {
+type UsersPropsType = {
     user: UsersDataType
     followingInProgress: number[]
     onClickHandler: () => void
 }
 
-export const User = forwardRef<any, UsersJsxPropsType>(({user, followingInProgress, onClickHandler}, ref) => {
+export const User =React.memo( forwardRef<any, UsersPropsType>(({user, followingInProgress, onClickHandler}, ref) => {
 
     const avatar = viewAvatar(user.photos.small)
     return (
@@ -50,6 +50,6 @@ export const User = forwardRef<any, UsersJsxPropsType>(({user, followingInProgre
         </div>
 
     );
-});
+}));
 
 
