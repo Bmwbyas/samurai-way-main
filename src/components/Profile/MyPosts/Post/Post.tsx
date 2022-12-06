@@ -1,7 +1,6 @@
 import React from 'react';
 import './Post.module.css'
 import {MessageOutlined} from '@ant-design/icons';
-import defaultAvatar from "../../../../assets/defaultAvatarUser.png";
 import {Button, Col, Row} from "antd";
 import style from "../../ProfileInfo/ProfileInfo.module.css";
 import styleMyPosts from "../MyPosts.module.css";
@@ -10,6 +9,7 @@ import {CommentForm} from "../CommentForm/CommentForm";
 import {CommentsStateType} from "../../../../Redux/profile-reduser";
 import {Comment} from "../Comment/Comment";
 import LikeButton from "../../../common/LikeButton/LikeButton";
+import {viewAvatar} from "../../../../utils/ViewAvatar/viewAvatar";
 
 type PostPropsType = {
     postId: string
@@ -33,7 +33,7 @@ export const Post: React.FC<PostPropsType> = ({
                                                   toggleLike
 
                                               }) => {
-    const avatar = avatarProfile ?? defaultAvatar
+    const avatar = viewAvatar(avatarProfile)
     
     const [showComment, setShowComment] = React.useState(true)
     const showCommentHandler = () => {

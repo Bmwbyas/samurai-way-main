@@ -5,11 +5,11 @@ import {
     changeFollow,
     changeFollowUnfollow,
     getUsers,
-    setFollowingInProgress, updateUsersParams,
+    setFollowingInProgress,
+    updateUsersParams,
     UsersDataType
 } from "../../Redux/users-reducer";
 import {Users} from "./Users";
-import {Preloader} from "../common/Preloader";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {
@@ -21,46 +21,42 @@ import {
     getUsersSuperSelector
 } from "../../Redux/usersSelectors";
 import {GetUsersParamsType} from "../../api/api";
+import {Skeleton} from "antd";
 
 
-class UsersContainerWithAPI extends React.PureComponent<UsersPropsType> {
+class UsersContainerWithAPI extends React.Component<UsersPropsType> {
 
     componentDidMount() {
-        const {currentPage,pageSize}=this.props
-        this.props.getUsers({page:currentPage, count:pageSize})
-        console.log('didmount users')
+        const {pageSize} = this.props
+        this.props.getUsers({page: 1, count: pageSize,term:null})
+        console.log('did mount users')
     }
-    //
-    // setSearchValue=(term:string)=>{
-    //     this.props.getUsers({term})
-    // }
-    setPaginationValue = (params:{page?: number,count?:number,term?:string}) => {
 
+
+    updateUsersData = (params: { page?: number, count?: number, term?: string }) => {
         this.props.getUsers({...params})
     }
+
 
     render() {
         console.log('UsersContainerWithAPI Component render')
         return (
             <>
-                {this.props.isFetching&& <Preloader/>}
-                <Users
-                    key={this.props.totalUsersCount}
-                    usersData={this.props.usersData}
-                    setPaginationValue={this.setPaginationValue}
-                    currentPage={this.props.currentPage}
-                    pageSize={this.props.pageSize}
-                    totalUsersCount={this.props.totalUsersCount}
-                    followingInProgress={this.props.followingInProgress}
-                    changeFollowUnfollow={this.props.changeFollowUnfollow}
-                    isLoading={this.props.isLoading}
-                    defaultSearchValue={this.props.defaultSearchValue}
-                    // getSearchUsers={this.setPaginationValue}
-                    // getUsers={this.props.getUsers}
-                    // updateUsersParams={this.props.updateUsersParams}
-                    // getUsersParams={this.props.getUsersParams}
+                <Skeleton loading={this.props.isFetching} style={{height:'75vh'}}>
+                    <Users
+                        key={this.props.totalUsersCount}
+                        usersData={this.props.usersData}
+                        updateUsersData={this.updateUsersData}
+                        currentPage={this.props.currentPage}
+                        pageSize={this.props.pageSize}
+                        totalUsersCount={this.props.totalUsersCount}
+                        followingInProgress={this.props.followingInProgress}
+                        changeFollowUnfollow={this.props.changeFollowUnfollow}
+                        isLoading={this.props.isLoading}
+                        defaultSearchValue={this.props.defaultSearchValue}
 
-                />
+                    />
+                </Skeleton>
             </>
         );
     }
@@ -68,15 +64,14 @@ class UsersContainerWithAPI extends React.PureComponent<UsersPropsType> {
 
 type MapStateToPropsType = {
     usersData: UsersDataType[]
-
-    pageSize: number
+    pageSize: number | undefined
     totalUsersCount: number
-    currentPage: number
+    currentPage: number | undefined
     isFetching: boolean
     isLoading: boolean
     followingInProgress: number[]
-    getUsersParams:GetUsersParamsType
-    defaultSearchValue:string|null|undefined
+    getUsersParams: GetUsersParamsType
+    defaultSearchValue: string | null | undefined
 }
 
 export type UsersPropsType = MapStateToPropsType & MapDispatchToPropsType
@@ -90,9 +85,9 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         currentPage: getCurrentPage(state),
         isFetching: getIsFetching(state),
         followingInProgress: getFollowingInProgress(state),
-        isLoading:state.usersPage.isLoading,
+        isLoading: state.usersPage.isLoading,
         getUsersParams: state.usersPage.getUsersParams,
-        defaultSearchValue:state.usersPage.getUsersParams.term
+        defaultSearchValue: state.usersPage.getUsersParams.term
     }
 }
 
@@ -101,13 +96,10 @@ const mapDispatchToProps = {
     setFollowingInProgress,
     getUsers,
     changeFollowUnfollow,
-
     updateUsersParams
 }
 
-// export const UsersContainer = withAuthRedirect(connect(mapStateToProps, mapDispatchToProps)(UsersContainerWithAPI))
-
 export const UsersContainer = compose<React.ComponentType>(
     connect(mapStateToProps, mapDispatchToProps),
-    withAuthRedirect
-    )(UsersContainerWithAPI)
+    withAuthRedirect,
+)(UsersContainerWithAPI)

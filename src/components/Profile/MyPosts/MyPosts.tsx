@@ -5,8 +5,8 @@ import style from '../ProfileInfo/ProfileInfo.module.css'
 import {MyPostsPropsType} from "./MyPostsContainer";
 import {AddPostForm} from "./AddPostForm/AddPostForm";
 import {Posts} from "./Posts/Posts";
-import defaultAvatar from '../../../assets/defaultAvatarUser.png'
 import {Button, Modal} from "antd";
+import {viewAvatar} from "../../../utils/ViewAvatar/viewAvatar";
 
 export const MyPosts: React.FC<MyPostsPropsType> = memo(({
                                                              addPost, addComment,
@@ -16,7 +16,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = memo(({
                                                          }) => {
 
     const [isModalOpen, setIsModalOpen] = React.useState(false);
-    const avatar = avatarProfile ?? defaultAvatar
+    const avatar = viewAvatar(avatarProfile)
     const userName = name ?? 'guest'
 
     const showModal = () => {

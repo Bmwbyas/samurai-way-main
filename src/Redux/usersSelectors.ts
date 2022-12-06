@@ -18,13 +18,13 @@ export const getUsersSuperSelector=createSelector(getDataUsers,(users:UsersDataT
     return users.filter(u=>u)
 }) 
 export const getPageSize=(state:AppStateType)=>{
-    return state.usersPage.pageSize
+    return state.usersPage.getUsersParams.count
 }
 export const getTotalUsersCount=(state:AppStateType)=>{
     return state.usersPage.totalUsersCount
 }
 export const getCurrentPage=(state:AppStateType)=>{
-    return state.usersPage.currentPage
+    return state.usersPage.getUsersParams.page
 }
 export const getIsFetching=(state:AppStateType)=>{
     return state.usersPage.isFetching

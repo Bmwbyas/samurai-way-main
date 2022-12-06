@@ -1,7 +1,16 @@
 .avatar{
     width: 60px;
-
 }
+
 .name{
  color: black;
+}
+.avatar:hover {
+    border-radius: 5px;
+    background-color: #bae0ff;
+}
+.name:hover{
+    padding:15px;
+    border-radius: 5px;
+    background-color: #bae0ff;
 }

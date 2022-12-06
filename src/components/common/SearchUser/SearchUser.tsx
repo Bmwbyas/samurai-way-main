@@ -5,16 +5,17 @@ type SearchUserType = {
     getSearchUsers: (term: string) => void
     isLoading:boolean
     defaultSearchValue:string|null|undefined
+    placeholder:string
 
 }
-export const SearchUser: React.FC<SearchUserType> = ({getSearchUsers,isLoading,defaultSearchValue}) => {
+export const SearchUser: React.FC<SearchUserType> = ({getSearchUsers,isLoading,placeholder,defaultSearchValue}) => {
 
     const onSearch = (value: string) => getSearchUsers && getSearchUsers(value)
     const defaultValue=defaultSearchValue??undefined
     return (
         <Search
             defaultValue={defaultValue}
-            placeholder="input search text"
+            placeholder={placeholder}
             allowClear
             enterButton="Search"
             size="middle"
