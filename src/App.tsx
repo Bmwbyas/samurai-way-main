@@ -1,9 +1,6 @@
 import React, {lazy} from 'react';
 import './App.css';
 import {Redirect, Route, withRouter} from "react-router-dom";
-import {News} from "./components/News/News";
-import {Music} from "./components/Music/Music";
-import {Setting} from "./components/Setting/Setting";
 import {UsersContainer} from "./components/Users/UsersContainer";
 import {ProfileContainer} from "./components/Profile/ProfileContainer";
 import {HeaderContainer} from "./components/Header/Header.contaiter";
@@ -16,8 +13,8 @@ import {Preloader} from "./components/common/Preloader";
 import {withSuspense} from "./hoc/withSuspense";
 import {Layout} from 'antd';
 import {Navbar} from "./components/Navbar/Navbar";
-import {DialogContainer} from "./components/Dialogs/Dialog/DialogContainer";
 import {routes} from "./Routes/Routes";
+import {DialogContainer} from "./components/Dialogs/Dialog/DialogContainer";
 
 
 const {Content} = Layout;
@@ -31,6 +28,7 @@ class App extends React.Component<AppPropsType> {
     }
 
     render() {
+        console.log('app render')
         if (!this.props.initialized) {
             return <Preloader/>
         }

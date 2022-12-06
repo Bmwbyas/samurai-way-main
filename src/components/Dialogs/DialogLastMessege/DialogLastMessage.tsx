@@ -17,7 +17,7 @@ export const DialogLastMessage: React.FC<DialogLastMessageType> = ({friends, add
     const standartPortion = 7
     const [sizePortion, setSizePortion] = React.useState(standartPortion)
     const friendPortion = friends.slice(0, sizePortion)
-    console.log('doalogs')
+
     const totalCountFriends = friends.length
 
     const lastItem = createRef<Element | null>();

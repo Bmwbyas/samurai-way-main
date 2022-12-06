@@ -153,13 +153,6 @@ type ThunkCreatorType = ThunkAction<void, AppStateType, unknown, UsersReducerAct
 
 //thunks
 
-export const getSearchUsers = (term: string): ThunkCreatorType => async (dispatch) => {
-    dispatch  (toggleIsLoading(true))
-    const data = await usersAPI.getUsers({term})
-    dispatch(clearUsers())
-    dispatch(setUsers(data.items))
-    dispatch  (toggleIsLoading(false))
-}
 
 
 
@@ -174,7 +167,7 @@ export const getUsers = (paramsGetUsers:GetUsersParamsType): ThunkCreatorType =>
     // if(term){
     //     params={...params,term}
     // }
-
+    dispatch(updateUsersParams(params))
     const data = await usersAPI.getUsers(params)
 
         dispatch(setUsers(data.items))

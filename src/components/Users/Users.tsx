@@ -10,19 +10,20 @@ import {SearchUser} from "../common/SearchUser/SearchUser";
 type UsersJsxPropsType = {
     totalUsersCount: number
     pageSize: number
-    setPaginationValue: (params: { page: number, count: number }) => void
+    setPaginationValue: (params: { page?: number, count?: number, term?: string }) => void
     currentPage: number
     usersData: UsersDataType[]
     followingInProgress: number[]
     changeFollowUnfollow: any
-    getSearchUsers: (term: string) => void
     isLoading: boolean
+    defaultSearchValue:string|null|undefined
     // getUsers: (params:GetUsersParamsType) => void
     // updateUsersParams:(params:GetUsersParamsType)=>void
     // getUsersParams:GetUsersParamsType
+    // getSearchUsers: (term: string) => void
 }
 
-const Users: React.FC<UsersJsxPropsType> = ({
+export const Users: React.FC<UsersJsxPropsType> = React.memo( ({
                                                 usersData,
                                                 totalUsersCount,
                                                 pageSize,
@@ -30,13 +31,23 @@ const Users: React.FC<UsersJsxPropsType> = ({
                                                 setPaginationValue,
                                                 changeFollowUnfollow,
                                                 followingInProgress,
-                                                getSearchUsers,
+                                                // getSearchUsers,
                                                 isLoading,
+                                                defaultSearchValue
 
                                             }) => {
-    // console.log('Users Component render')
+     console.log('Users Component render')
     const onChangePaginationValue = (page: number, pageSize: number) => setPaginationValue({page, count: pageSize})
-
+    const getSearchUsers=(term:string)=>{
+        setPaginationValue({term,page:1,count:10})
+    }
+    const setUsers = usersData.map((user) => {
+        const onClickHandler = () => {
+            changeFollowUnfollow(user)
+        }
+        return <User key={user.id} user={user} followingInProgress={followingInProgress}
+                     onClickHandler={onClickHandler}/>
+    })
 
     return (
 
@@ -46,16 +57,10 @@ const Users: React.FC<UsersJsxPropsType> = ({
 
                     <Row>All Users <span className={s.totalCountUsers}>{totalUsersCount}</span> </Row>
                     <Divider style={{margin: 10}}/>
-                    <SearchUser getSearchUsers={getSearchUsers} isLoading={isLoading}/>
+                    <SearchUser defaultSearchValue={defaultSearchValue} getSearchUsers={getSearchUsers} isLoading={isLoading}/>
                     <Divider style={{margin: 10}}/>
 
-                    {usersData.map((user) => {
-                        const onClickHandler = () => {
-                            changeFollowUnfollow(user)
-                        }
-                        return <User key={user.id} user={user} followingInProgress={followingInProgress}
-                                     onClickHandler={onClickHandler}/>
-                    })}
+                    {setUsers}
                     <Pagination defaultCurrent={currentPage} onChange={onChangePaginationValue}
                                 defaultPageSize={pageSize} total={totalUsersCount}/>
                 </div>
@@ -68,6 +73,6 @@ const Users: React.FC<UsersJsxPropsType> = ({
         </Row>
 
     );
-};
+});
 
-export default Users;
+

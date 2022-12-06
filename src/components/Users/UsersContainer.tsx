@@ -3,12 +3,12 @@ import {AppStateType} from "../../Redux/redux-store";
 import {connect} from "react-redux";
 import {
     changeFollow,
-    changeFollowUnfollow, getSearchUsers,
+    changeFollowUnfollow,
     getUsers,
     setFollowingInProgress, updateUsersParams,
     UsersDataType
 } from "../../Redux/users-reducer";
-import Users from "./Users";
+import {Users} from "./Users";
 import {Preloader} from "../common/Preloader";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
@@ -23,17 +23,18 @@ import {
 import {GetUsersParamsType} from "../../api/api";
 
 
-class UsersContainerWithAPI extends React.Component<UsersPropsType> {
+class UsersContainerWithAPI extends React.PureComponent<UsersPropsType> {
 
     componentDidMount() {
         const {currentPage,pageSize}=this.props
         this.props.getUsers({page:currentPage, count:pageSize})
+        console.log('didmount users')
     }
     //
-    setSearchValue=(term:string)=>{
-        this.props.updateUsersParams({term})
-    }
-    setPaginationValue = (params:{page: number,count:number}) => {
+    // setSearchValue=(term:string)=>{
+    //     this.props.getUsers({term})
+    // }
+    setPaginationValue = (params:{page?: number,count?:number,term?:string}) => {
 
         this.props.getUsers({...params})
     }
@@ -53,7 +54,8 @@ class UsersContainerWithAPI extends React.Component<UsersPropsType> {
                     followingInProgress={this.props.followingInProgress}
                     changeFollowUnfollow={this.props.changeFollowUnfollow}
                     isLoading={this.props.isLoading}
-                    getSearchUsers={this.setSearchValue}
+                    defaultSearchValue={this.props.defaultSearchValue}
+                    // getSearchUsers={this.setPaginationValue}
                     // getUsers={this.props.getUsers}
                     // updateUsersParams={this.props.updateUsersParams}
                     // getUsersParams={this.props.getUsersParams}
@@ -74,6 +76,7 @@ type MapStateToPropsType = {
     isLoading: boolean
     followingInProgress: number[]
     getUsersParams:GetUsersParamsType
+    defaultSearchValue:string|null|undefined
 }
 
 export type UsersPropsType = MapStateToPropsType & MapDispatchToPropsType
@@ -88,7 +91,8 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         isFetching: getIsFetching(state),
         followingInProgress: getFollowingInProgress(state),
         isLoading:state.usersPage.isLoading,
-        getUsersParams: state.usersPage.getUsersParams
+        getUsersParams: state.usersPage.getUsersParams,
+        defaultSearchValue:state.usersPage.getUsersParams.term
     }
 }
 
@@ -97,7 +101,7 @@ const mapDispatchToProps = {
     setFollowingInProgress,
     getUsers,
     changeFollowUnfollow,
-    getSearchUsers,
+
     updateUsersParams
 }
 
