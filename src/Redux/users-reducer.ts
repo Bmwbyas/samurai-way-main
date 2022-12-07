@@ -159,7 +159,6 @@ type ThunkCreatorType = ThunkAction<void, AppStateType, unknown, UsersReducerAct
 export const getUsers = (paramsGetUsers:GetUsersParamsType): ThunkCreatorType => async (dispatch, getState:()=>AppStateType) => {
 
     dispatch(setIsFetching(true))
-    // dispatch(setCurrentPage(currentPage))
     let getParamsStore=getState().usersPage.getUsersParams
     let params:GetUsersParamsType={
         ...getParamsStore,...paramsGetUsers

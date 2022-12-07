@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import './MyPosts.module.css'
 import s from './MyPosts.module.css'
-import style from '../ProfileInfo/ProfileInfo.module.css'
+import style from '../Profile.module.css'
 import {MyPostsPropsType} from "./MyPostsContainer";
 import {AddPostForm} from "./AddPostForm/AddPostForm";
 import {Posts} from "./Posts/Posts";

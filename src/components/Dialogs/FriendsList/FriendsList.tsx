@@ -5,6 +5,7 @@ import SingleUser from "../../common/SingleUser/SingleUser";
 import {UsersDataType} from "../../../Redux/users-reducer";
 import s from './FriendsList.module.css'
 import {viewAvatar} from "../../../utils/ViewAvatar/viewAvatar";
+import {routes} from "../../../Routes/Routes";
 
 type FriendsListType = {
     friends: UsersDataType[]
@@ -32,7 +33,7 @@ export const FriendsList: React.FC<FriendsListType> = ({friends,addTochedUser}) 
     }
     const friendsData = friendPortion.map((f) => {
         const avatar = viewAvatar(f.photos.small)
-        return <SingleUser key={f.id} addTochedUser={addTochedUser} navigate={'/dialog/'} user={f} photo={avatar}/>
+        return <SingleUser key={f.id} addTochedUser={addTochedUser} isFriends={true} navigate={routes.toDialog} user={f} photo={avatar}/>
     })
 
     return (

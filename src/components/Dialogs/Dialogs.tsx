@@ -1,16 +1,19 @@
 import React from 'react';
 import {DialogsPropsType} from "./DialogsContainer";
-import sProfilePage from "../Profile/ProfileInfo/ProfileInfo.module.css";
+import sProfilePage from "../Profile/Profile.module.css";
 import {Col, Row} from "antd";
 import {SearchAutoComplite} from "../common/SearchWithAutocomplite/SearchAutoComplite";
 import {FriendsList} from "./FriendsList/FriendsList";
 import {DialogLastMessage} from "./DialogLastMessege/DialogLastMessage";
 import {NavDialogs} from "./NavDialogs/NavDialogs";
 
+
 export const Dialogs: React.FC<DialogsPropsType> = ({
                                                         friends, myAvatar,
                                                         tochedUsers, addTochedUser, message
+                                                        , removeTochedUser
                                                     }) => {
+
     console.log('dialogs')
     return (
         <>
@@ -23,12 +26,12 @@ export const Dialogs: React.FC<DialogsPropsType> = ({
                         <FriendsList friends={friends} addTochedUser={addTochedUser}/>
                     </div>
                     <div className={sProfilePage.profileInfoContainer}>
-                       <DialogLastMessage friends={friends} addTochedUser={addTochedUser}
-                                          myAvatar={myAvatar} messege={message}/>
+                        <DialogLastMessage friends={friends} addTochedUser={addTochedUser}
+                                           myAvatar={myAvatar} messege={message}/>
                     </div>
                 </Col>
                 <Col className="gutter-row" span={9}>
-                    <NavDialogs tochedUsers={tochedUsers}/>
+                    <NavDialogs removeTochedUser={removeTochedUser} tochedUsers={tochedUsers}/>
                 </Col>
             </Row>
         </>

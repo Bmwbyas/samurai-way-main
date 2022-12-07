@@ -1,4 +1,33 @@
-.pofileContainer{
-    padding: 15px;
+.profileInfoContainer{
+    background: #ffffff;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1), -1px -1px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 0 10px;
+    padding:15px;
+    margin-bottom: 25px;
+
+}
+.changePhoto {
+    color: white;
+    border-radius: 6px;
+    padding: 5px 15px 8px;
+    background-color: #1677ff;
+    box-shadow: 0 2px 0 rgb(5 145 255 / 10%);
+    margin-bottom: 15px;
+    margin-right: 15px;
+}
+
+.changePhoto:hover {
+    background-color: #4096ff;
+    box-shadow: 0 2px 0 rgb(5 145 255 / 10%);
+}
+
+.changePhoto:active {
+    background-color: #0958d9;
+}
+.img{
+   justify-content: center;
+    margin-bottom: 15px;
+    margin-right: 15px;
 
 }

@@ -3,18 +3,20 @@ export type MessageDataType = {
     message: string
     isMeMessage: boolean
 }
-export type TouchedUsers ={
-    id:number
-    name:string
+export type TouchedUsers = {
+    id: number
+    name: string
 }
 
 
-type DialogsReducerActionType = ReturnType<typeof addMessage>|ReturnType<typeof addTochedUser>
+type DialogsReducerActionType = ReturnType<typeof addMessage>
+    | ReturnType<typeof addTochedUser>
+    | ReturnType<typeof removeTochedUser>
 
 export type DialogsPageStateType = typeof initialState
 
 let initialState = {
-    touchedUsers:[] as TouchedUsers[],
+    touchedUsers: [] as TouchedUsers[],
     messagesData: [
         {id: 1, isMeMessage: true, message: 'Hi'},
         {id: 2, isMeMessage: false, message: 'it-kamasutra'},
@@ -35,19 +37,21 @@ export const dialogsReducer = (state = initialState, action: DialogsReducerActio
             }
             return {
                 ...state,
-                messagesData: [...state.messagesData,newMessage]
+                messagesData: [...state.messagesData, newMessage]
             };
         case "DIALOGS/ADD-TOCHED-USER":
-            if(state.touchedUsers.find(t=>t.id===action.payload.id)){
+            if (state.touchedUsers.find(t => t.id === action.payload.id)) {
                 return {...state}
             }
-            return {...state,touchedUsers: [...state.touchedUsers,action.payload]}
-
+            return {...state, touchedUsers: [...state.touchedUsers, action.payload]}
+        case "DIALOGS/REMOVE-TOCHED-USER":
+            return {...state,touchedUsers: state.touchedUsers.filter(t=>t.id!=action.id)}
         default:
             return state;
     }
 }
 //actions
 export const addMessage = (text: string) => ({type: 'DIALOGS/ADD-MESSAGE', text} as const)
-export const addTochedUser = (data:TouchedUsers) => ({type: 'DIALOGS/ADD-TOCHED-USER', payload:data} as const)
+export const addTochedUser = (data: TouchedUsers) => ({type: 'DIALOGS/ADD-TOCHED-USER', payload: data} as const)
+export const removeTochedUser = (id: number) => ({type: 'DIALOGS/REMOVE-TOCHED-USER', id} as const)
 

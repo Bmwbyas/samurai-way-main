@@ -5,9 +5,7 @@
     cursor: pointer;
     border-radius: 5px;
 }
-.friendContainer a {
-    color: black;
-}
+
 .friendContainer:hover{
     background-color: #bae0ff;
 
@@ -26,10 +24,17 @@
     z-index: 1;
     background-color: white;
     border-radius: 2px;
-
-
 }
-
+.unfriendContainer{
+    position: relative;
+    margin: 10px;
+    width: 60px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.unfriendContainer:hover{
+    background-color: #bae0ff;
+}
 
 /*.friendContainer:nth-child(4n){*/
 /*   margin-right: 0;*/

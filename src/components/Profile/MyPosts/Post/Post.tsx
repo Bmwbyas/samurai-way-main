@@ -2,7 +2,7 @@ import React from 'react';
 import './Post.module.css'
 import {MessageOutlined} from '@ant-design/icons';
 import {Button, Col, Row} from "antd";
-import style from "../../ProfileInfo/ProfileInfo.module.css";
+import style from "../../Profile.module.css";
 import styleMyPosts from "../MyPosts.module.css";
 import s from './Post.module.css'
 import {CommentForm} from "../CommentForm/CommentForm";

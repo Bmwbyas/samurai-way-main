@@ -6,7 +6,7 @@ import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
 import {Dialog} from "./Dialog";
 import {RouteComponentProps, withRouter} from "react-router-dom";
 import {UsersDataType} from "../../../Redux/users-reducer";
-import {addMessage, MessageDataType, TouchedUsers} from "../../../Redux/dialogs-reduser";
+import {addMessage, MessageDataType, removeTochedUser, TouchedUsers} from "../../../Redux/dialogs-reduser";
 
 export class DialogAPI extends React.Component<DialogPropsType> {
     getDialog() {
@@ -23,6 +23,7 @@ export class DialogAPI extends React.Component<DialogPropsType> {
                      myAvatar={this.props.myAvatar}
                     myUserName={this.props.myUserName} addMessage={this.props.addMessage}
                     dialogsData={this.props.dialogsData} tochedUsers={this.props.tochedUsers}
+                    removeTochedUser={this.props.removeTochedUser}
             />
         )
     }
@@ -50,7 +51,7 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         }
 }
 let mapDispatchToProps = {
-    addMessage
+    addMessage,removeTochedUser
 }
 
 export const DialogContainer= compose<React.ComponentType>(

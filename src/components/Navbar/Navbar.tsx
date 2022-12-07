@@ -3,7 +3,7 @@ import React from 'react';
 import {NavLink} from "react-router-dom";
 
 import {Menu} from "antd";
-import {UploadOutlined, UserOutlined, VideoCameraOutlined} from "@ant-design/icons";
+import {MessageOutlined, UserOutlined, TeamOutlined } from "@ant-design/icons";
 import Sider from "antd/es/layout/Sider";
 
 export const Navbar = () => {
@@ -14,7 +14,7 @@ export const Navbar = () => {
                 style={{backgroundColor:'#f5f5f5',borderRight:'none'}}
                 theme="light"
                 mode={'vertical'}
-                defaultSelectedKeys={['1']}
+
                 items={[
                     {
                         key: '1',
@@ -23,12 +23,12 @@ export const Navbar = () => {
                     },
                     {
                         key: '2',
-                        icon: <VideoCameraOutlined/>,
+                        icon: <TeamOutlined />,
                         label: <NavLink to="/users">Users</NavLink>,
                     },
                     {
                         key: '3',
-                        icon: <UploadOutlined/>,
+                        icon: <MessageOutlined />,
                         label: <NavLink to="/dialogs">Messenger</NavLink>,
                     },
                 ]}

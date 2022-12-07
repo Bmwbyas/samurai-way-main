@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import s from "./Users.module.css";
 import {UsersDataType} from "../../Redux/users-reducer";
 import {User} from "./User/User";
-import sProfilePage from "../Profile/ProfileInfo/ProfileInfo.module.css";
+import sProfilePage from "../Profile/Profile.module.css";
 import {Col, Divider, Pagination, Row} from "antd";
 import {SearchUser} from "../common/SearchUser/SearchUser";
 import {viewAvatar} from "../../utils/ViewAvatar/viewAvatar";
@@ -44,7 +44,7 @@ export const Users: React.FC<UsersJsxPropsType> = React.memo(({
     }
     const changeFriends=useCallback((user:UsersDataType)=>{
         changeFollowUnfollow(user)
-    },[friends])
+    },[changeFollowUnfollow])
     const setUsers =  usersData.map((user) => {
         const onClickHandler = () => {
             changeFriends(user)
@@ -63,7 +63,8 @@ export const Users: React.FC<UsersJsxPropsType> = React.memo(({
     }
     const friendsData = friends.map((f) => {
         const avatar = viewAvatar(f.photos.small)
-        return <SingleUser key={f.id}  unfriend={changeFriends} user={f} navigate={routes.toProfile}  photo={avatar}/>
+        return <SingleUser key={f.id}  unfriend={changeFriends} isFriends={true}
+                           user={f} navigate={routes.toProfile}  photo={avatar}/>
     })
 
     return (

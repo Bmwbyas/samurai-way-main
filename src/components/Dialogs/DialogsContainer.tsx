@@ -1,5 +1,5 @@
 import React from 'react';
-import {addTochedUser,  TouchedUsers,} from "../../Redux/dialogs-reduser";
+import {addTochedUser, removeTochedUser, TouchedUsers,} from "../../Redux/dialogs-reduser";
 import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
 import {AppStateType} from "../../Redux/redux-store";
@@ -25,7 +25,8 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     }
 }
 let mapDispatchToProps = {
-    addTochedUser
+    addTochedUser,
+    removeTochedUser
 }
 
 export const DialogsContainer= compose<React.ComponentType>(

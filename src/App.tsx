@@ -38,9 +38,7 @@ class App extends React.Component<AppPropsType> {
                 <Layout>
                     {this.props.isAuth && <Navbar/>}
                     <Content>
-                        {/*<Route path='/news' component={News}/>*/}
-                        {/*<Route path='/music' component={Music}/>*/}
-                        {/*<Route path='/setting' component={Setting}/>*/}
+
                         <Route path={routes.dialogs} render={withSuspense(DialogsContainer)}/>
                         <Route path={routes.dialog} render={() => <DialogContainer/>}/>
                         <Route path={routes.profile} render={() => <ProfileContainer/>}/>

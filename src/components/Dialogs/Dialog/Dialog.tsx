@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavLink} from "react-router-dom";
-import sProfilePage from "../../Profile/ProfileInfo/ProfileInfo.module.css";
+import sProfilePage from "../../Profile/Profile.module.css";
 import {Col, Row} from "antd";
 import {LeftOutlined} from "@ant-design/icons";
 import sCommentForm from "../../Profile/MyPosts/CommentForm/CommentForm.module.css";
@@ -20,12 +20,13 @@ type DialogPropsType = {
     addMessage: (text: string) => void
     dialogsData: MessageDataType[]
     tochedUsers: TouchedUsers[]
+    removeTochedUser:(id:number)=>void
 
 }
 export const Dialog: React.FC<DialogPropsType> = ({
                                                       addMessage, dialogsData,
                                                       userName, avatar, myAvatar,
-                                                      myUserName,tochedUsers
+                                                      myUserName,tochedUsers,removeTochedUser
                                                   }) => {
 
 
@@ -55,7 +56,7 @@ export const Dialog: React.FC<DialogPropsType> = ({
                 </div>
             </Col>
             <Col className="gutter-row" span={9}>
-                <NavDialogs tochedUsers={tochedUsers}/>
+                <NavDialogs removeTochedUser={removeTochedUser} tochedUsers={tochedUsers}/>
             </Col>
         </Row>
     );

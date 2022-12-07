@@ -1,7 +1,30 @@
 .name{
     padding: 10px;
     border-radius: 5px;
+    position: relative;
 }
 .name:hover{
     background-color: #bae0ff;
 }
+.container{
+    position: relative;
+    cursor: pointer;
+}
+.container:hover:before{
+
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top: 12px;
+    right: 12px;
+    background-image: url("./../../../../assets/deleteIcon.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 1;
+    background-color: white;
+    border-radius: 2px;
+
+
+}
+
