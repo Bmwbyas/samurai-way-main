@@ -1,6 +1,6 @@
 import React, {lazy} from 'react';
 import './App.css';
-import {Redirect, Route, withRouter} from "react-router-dom";
+import {Route, withRouter} from "react-router-dom";
 import {UsersContainer} from "./components/Users/UsersContainer";
 import {ProfileContainer} from "./components/Profile/ProfileContainer";
 import {HeaderContainer} from "./components/Header/Header.contaiter";
@@ -9,13 +9,13 @@ import {connect} from "react-redux";
 import {AppStateType} from "./Redux/redux-store";
 import {compose} from "redux";
 import {initializeApp} from "./Redux/app-reducer";
-import {Preloader} from "./components/common/Preloader";
+import {Preloader} from "./components/common/Preloader/Preloader";
 import {withSuspense} from "./hoc/withSuspense";
 import {Layout} from 'antd';
 import {Navbar} from "./components/Navbar/Navbar";
 import {routes} from "./Routes/Routes";
 import {DialogContainer} from "./components/Dialogs/Dialog/DialogContainer";
-import Page404 from "./components/404/Page404";
+import Page404 from "./components/common/404/Page404";
 
 
 const {Content} = Layout;
@@ -30,24 +30,23 @@ class App extends React.Component<AppPropsType> {
 
     render() {
         console.log('app render')
+
         if (!this.props.initialized) {
             return <Preloader/>
         }
         return (
             <Layout>
                 <HeaderContainer/>
+
                 <Layout>
                     {this.props.isAuth && <Navbar/>}
                     <Content>
-
                         <Route path={routes.dialogs} render={withSuspense(DialogsContainer)}/>
                         <Route path={routes.dialog} render={() => <DialogContainer/>}/>
                         <Route path={routes.profile} render={() => <ProfileContainer/>}/>
                         <Route path={routes.users} render={() => <UsersContainer/>}/>
                         <Route path={routes.login} render={() => <LoginContainer/>}/>
-                        <Route path={routes.page404} render={() => <Page404/>}/>
-                        <Route path={'/samurai-way-main#/*'} render={() => <Redirect to={routes.page404}/>}/>
-
+                        <Route path={'*'} render={() => <Page404/>}/>
                     </Content>
                 </Layout>
 

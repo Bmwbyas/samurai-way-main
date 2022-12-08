@@ -38,6 +38,7 @@ export class ProfileContainerAPI extends React.PureComponent<PropsTypeAPI> {
     }
 
     componentDidMount() {
+
         this.refreshProfile()
     }
 

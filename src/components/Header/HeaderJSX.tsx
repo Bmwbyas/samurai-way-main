@@ -4,7 +4,7 @@ import {NavLink} from "react-router-dom";
 import {Header} from "antd/es/layout/layout";
 import {UserOutlined} from "@ant-design/icons";
 import {Avatar, Button} from "antd";
-import defaultAvatarUser from "../../assets/defaultAvatarUser.png";
+import defaultAvatar from "../../assets/defaultAvatar.png";
 
 type HeaderPropsType = {
     isAuth: boolean
@@ -17,7 +17,7 @@ export const HeaderJSX: React.FC<HeaderPropsType> = ({isAuth, logOutAuthUser, lo
     const logOut = () => {
         logOutAuthUser()
     }
-    const viewAvatar=avatar??defaultAvatarUser
+    const viewAvatar=avatar??defaultAvatar
     return (
         <Header className={s.headerContainer}>
             <div className={s.logoContainer}>
@@ -41,4 +41,3 @@ export const HeaderJSX: React.FC<HeaderPropsType> = ({isAuth, logOutAuthUser, lo
         </Header>
     );
 }
-// <button onClick={logOut}>LogOut</button>
