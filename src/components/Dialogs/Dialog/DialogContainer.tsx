@@ -8,18 +8,30 @@ import {RouteComponentProps, withRouter} from "react-router-dom";
 import {UsersDataType} from "../../../Redux/users-reducer";
 import {addMessage, MessageDataType, removeTochedUser, TouchedUsers} from "../../../Redux/dialogs-reduser";
 
+
+
 export class DialogAPI extends React.Component<DialogPropsType> {
+
     getDialog() {
         let userId = this.props.match.params.userId
         return this.props.friends.find(f=>f.id===+userId)
     }
-    render() {
 
-        const {name,photos}=this.getDialog()!
+
+
+    render() {
+        const currentUser=this.getDialog()
+        let name=''
+        let avatar='' as string|null
+        if(currentUser!==undefined){
+            name=currentUser.name
+            avatar=currentUser.photos.small
+        }
+
 
         console.log('dialog')
         return (
-            <Dialog userName={name} avatar={photos.small}
+            <Dialog userName={name} avatar={avatar}
                      myAvatar={this.props.myAvatar}
                     myUserName={this.props.myUserName} addMessage={this.props.addMessage}
                     dialogsData={this.props.dialogsData} tochedUsers={this.props.tochedUsers}
@@ -38,6 +50,7 @@ type MapStateToPropsType = {
     myUserName:string | null
     dialogsData:MessageDataType[]
     tochedUsers: TouchedUsers[]
+
 }
 type MapDispatchToPropsType = typeof mapDispatchToProps
 export type DialogPropsType = MapStateToPropsType & RouteComponentProps<PathParamsType> & MapDispatchToPropsType
@@ -47,7 +60,7 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         myAvatar:state.auth.avatar,
         myUserName:state.auth.login,
         dialogsData:state.dialogsPage.messagesData,
-        tochedUsers:state.dialogsPage.touchedUsers
+        tochedUsers:state.dialogsPage.touchedUsers,
         }
 }
 let mapDispatchToProps = {

@@ -1,6 +1,6 @@
 import React, {lazy} from 'react';
 import './App.css';
-import {Route, withRouter} from "react-router-dom";
+import {Route, withRouter,Switch} from "react-router-dom";
 import {UsersContainer} from "./components/Users/UsersContainer";
 import {ProfileContainer} from "./components/Profile/ProfileContainer";
 import {HeaderContainer} from "./components/Header/Header.contaiter";
@@ -41,12 +41,14 @@ class App extends React.Component<AppPropsType> {
                 <Layout>
                     {this.props.isAuth && <Navbar/>}
                     <Content>
-                        <Route path={routes.dialogs} render={withSuspense(DialogsContainer)}/>
-                        <Route path={routes.dialog} render={() => <DialogContainer/>}/>
-                        <Route path={routes.profile} render={() => <ProfileContainer/>}/>
-                        <Route path={routes.users} render={() => <UsersContainer/>}/>
-                        <Route path={routes.login} render={() => <LoginContainer/>}/>
-                        <Route path={'*'} render={() => <Page404/>}/>
+                        <Switch>
+                            <Route path={routes.dialogs} render={withSuspense(DialogsContainer)}/>
+                            <Route path={routes.dialog} render={() => <DialogContainer/>}/>
+                            <Route path={routes.profile} render={() => <ProfileContainer/>}/>
+                            <Route path={routes.users} render={() => <UsersContainer/>}/>
+                            <Route path={routes.login} render={() => <LoginContainer/>}/>
+                            <Route path={'*'} render={() => <Page404/>}/>
+                        </Switch>
                     </Content>
                 </Layout>
 

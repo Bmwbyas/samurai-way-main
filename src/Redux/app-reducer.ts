@@ -1,9 +1,10 @@
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
 import {getAuthUserData} from "./auth-reducer";
+import {getUserProfile} from "./profile-reduser";
 
 export  type AppStateInitialType = {
-    initialized:boolean
+    initialized: boolean
 }
 type InitializedSuccessAppType = ReturnType<typeof initializedSuccessApp>
 
@@ -11,7 +12,7 @@ type AppReducerActionType = InitializedSuccessAppType
 
 
 let initialState: AppStateInitialType = {
-    initialized:false
+    initialized: false
 }
 
 export const appReducer = (state = initialState, action: AppReducerActionType): AppStateInitialType => {
@@ -19,7 +20,7 @@ export const appReducer = (state = initialState, action: AppReducerActionType): 
         case "APP/SET-INITIALIZED": {
             return {
                 ...state,
-                initialized:true
+                initialized: true
             }
         }
         default:
@@ -32,12 +33,9 @@ export const initializedSuccessApp = () => ({type: "APP/SET-INITIALIZED"}) as co
 //Thunk creator for login user
 type AppReducerThunkType = ThunkAction<void, AppStateType, unknown, AppReducerActionType>
 
-export const initializeApp = (): AppReducerThunkType =>  async (dispatch) => {
-await dispatch(getAuthUserData())
-    // const id=getState().auth.id
-    // const res2= await dispatch(getUserProfile(id!))
-
+export const initializeApp = (): AppReducerThunkType => async (dispatch
+                                                               , getState: () => AppStateType) => {
+    await dispatch(getAuthUserData())
+    await dispatch(getUserProfile(getState().auth.id!))
     dispatch(initializedSuccessApp())
-    // promise.then(()=>{dispatch(initializedSuccessApp())})
-
 }
