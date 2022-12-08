@@ -30,6 +30,9 @@ export class ProfileContainerAPI extends React.PureComponent<PropsTypeAPI> {
         this.props.getUserProfile(+userId)
         this.props.getProfileStatus(+userId)
         this.props.getUnknown()
+        if (!userId) userId = this.props.userIdMe!.toString()
+        const isFriend = +userId === this.props.userIdMe
+        this.props.getFriend(isFriend)
 
 
     }
@@ -69,6 +72,7 @@ type MapStateToPropsType = {
     friends: UsersDataType[]
     usersUnknown:UsersDataType[]
 
+
 }
 type MapDispatchToPropsType = typeof mapDispatchToProps
 export type ProfileUserPropsType = MapStateToPropsType & MapDispatchToPropsType
@@ -80,7 +84,8 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
     newStatus: state.profilePage.newStatus,
     userIdMe: state.auth.id,
     friends: state.usersPage.friends,
-    usersUnknown:state.usersPage.usersUnknown
+    usersUnknown:state.usersPage.usersUnknown,
+
 })
 let mapDispatchToProps = {
     getUserProfile,

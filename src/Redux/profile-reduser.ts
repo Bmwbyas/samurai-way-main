@@ -1,8 +1,7 @@
 import {profileAPI} from "../api/api";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
- import {setMyAvatar, SetMyAvatarType} from "./auth-reducer";
-import {getFriend} from "./users-reducer";
+import {setMyAvatar, SetMyAvatarType} from "./auth-reducer";
 import {v1} from "uuid";
 
 export type ContactsType = {
@@ -29,7 +28,7 @@ export type CommentsStateType = {
     [key: string]: CommentType[]
 }
 export type UserProfileType = {
-    userId: number| undefined
+    userId: number | undefined
     aboutMe: string | null
     lookingForAJob: boolean
     lookingForAJobDescription: string | null
@@ -97,8 +96,9 @@ export const profileReducer = (state = initialState, action: ProfileReducerActio
             return {
                 ...state,
                 postData: [newPost, ...state.postData],
-                commentData: { ...state.commentData,
-                [newPost.id]:[]
+                commentData: {
+                    ...state.commentData,
+                    [newPost.id]: []
                 }
             }
 
@@ -146,7 +146,7 @@ export const profileReducer = (state = initialState, action: ProfileReducerActio
                     ...state,
                     postData: state.postData.map(p => p.id === action.payload.postId ? {
                         ...p,
-                        likesCount: p.likesCount+action.payload.likeValue
+                        likesCount: p.likesCount + action.payload.likeValue
                     } : p)
                 }
             }
@@ -178,29 +178,21 @@ export const toggleLike = (payload: { postId: string, id?: string, likeValue: nu
 //thunk
 type ThunkCreatorType = ThunkAction<void, AppStateType, unknown, ProfileReducerActionType>
 
-export const getUserProfile = (userId: number): ThunkCreatorType => (dispatch, getState: () => AppStateType) => {
+export const getUserProfile = (userId: number): ThunkCreatorType => async (dispatch, getState: () => AppStateType) => {
     const myId = getState().auth.id
     if (!userId) userId = myId!
-    profileAPI.getProfile(userId)
-        .then(response => {
-            if (response.data.userId === myId ) {
-                    dispatch(setMyAvatar(response.data.photos.small ?? ''))
-            }
-//a? a: b
-            //a?? b
-            dispatch(setUserProfile(response.data))
-        });
+    const response = await profileAPI.getProfile(userId)
+
+    if (response.data.userId === myId) {
+        dispatch(setMyAvatar(response.data.photos.small ?? ''))
+    }
+    dispatch(setUserProfile(response.data))
 }
-export const getProfileStatus = (userId: number): ThunkCreatorType => async (dispatch, getState: () => AppStateType) => {
+export const getProfileStatus = (userId: number): ThunkCreatorType => async (dispatch) => {
 
-
-    const myId = getState().auth.id
-    if (!userId) userId = myId!
-
-    const isFriend = userId === myId
     const response = await profileAPI.getStatus(userId)
     dispatch(setProfileStatus(response.data))
-    dispatch(getFriend( isFriend))
+
 
 }
 export const updateProfileStatus = (newStatus: string): ThunkCreatorType => async (dispatch) => {
@@ -209,14 +201,14 @@ export const updateProfileStatus = (newStatus: string): ThunkCreatorType => asyn
         dispatch(setProfileStatus(newStatus))
     }
 }
-export const savePhoto = (value: File): ThunkCreatorType => async (dispatch, getState:()=>AppStateType) => {
+export const savePhoto = (value: File): ThunkCreatorType => async (dispatch, getState: () => AppStateType) => {
     const response = await profileAPI.savePhoto(value)
     if (response.data.resultCode === 0) {
         const myId = getState().auth.id
-        const oldProfile=getState().profilePage.profile
-        const newProfile={...oldProfile!,photos:response.data.data.photos}
+        const oldProfile = getState().profilePage.profile
+        const newProfile = {...oldProfile!, photos: response.data.data.photos}
 
-        if (newProfile.userId === myId ) {
+        if (newProfile.userId === myId) {
             dispatch(setMyAvatar(response.data.data.photos.small))
         }
         dispatch(savePhotoSuccess(newProfile))
@@ -224,12 +216,9 @@ export const savePhoto = (value: File): ThunkCreatorType => async (dispatch, get
 }
 export const updateProfileData = (newProfileData: UserUpdateProfileType): ThunkCreatorType => async (dispatch, getState: () => AppStateType) => {
     try {
-
         const userId = getState().profilePage.profile!.userId
-
         const response = await profileAPI.updateUserData(newProfileData)
         if (response.data.resultCode === 0) {
-            // dispatch(updateProfileDataSuccess(newProfileData))
             dispatch(getUserProfile(userId!))
         }
     } catch (e) {

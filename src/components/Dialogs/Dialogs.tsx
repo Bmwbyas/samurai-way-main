@@ -1,13 +1,22 @@
 import React from 'react';
-import {DialogsPropsType} from "./DialogsContainer";
+
 import sProfilePage from "../Profile/Profile.module.css";
 import {Col, Row} from "antd";
 import {SearchAutoComplite} from "../common/SearchWithAutocomplite/SearchAutoComplite";
 import {FriendsList} from "./FriendsList/FriendsList";
 import {DialogLastMessage} from "./DialogLastMessege/DialogLastMessage";
 import {NavDialogs} from "./NavDialogs/NavDialogs";
+import {UsersDataType} from "../../Redux/users-reducer";
+import {TouchedUsers} from "../../Redux/dialogs-reduser";
 
-
+type DialogsPropsType={
+    friends:UsersDataType[]
+    myAvatar:string|null|undefined
+    tochedUsers:TouchedUsers[]
+    addTochedUser:(data: { id: number; name: string; }) => void
+    message:string
+    removeTochedUser:( id: number) => void
+}
 export const Dialogs: React.FC<DialogsPropsType> = ({
                                                         friends, myAvatar,
                                                         tochedUsers, addTochedUser, message

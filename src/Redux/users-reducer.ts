@@ -61,7 +61,7 @@ let initialState = {
     currentPage: 1,
     isFetching: false,
     followingInProgress: [] as number[],
-    friends: [] as UsersDataType[],
+    friends: []  as UsersDataType[],
     usersUnknown: [] as UsersDataType[],
     isLoading:false
 

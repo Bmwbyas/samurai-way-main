@@ -3,7 +3,7 @@ import {AppStateType} from "../../Redux/redux-store";
 import {connect} from "react-redux";
 import {
     changeFollow,
-    changeFollowUnfollow,
+    changeFollowUnfollow, getFriend,
     getUsers,
     setFollowingInProgress,
     updateUsersParams,
@@ -30,6 +30,9 @@ class UsersContainerWithAPI extends React.PureComponent<UsersPropsType> {
         const {pageSize} = this.props
         this.props.getUsers({page: 1, count: pageSize,term:null})
         console.log('did mount users')
+        if (this.props.friends.length===0){
+            this.props.getFriend(true)
+        }
     }
 
 
@@ -99,7 +102,8 @@ const mapDispatchToProps = {
     setFollowingInProgress,
     getUsers,
     changeFollowUnfollow,
-    updateUsersParams
+    updateUsersParams,
+    getFriend
 }
 
 export const UsersContainer = compose<React.ComponentType>(
