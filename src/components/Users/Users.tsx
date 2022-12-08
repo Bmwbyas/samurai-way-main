@@ -3,11 +3,10 @@ import s from "./Users.module.css";
 import {UsersDataType} from "../../Redux/users-reducer";
 import {User} from "./User/User";
 import sProfilePage from "../Profile/Profile.module.css";
-import {Col, Divider, Pagination, Row} from "antd";
+import {Col, Divider, Row} from "antd";
 import {SearchUser} from "../common/SearchUser/SearchUser";
-import {viewAvatar} from "../../utils/ViewAvatar/viewAvatar";
-import SingleUser from "../common/SingleUser/SingleUser";
-import {routes} from "../../Routes/Routes";
+import {Friends} from "./Friends/Friends";
+import {PaginationUsers} from "./PaginationUsers/PaginationUsers";
 
 
 type UsersJsxPropsType = {
@@ -38,7 +37,7 @@ export const Users: React.FC<UsersJsxPropsType> = React.memo(({
 
                                                               }) => {
     console.log('Users Component render')
-    const onChangePaginationValue = (page: number, pageSize: number) => updateUsersData({page, count: pageSize})
+
     const getSearchUsers = (term: string) => {
         updateUsersData({term, page: 1, count: 10})
     }
@@ -51,20 +50,6 @@ export const Users: React.FC<UsersJsxPropsType> = React.memo(({
         }
         return <User key={user.id} user={user} followingInProgress={followingInProgress}
                      onClickHandler={onClickHandler}/>
-    })
-    const pageSizeOptions = () => {
-
-        if (pageSize) {
-            return [pageSize, pageSize * 2, pageSize * 3, pageSize * 4, pageSize * 10]
-        } else {
-            return [10, 20, 30, 40]
-        }
-
-    }
-    const friendsData = friends.map((f) => {
-        const avatar = viewAvatar(f.photos.small)
-        return <SingleUser key={f.id}  unfriend={changeFriends} isFriends={true}
-                           user={f} navigate={routes.toProfile}  photo={avatar}/>
     })
 
     return (
@@ -80,18 +65,12 @@ export const Users: React.FC<UsersJsxPropsType> = React.memo(({
                         <Divider style={{margin: 10}}/>
 
                         {setUsers}
-                        <Pagination defaultCurrent={currentPage} onChange={onChangePaginationValue}
-                                    hideOnSinglePage={true}
-                                    showTitle={false}
-                                    defaultPageSize={pageSize} total={totalUsersCount}
-                                    pageSizeOptions={pageSizeOptions()}/>
+                        <PaginationUsers pageSize={pageSize} totalUsersCount={totalUsersCount}
+                        updateUsersData={updateUsersData} currentPage={currentPage}/>
                     </div>
                 </Col>
                 <Col className="gutter-row" span={9}>
-                    <div className={sProfilePage.profileInfoContainer}>
-                        <Row>My friends {friends.length+1}</Row>
-                        <Row>{friendsData}</Row>
-                    </div>
+                   <Friends friends={friends} changeFriends={changeFriends}/>
                 </Col>
             </Row>
 
