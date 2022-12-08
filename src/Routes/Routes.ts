@@ -5,5 +5,6 @@ export const routes={
     dialog:'/dialog/:userId?',
     toDialog:'/dialog/',
     users:'/users',
-    login:'/login'
+    login:'/login',
+    page404:'/page404'
 }
