@@ -15,6 +15,7 @@ import {Layout} from 'antd';
 import {Navbar} from "./components/Navbar/Navbar";
 import {routes} from "./Routes/Routes";
 import {DialogContainer} from "./components/Dialogs/Dialog/DialogContainer";
+import Page404 from "./components/404/Page404";
 
 
 const {Content} = Layout;
@@ -44,7 +45,8 @@ class App extends React.Component<AppPropsType> {
                         <Route path={routes.profile} render={() => <ProfileContainer/>}/>
                         <Route path={routes.users} render={() => <UsersContainer/>}/>
                         <Route path={routes.login} render={() => <LoginContainer/>}/>
-                        <Route path='*' render={() => <Redirect to={routes.page404}/>}/>
+                        <Route path={routes.page404} render={() => <Page404/>}/>
+                        <Route path={'/samurai-way-main#/*'} render={() => <Redirect to={routes.page404}/>}/>
 
                     </Content>
                 </Layout>
