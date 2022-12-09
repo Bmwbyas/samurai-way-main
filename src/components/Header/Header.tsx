@@ -13,7 +13,7 @@ type HeaderPropsType = {
     avatar: null | string | undefined
 
 }
-export const HeaderJSX: React.FC<HeaderPropsType> = ({isAuth, logOutAuthUser, login, avatar}) => {
+export const HeaderTSX: React.FC<HeaderPropsType> = ({isAuth, logOutAuthUser, login, avatar}) => {
     const logOut = () => {
         logOutAuthUser()
     }

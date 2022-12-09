@@ -20,7 +20,7 @@ import {
 } from "../../Redux/users-reducer";
 import {Profile} from "./Profile";
 
-export class ProfileContainerAPI extends React.PureComponent<PropsTypeAPI> {
+export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
     refreshProfile() {
         let userId = this.props.match.params.userId
         if (!userId) {

@@ -47,6 +47,7 @@ class App extends React.Component<AppPropsType> {
                             <Route path={routes.profile} render={() => <ProfileContainer/>}/>
                             <Route path={routes.users} render={() => <UsersContainer/>}/>
                             <Route path={routes.login} render={() => <LoginContainer/>}/>
+                            <Route path={'/'} render={() => <ProfileContainer/>}/>
                             <Route path={'*'} render={() => <Page404/>}/>
                         </Switch>
                     </Content>

@@ -1,6 +1,6 @@
 import React from 'react';
 import './Header.module.css'
-import { HeaderJSX} from "./HeaderJSX";
+import { HeaderTSX} from "./Header";
 import {connect} from "react-redux";
 import {AppStateType} from "../../Redux/redux-store";
 import {AuthStateType, logOutAuthUser} from "../../Redux/auth-reducer";
@@ -9,7 +9,7 @@ import {AuthStateType, logOutAuthUser} from "../../Redux/auth-reducer";
 export class HeaderContaiterAPI extends React.Component<AuthPropsType> {
     render() {
         return (
-            <HeaderJSX login={this.props.auth.login} isAuth={this.props.auth.isAuth}
+            <HeaderTSX login={this.props.auth.login} isAuth={this.props.auth.isAuth}
                     logOutAuthUser={this.props.logOutAuthUser} avatar={this.props.avatar}/>
         );
     }
