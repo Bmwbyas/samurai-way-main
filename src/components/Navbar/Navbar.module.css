@@ -1,3 +1,21 @@
-.navbarContainer{
-    background-color: #f5f5f5;
+.navContainer{
+    margin-left: 10px;
+}
+.navContainer:hover{
+    background-color: #eaeaea;
+    border-radius: 5px;
+
+}
+.nav{
+padding: 10px 15px 10px 20px;
+ color: black;
+    text-decoration: none;
+}
+.nav:hover,nav:active,nav:focus,nav:link,nav:visited{
+    color: black;
+
+}
+
+.name{
+    padding-left: 10px;
 }

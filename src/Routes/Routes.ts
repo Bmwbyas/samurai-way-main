@@ -1,4 +1,5 @@
 export const routes={
+    myProfile:'/profile',
     profile:'/profile/:userId?',
     toProfile:'/profile/',
     dialogs:'/dialogs',

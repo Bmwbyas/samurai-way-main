@@ -1,45 +1,28 @@
 import React from 'react';
-
+import s from './Navbar.module.css'
 import {NavLink} from "react-router-dom";
 
-import {Menu} from "antd";
-import {MessageOutlined, UserOutlined, TeamOutlined } from "@ant-design/icons";
+import {Row} from "antd";
+import {MessageOutlined, TeamOutlined, UserOutlined} from "@ant-design/icons";
 import Sider from "antd/es/layout/Sider";
+import {routes} from "../../Routes/Routes";
 
 export const Navbar = () => {
+
     return (
-        <Sider theme="dark" style={{backgroundColor:'#f5f5f5'}} >
+        <Sider theme="dark" style={{backgroundColor:'#f5f5f5',marginTop:15}} >
 
-            <Menu
-                style={{backgroundColor:'#f5f5f5',borderRight:'none'}}
-                theme="light"
-                mode={'vertical'}
-
-                items={[
-                    {
-                        key: '1',
-                        icon: <UserOutlined/>,
-                        label: <NavLink to="/profile">Profile</NavLink>,
-                    },
-                    {
-                        key: '2',
-                        icon: <TeamOutlined />,
-                        label: <NavLink to="/users">Users</NavLink>,
-                    },
-                    {
-                        key: '3',
-                        icon: <MessageOutlined />,
-                        label: <NavLink to="/dialogs">Messenger</NavLink>,
-                    },
-                ]}
-            />
+            <Row className={s.navContainer}>
+                <NavLink to={routes.myProfile}  className={s.nav}><UserOutlined/> <span className={s.name}>Profile</span></NavLink>
+            </Row>
+            <Row className={s.navContainer}>
+                <NavLink to={routes.users} className={s.nav}><TeamOutlined /> <span className={s.name}>Users</span></NavLink>
+            </Row>
+            <Row className={s.navContainer}>
+                <NavLink to={routes.dialogs} className={s.nav}><MessageOutlined /> <span className={s.name}>Messenger</span></NavLink>
+            </Row>
 
         </Sider>
-        // <Sider style={{backgroundColor:'#f5f5f5'}}>
-        //     <NavLink to="/profile">Profile</NavLink>
-        //     <NavLink to="/users">Users</NavLink>
-        //     <NavLink to="/dialogs">Messages</NavLink>
-        //
-        // </Sider>
+
     )
 }

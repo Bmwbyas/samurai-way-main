@@ -10,7 +10,7 @@ import TextArea from "antd/es/input/TextArea";
 type ContactPropsType = {
     name: string
     errors: FieldError | undefined
-    control: Control<Inputs, any>
+    control: Control<Inputs>
     nameCheckbox: any
     nameInput: any
     valueFromWatch?: any
