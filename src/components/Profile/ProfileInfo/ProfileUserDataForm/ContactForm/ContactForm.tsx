@@ -1,12 +1,16 @@
 import React from "react";
-import {Checkbox, Input, Row} from "antd";
-import {Controller} from "react-hook-form";
 import s from "./ContactForm.module.css"
+
+import {Checkbox, Row} from "antd";
+import {Controller, FieldError} from "react-hook-form";
+import {Control} from "react-hook-form/dist/types/form";
+import {Inputs} from "../ProfileUserDataForm";
+import TextArea from "antd/es/input/TextArea";
 
 type ContactPropsType = {
     name: string
-    errors: any
-    control: any
+    errors: FieldError | undefined
+    control: Control<Inputs, any>
     nameCheckbox: any
     nameInput: any
     valueFromWatch?: any
@@ -16,7 +20,6 @@ export const ContactForm: React.FC<ContactPropsType> = ({
                                                             name, control, nameCheckbox, nameInput
                                                             , valueFromWatch
                                                         }) => {
-
 
     return (
         <>
@@ -33,14 +36,13 @@ export const ContactForm: React.FC<ContactPropsType> = ({
                 </label>
                 {valueFromWatch &&
                     <>
-                        <Row>
+
                             <Controller
                                 name={nameInput}
                                 control={control}
-                                render={({field}) => <Input  {...field} placeholder={`input your ${name}`}
-                                />}
+                                render={({field}) => <TextArea {...field} status={errors&&'error'}  placeholder={`input your ${name}`} autoSize />}
                             />
-                        </Row>
+
                     </>
                 }
             </Row>

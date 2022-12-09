@@ -6,29 +6,31 @@ import {routes} from "../../../Routes/Routes";
 import s from "../Profile.module.css";
 import {Button, Row} from "antd";
 import {PlusCircleOutlined} from "@ant-design/icons";
+import {showMoreFriends} from "../../../utils/Pagination/showMoreFriends";
 
 type FriendsProfilePropsType={
     friends:UsersDataType[]
     changeFollowUnfollow:(user: UsersDataType) => void
+    isOwner:boolean
 }
 
-export const FriendsListProfile:React.FC<FriendsProfilePropsType> = ({friends,changeFollowUnfollow}) => {
+export const FriendsListProfile:React.FC<FriendsProfilePropsType> = ({friends,changeFollowUnfollow,isOwner}) => {
 
     const [sizePortion, setSizePortion] = React.useState(4)
-    const totalCountFriends = friends.length
+
     const friendPortion = friends.slice(0, sizePortion)
 
     const friendsData=friendPortion.map((f) => {
         const avatar = viewAvatar(f.photos.small)
         return <SingleUser key={f.id} unfriend={changeFollowUnfollow} navigate={routes.toProfile} user={f}
-                           photo={avatar} isFriends={true}/>
+                           photo={avatar} isOwner={isOwner}/>
     })
 
 
     const showMoreUser = () => {
         setSizePortion(sizePortion + 4)
     }
-    const showButtonMoreFriends = totalCountFriends / sizePortion > 1
+    const showButtonMoreFriends = showMoreFriends(friends.length,sizePortion)
 
     return (
         <div className={s.profileInfoContainer}>

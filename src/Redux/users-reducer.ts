@@ -195,15 +195,20 @@ export const changeFollowUnfollow = (user: UsersDataType): ThunkCreatorType => a
     dispatch(setFollowingInProgress(true, user.id))
     if (user.followed) {
         const data = await usersAPI.deleteFollowUser(user.id)
-        if (data.resultCode === 0) dispatch(changeFollow(user.id))
+        if (data.resultCode === 0) {
+            dispatch(deleteFriend(user.id))
+            dispatch(changeFollow(user.id))
+            dispatch(getFriend(true))
+        }
         dispatch(setFollowingInProgress(false, user.id))
-        dispatch(deleteFriend(user.id))
+
 
     } else {
         const data = await usersAPI.addFollowUser(user.id)
         if (data.resultCode === 0) {
             dispatch(changeFollow(user.id))
             dispatch(addFriend(user))
+            dispatch(getFriend(true))
         }
         dispatch(setFollowingInProgress(false, user.id))
     }

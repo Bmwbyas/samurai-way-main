@@ -12,7 +12,7 @@ import s from "./ProfileUserDataForm.module.css"
 import {ContactForm} from "./ContactForm/ContactForm";
 
 
-type Inputs = {
+export type Inputs = {
     dataFromServer: {
         aboutMe: string
         lookingForAJob: boolean

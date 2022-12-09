@@ -14,7 +14,7 @@ export const PeopleUnknown:React.FC<PeopleUnknownPropsType> = ({usersUnknown}) =
     const userMayYouKnown=usersUnknown.map((f) => {
         const avatar = viewAvatar(f.photos.small)
         return <SingleUser key={f.id} navigate={routes.toProfile} user={f}
-                           photo={avatar} isFriends={false}/>
+                           photo={avatar} />
     })
     return (
         <div className={s.profileInfoContainer}>

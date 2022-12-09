@@ -27,6 +27,7 @@ export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
             if (typeof (this.props.userIdMe) === "number") userId = this.props.userIdMe.toString()
             if (!userId) this.props.history.push('/login')
         }
+
         this.props.getUserProfile(+userId)
         this.props.getProfileStatus(+userId)
         this.props.getUnknown()
@@ -45,6 +46,7 @@ export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
     componentDidUpdate(prevProps: Readonly<PropsTypeAPI>, prevState: Readonly<{}>, snapshot?: any) {
         if (this.props.match.params.userId !== prevProps.match.params.userId)
             this.refreshProfile()
+
     }
 
     render() {

@@ -20,7 +20,7 @@ type UsersJsxPropsType = {
     isLoading: boolean
     defaultSearchValue: string | null | undefined
     friends: UsersDataType[]
-
+    isOwner:boolean
 }
 
 export const Users: React.FC<UsersJsxPropsType> = React.memo(({
@@ -33,7 +33,8 @@ export const Users: React.FC<UsersJsxPropsType> = React.memo(({
                                                                   followingInProgress,
                                                                   isLoading,
                                                                   defaultSearchValue,
-                                                                  friends
+                                                                  friends,
+                                                                  isOwner
 
                                                               }) => {
     console.log('Users Component render')
@@ -43,7 +44,7 @@ export const Users: React.FC<UsersJsxPropsType> = React.memo(({
     }
     const changeFriends=useCallback((user:UsersDataType)=>{
         changeFollowUnfollow(user)
-    },[changeFollowUnfollow])
+    },[friends])
     const setUsers =  usersData.map((user) => {
         const onClickHandler = () => {
             changeFriends(user)
@@ -70,7 +71,7 @@ export const Users: React.FC<UsersJsxPropsType> = React.memo(({
                     </div>
                 </Col>
                 <Col className="gutter-row" span={9}>
-                   <Friends friends={friends} changeFriends={changeFriends}/>
+                   <Friends isOwner={isOwner} friends={friends} changeFriends={changeFriends}/>
                 </Col>
             </Row>
 

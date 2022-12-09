@@ -5,32 +5,39 @@ import {NavLink} from "react-router-dom";
 import {UsersDataType} from "../../../Redux/users-reducer";
 
 type FriendsPropsType = {
-    isFriends:boolean
+
     photo: string
 
-    user:UsersDataType
-    navigate:string
+    user: UsersDataType
+    navigate: string
     addTochedUser?: (data: { id: number, name: string }) => void
-    unfriend?:(user: UsersDataType)=>void
+    unfriend?: (user: UsersDataType) => void
+    isOwner?:boolean
 }
-const SingleUser: React.FC<FriendsPropsType> = ({ photo,navigate,addTochedUser,unfriend,isFriends,user}) => {
-    const addTochedUserHandler =()=>{
+const SingleUser: React.FC<FriendsPropsType> = ({photo, navigate, addTochedUser, unfriend,  user,isOwner}) => {
+    const addTochedUserHandler = () => {
 
-        addTochedUser && addTochedUser({id:user.id,name:user.name})
+        addTochedUser && addTochedUser({id: user.id, name: user.name})
     }
-    const singleUserContainer=isFriends?s.friendContainer:s.unfriendContainer
-    const unfriendsUser=()=>{
 
-        unfriend && unfriend(user)}
+    const unfriendsUser = () => {
+
+        unfriend && unfriend(user)
+    }
     return (
 
-        <div className={singleUserContainer} onClick={unfriendsUser}>
-            <NavLink style={{color:"black"}} to={navigate + user.id} onClick={addTochedUserHandler} >
-            <Tooltip color={'#1369e1'} title={user.name}>
-                <Row justify={"center"}><img className={s.ava} src={photo} alt="ava"/></Row>
-                <Row justify={"center"}  className={s.name}>{user.name}</Row>
-            </Tooltip>
+
+        <div className={s.friendContainer}>
+            <NavLink style={{color: "black"}} to={navigate + user.id} onClick={addTochedUserHandler}>
+
+                <Tooltip color={'#1369e1'} title={user.name}>
+                    <Row justify={"center"}><img className={s.ava} src={photo} alt="ava"/></Row>
+                    <Row justify={"center"} className={s.name}>{user.name}</Row>
+                </Tooltip>
             </NavLink>
+
+        {isOwner&& <div className={s.delete} onClick={unfriendsUser}>
+    </div>}
         </div>
     );
 };

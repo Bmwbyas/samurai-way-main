@@ -11,8 +11,9 @@ import {showMoreFriends} from "../../../utils/Pagination/showMoreFriends";
 type FriendsPropsType = {
     friends: UsersDataType[]
     changeFriends: (user: UsersDataType) => void
+    isOwner:boolean
 }
-export const Friends: React.FC<FriendsPropsType> = ({changeFriends, friends}) => {
+export const Friends: React.FC<FriendsPropsType> = ({changeFriends, friends,isOwner}) => {
     const standartPortion = 8
     const [sizePortion, setSizePortion] = React.useState(standartPortion)
     const friendPortion = friends.slice(0, sizePortion)
@@ -23,13 +24,13 @@ export const Friends: React.FC<FriendsPropsType> = ({changeFriends, friends}) =>
 
     const friendsData = friendPortion.map((f) => {
         const avatar = viewAvatar(f.photos.small)
-        return <SingleUser key={f.id} unfriend={changeFriends} isFriends={true}
-                           user={f} navigate={routes.toProfile} photo={avatar}/>
+        return <SingleUser key={f.id} unfriend={changeFriends}
+                           user={f} navigate={routes.toProfile} photo={avatar} isOwner={isOwner}/>
     })
 
     return (<>
             <div className={sProfilePage.profileInfoContainer}>
-                <Row>My friends {friends.length + 1}</Row>
+                <Row>My friends {friends.length }</Row>
                 <Row>{friendsData}</Row>
                 {showNextFriendsButton && <Row justify={"center"}>
                     <Button style={{marginBottom: 15}} type={'primary'} onClick={nextPortion}>

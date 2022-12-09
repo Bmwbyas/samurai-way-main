@@ -10,7 +10,10 @@ type TochedUserType = {
     removeTochedUser:(id:number)=>void
 }
 export const TochedUser: React.FC<TochedUserType> = ({user,removeTochedUser}) => {
-const removeUserHandler=()=>{removeTochedUser(user.id)}
+const removeUserHandler=()=>{
+    console.log('1')
+    removeTochedUser(user.id)
+}
     return (
         <div className={s.container} onClick={removeUserHandler} >
             <NavLink style={{color:"black"}}   to={routes.toDialog + user.id}>

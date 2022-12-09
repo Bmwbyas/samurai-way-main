@@ -33,7 +33,7 @@ export const FriendsList: React.FC<FriendsListType> = ({friends,addTochedUser}) 
     }
     const friendsData = friendPortion.map((f) => {
         const avatar = viewAvatar(f.photos.small)
-        return <SingleUser key={f.id} addTochedUser={addTochedUser} isFriends={true} navigate={routes.toDialog} user={f} photo={avatar}/>
+        return <SingleUser key={f.id} addTochedUser={addTochedUser}  navigate={routes.toDialog} user={f} photo={avatar}/>
     })
 
     return (

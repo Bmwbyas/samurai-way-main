@@ -22,6 +22,7 @@ import {
 } from "../../Redux/usersSelectors";
 import {GetUsersParamsType} from "../../api/api";
 import {Skeleton} from "antd";
+import {getUserProfile} from "../../Redux/profile-reduser";
 
 
 class UsersContainerWithAPI extends React.PureComponent<UsersPropsType> {
@@ -30,6 +31,10 @@ class UsersContainerWithAPI extends React.PureComponent<UsersPropsType> {
         const {pageSize} = this.props
         this.props.getUsers({page: 1, count: pageSize,term:null})
         console.log('did mount users')
+        if (this.props.profileId !== this.props.myId) {
+            this.props.getUserProfile(this.props.myId!)
+            this.props.getFriend(true)
+        }
         if (this.props.friends.length===0){
             this.props.getFriend(true)
         }
@@ -58,7 +63,7 @@ class UsersContainerWithAPI extends React.PureComponent<UsersPropsType> {
                         isLoading={this.props.isLoading}
                         defaultSearchValue={this.props.defaultSearchValue}
                         friends={this.props.friends}
-
+                        isOwner={this.props.myId === this.props.profileId}
                     />
                 </Skeleton>
             </>
@@ -77,6 +82,8 @@ type MapStateToPropsType = {
     getUsersParams: GetUsersParamsType
     defaultSearchValue: string | null | undefined
     friends:UsersDataType[]
+    profileId:number | undefined
+    myId:number | null
 }
 
 export type UsersPropsType = MapStateToPropsType & MapDispatchToPropsType
@@ -93,7 +100,9 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         isLoading: state.usersPage.isLoading,
         getUsersParams: state.usersPage.getUsersParams,
         defaultSearchValue: state.usersPage.getUsersParams.term,
-        friends:state.usersPage.friends
+        friends:state.usersPage.friends,
+        profileId:state.profilePage.profile?.userId,
+        myId:state.auth.id
     }
 }
 
@@ -103,7 +112,8 @@ const mapDispatchToProps = {
     getUsers,
     changeFollowUnfollow,
     updateUsersParams,
-    getFriend
+    getFriend,
+    getUserProfile
 }
 
 export const UsersContainer = compose<React.ComponentType>(
