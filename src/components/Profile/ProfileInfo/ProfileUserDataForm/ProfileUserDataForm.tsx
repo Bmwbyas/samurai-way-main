@@ -164,20 +164,21 @@ export const ProfileUserDataForm: React.FC<ProfileUserDataFormPropsType> = ({
                 .map((key) => {
 
                     return <ContactForm key={key} name={key} control={control}
-                                    valueFromWatch={watchValue[key]}
-                                    nameCheckbox={`contactsCheckbox.${[key]}`}
-                                    nameInput={`dataFromServer.contacts.${[key]}`}
-                                    errors={errors?.dataFromServer?.contacts?.[key]}
+                                        valueFromWatch={watchValue[key]}
+                                        contactValue={profile.contacts?.[key]}
+                                        nameCheckbox={`contactsCheckbox.${[key]}`}
+                                        nameInput={`dataFromServer.contacts.${[key]}`}
+                                        errors={errors?.dataFromServer?.contacts?.[key]}
                     />
                 })
             }
 
             <Row className={s.buttonContainer}>
-                <Button className={s.submit}  type="primary" htmlType="submit" size={"small"}
+                <Button className={s.submit} type="primary" htmlType="submit" size={"small"}
                         disabled={!isValid}>
                     Submit
                 </Button>
-                <Button type="primary"  onClick={navigateToProfile} size={"small"}>
+                <Button type="primary" onClick={navigateToProfile} size={"small"}>
                     Cancel
                 </Button>
             </Row>

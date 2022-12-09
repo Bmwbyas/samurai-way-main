@@ -14,20 +14,22 @@ type ContactPropsType = {
     nameCheckbox: any
     nameInput: any
     valueFromWatch?: any
+    contactValue: any
 }
 export const ContactForm: React.FC<ContactPropsType> = ({
                                                             errors,
-                                                            name, control, nameCheckbox, nameInput
-                                                            , valueFromWatch
+                                                            name, control,
+                                                            nameCheckbox, nameInput
+                                                            , valueFromWatch, contactValue
                                                         }) => {
-
+const valueChechbox=contactValue===null
     return (
         <>
             <Row className={s.contact}>
                 <label>{name}
                     <Controller
                         name={nameCheckbox}
-                        defaultValue={false}
+                        defaultValue={!valueChechbox}
                         control={control}
                         render={({field: {onChange, value, ...restProps}}) => <Checkbox {...restProps}
                                                                                         onChange={onChange}
@@ -37,18 +39,17 @@ export const ContactForm: React.FC<ContactPropsType> = ({
                 {valueFromWatch &&
                     <>
 
-                            <Controller
-                                name={nameInput}
-                                control={control}
-                                render={({field}) => <TextArea {...field} status={errors&&'error'}  placeholder={`input your ${name}`} autoSize />}
-                            />
+                        <Controller
+                            name={nameInput}
+                            control={control}
+                            defaultValue={contactValue}
+                            render={({field}) => <TextArea {...field} status={errors && 'error'}
+                                                           placeholder={`input your ${name}`} autoSize/>}
+                        />
 
                     </>
                 }
             </Row>
-
-
-
             <Row style={{color: "red"}} className={s.contact}>
                 {errors && errors?.message}
             </Row>
