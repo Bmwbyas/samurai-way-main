@@ -42,7 +42,7 @@ export const Login: React.FC<LoginType> = ({loginAuthUser, isAuth, captcha}) => 
                         name="email"
                         control={control}
                         defaultValue=""
-                        render={({field}) => <Input  {...field} size="middle" placeholder="input email"
+                        render={({field}) => <Input  {...field} size="large" placeholder="input email"
                                                      prefix={<UserOutlined/>}/>}
                     />
                     <div className={s.errorMessage}>{errors.email && errors.email.message}</div>
@@ -51,7 +51,7 @@ export const Login: React.FC<LoginType> = ({loginAuthUser, isAuth, captcha}) => 
                         name="password"
                         control={control}
                         defaultValue=""
-                        render={({field}) => <Input.Password {...field} placeholder="input password"
+                        render={({field}) => <Input.Password {...field} size="large" placeholder="input password"
                                                              prefix={<LockOutlined className="site-form-item-icon"/>}/>}
                     />
                     <div className={s.errorMessage}>{errors.password && errors.password.message}</div>
@@ -60,20 +60,24 @@ export const Login: React.FC<LoginType> = ({loginAuthUser, isAuth, captcha}) => 
                         name="rememberMe"
                         control={control}
                         defaultValue={false}
-                        render={({field: {onChange, value}}) => <div className={s.rememberMe}><label><Checkbox
-                            onChange={onChange} checked={value}/> Remember
-                            me</label></div>}
+                        render={({field: {onChange, value}}) =>
+                            <label className={s.rememberMe}><Checkbox
+                                onChange={onChange} checked={value}/> Remember me
+                            </label>
+                       }
                     />
 
-                    {captcha && <div><img src={captcha} alt=""/></div>}
-                    {captcha && <div><Controller
-                        name="captcha"
-                        control={control}
-                        rules={{required: {value: true, message: 'This field is required'}}}
-                        render={({field}) => <Input  {...field} size="middle" placeholder="Enter captcha"/>}
-                    /></div>}
+                    {captcha && <div className={s.captcha}><img src={captcha} alt=""/></div>}
+                    {captcha && <div>
+                        <Controller
+                            name="captcha"
+                            control={control}
+                            rules={{required: {value: true, message: 'This field is required'}}}
+                            render={({field}) => <Input  {...field} size="middle" placeholder="Enter captcha"/>}/>
+                    </div>}
+
                     <div className={s.buttonContainer}>
-                        <Button className={s.button}  type="primary" htmlType="submit" size={"large"}
+                        <Button className={s.button} type="primary" htmlType="submit" size={"large"}
                                 disabled={!isValid}>
                             Log in
                         </Button>

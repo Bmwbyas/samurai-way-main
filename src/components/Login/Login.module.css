@@ -6,20 +6,27 @@ margin: 100px;
 }
 .title{
     text-align: center;
+    font-size: 20px;
 }
+
 .rememberMe{
     height: 20px;
-    margin-bottom: 20px;
-}
-.textArea{
-    height: 20px;
-    color: red;
+    font-size: 16px;
 }
 .buttonContainer{
     display: flex;
     justify-content: center;
 }
 .button {
+    margin-top: 30px;
     width: 200px;
 
+}
+.errorMessage{
+    color: red;
+    height: 30px;
+    font-size: 16px;
+}
+.captcha{
+    margin: 10px 0;
 }

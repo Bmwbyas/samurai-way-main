@@ -36,6 +36,7 @@ type AppReducerThunkType = ThunkAction<void, AppStateType, unknown, AppReducerAc
 export const initializeApp = (): AppReducerThunkType => async (dispatch
                                                                , getState: () => AppStateType) => {
     await dispatch(getAuthUserData())
-    await dispatch(getUserProfile(getState().auth.id!))
+    if(getState().auth.isAuth)await dispatch(getUserProfile(getState().auth.id!))
+
     dispatch(initializedSuccessApp())
 }
