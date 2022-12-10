@@ -1,11 +1,12 @@
 import React from 'react';
 import sProfilePage from "../../Profile/Profile.module.css";
 import {NavLink} from "react-router-dom";
-import {Anchor, Divider, Row} from "antd";
+import {Divider, Row} from "antd";
 import s from "../Dialogs.module.css";
 import {TochedUser} from "../Dialog/TochedUser/TochedUser";
 import {TouchedUsers} from "../../../Redux/dialogs-reduser";
 import {routes} from "../../../Routes/Routes";
+
 type NavDialogsType={
     tochedUsers:TouchedUsers[]
     removeTochedUser:(id:number)=>void
@@ -14,7 +15,7 @@ export const NavDialogs:React.FC<NavDialogsType> = ({tochedUsers,removeTochedUse
 
     const tochedUserDialog = tochedUsers.map(t => <TochedUser key={t.id} user={t} removeTochedUser={removeTochedUser}/>)
     return (
-        <Anchor >
+
             <div className={sProfilePage.profileInfoContainer}>
                 <NavLink to={routes.dialogs} style={{color: "black"}}>
                     <Row justify={"center"} className={s.allChat}>
@@ -24,7 +25,7 @@ export const NavDialogs:React.FC<NavDialogsType> = ({tochedUsers,removeTochedUse
                 <Divider style={{margin: 10}}/>
                 {tochedUserDialog}
             </div>
-         </Anchor>
+
     );
 };
 

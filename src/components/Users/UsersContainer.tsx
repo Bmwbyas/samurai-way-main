@@ -84,6 +84,7 @@ type MapStateToPropsType = {
     friends:UsersDataType[]
     profileId:number | undefined
     myId:number | null
+
 }
 
 export type UsersPropsType = MapStateToPropsType & MapDispatchToPropsType

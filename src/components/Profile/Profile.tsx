@@ -17,6 +17,7 @@ type ProfileType = {
     friends: UsersDataType[]
     usersUnknown: UsersDataType[]
     changeFollowUnfollow: (user: UsersDataType) => void
+    followingInProgress:number[]
 }
 
 export const Profile: React.FC<ProfileType> = ({
@@ -28,7 +29,8 @@ export const Profile: React.FC<ProfileType> = ({
                                                               isOwner,
                                                               friends,
                                                               usersUnknown,
-                                                              changeFollowUnfollow
+                                                              changeFollowUnfollow,
+                                                   followingInProgress
                                                           }) => {
     console.log('profile component')
 
@@ -46,8 +48,9 @@ export const Profile: React.FC<ProfileType> = ({
 
             </Col>
             <Col className="gutter-row" span={9}>
-                <FriendsListProfile friends={friends} changeFollowUnfollow={changeFollowUnfollow} isOwner={isOwner}/>
-                <PeopleUnknown usersUnknown={usersUnknown}/>
+                <FriendsListProfile friends={friends} followingInProgress={followingInProgress}
+                                    changeFollowUnfollow={changeFollowUnfollow} isOwner={isOwner}/>
+                <PeopleUnknown followingInProgress={followingInProgress} usersUnknown={usersUnknown}/>
             </Col>
         </Row>
 

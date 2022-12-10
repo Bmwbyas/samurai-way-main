@@ -12,8 +12,10 @@ type FriendsPropsType = {
     friends: UsersDataType[]
     changeFriends: (user: UsersDataType) => void
     isOwner:boolean
+    followingInProgress:number[]
 }
-export const Friends: React.FC<FriendsPropsType> = ({changeFriends, friends,isOwner}) => {
+export const Friends: React.FC<FriendsPropsType> = ({changeFriends, friends,
+                                                        isOwner,followingInProgress}) => {
     const standartPortion = 8
     const [sizePortion, setSizePortion] = React.useState(standartPortion)
     const friendPortion = friends.slice(0, sizePortion)
@@ -25,13 +27,17 @@ export const Friends: React.FC<FriendsPropsType> = ({changeFriends, friends,isOw
     const friendsData = friendPortion.map((f) => {
         const avatar = viewAvatar(f.photos.small)
         return <SingleUser key={f.id} unfriend={changeFriends}
-                           user={f} navigate={routes.toProfile} photo={avatar} isOwner={isOwner}/>
+                           user={f} navigate={routes.toProfile} followingInProgress={followingInProgress} photo={avatar} isOwner={isOwner}/>
     })
 
     return (<>
             <div className={sProfilePage.profileInfoContainer}>
-                <Row>My friends {friends.length }</Row>
-                <Row>{friendsData}</Row>
+                <Row style={{marginBottom:10}}>My friends {friends.length }</Row>
+                <Row >
+                    {friendsData.length===0?
+                    'Empty'
+                    :friendsData}
+                </Row>
                 {showNextFriendsButton && <Row justify={"center"}>
                     <Button style={{marginBottom: 15}} type={'primary'} onClick={nextPortion}>
                         Show more

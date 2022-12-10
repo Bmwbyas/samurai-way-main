@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {AppStateType} from "../../Redux/redux-store";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {getFriend, UsersDataType} from "../../Redux/users-reducer";
+import {changeFollowUnfollow, getFriend, UsersDataType} from "../../Redux/users-reducer";
 import {getUserProfile} from "../../Redux/profile-reduser";
 
 export class DialogsContainerApi extends React.PureComponent<DialogsPropsType> {
@@ -24,7 +24,10 @@ export class DialogsContainerApi extends React.PureComponent<DialogsPropsType> {
         return <Dialogs friends={this.props.friends} tochedUsers={this.props.tochedUsers}
                         message={this.props.message} myAvatar={this.props.myAvatar}
                         removeTochedUser={this.props.removeTochedUser}
-                        addTochedUser={this.props.addTochedUser}/>
+                        addTochedUser={this.props.addTochedUser}
+                        followingInProgress={this.props.followingInProgress}
+                        changeFollowUnfollow={this.props.changeFollowUnfollow}
+                        isOwner={this.props.myId === this.props.profileId}/>
     }
 }
 
@@ -35,6 +38,8 @@ type MapStateToPropsType = {
     message: string
     profileId:number | undefined
     myId:number | null
+    isLoading:boolean
+    followingInProgress:number[]
 }
 type MapDispatchToPropsType = typeof mapDispatchToProps
 export type DialogsPropsType = MapStateToPropsType & MapDispatchToPropsType
@@ -45,7 +50,9 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         myAvatar: state.auth.avatar,
         message: state.dialogsPage.messagesData[state.dialogsPage.messagesData.length - 1].message,
         profileId:state.profilePage.profile?.userId,
-        myId:state.auth.id
+        myId:state.auth.id,
+        isLoading:state.usersPage.isLoading,
+        followingInProgress:state.usersPage.followingInProgress
     }
 }
 let mapDispatchToProps = {
@@ -53,6 +60,7 @@ let mapDispatchToProps = {
     removeTochedUser,
     getFriend,
     getUserProfile,
+    changeFollowUnfollow
 
 
 }

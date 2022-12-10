@@ -12,9 +12,14 @@ type FriendsPropsType = {
     navigate: string
     addTochedUser?: (data: { id: number, name: string }) => void
     unfriend?: (user: UsersDataType) => void
-    isOwner?:boolean
+    isOwner?: boolean
+    followingInProgress: number[]
 }
-const SingleUser: React.FC<FriendsPropsType> = ({photo, navigate, addTochedUser, unfriend,  user,isOwner}) => {
+const SingleUser: React.FC<FriendsPropsType> = ({
+                                                    photo, navigate, addTochedUser,
+                                                    unfriend, user, isOwner,
+                                                    followingInProgress
+                                                }) => {
     const addTochedUserHandler = () => {
 
         addTochedUser && addTochedUser({id: user.id, name: user.name})
@@ -36,8 +41,8 @@ const SingleUser: React.FC<FriendsPropsType> = ({photo, navigate, addTochedUser,
                 </Tooltip>
             </NavLink>
 
-        {isOwner&& <div className={s.delete} onClick={unfriendsUser}>
-    </div>}
+            {isOwner && <button className={s.delete} disabled={followingInProgress.some(id => id === user.id)}
+                                onClick={unfriendsUser}></button>}
         </div>
     );
 };

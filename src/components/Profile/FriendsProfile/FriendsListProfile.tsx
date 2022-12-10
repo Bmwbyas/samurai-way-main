@@ -12,9 +12,11 @@ type FriendsProfilePropsType={
     friends:UsersDataType[]
     changeFollowUnfollow:(user: UsersDataType) => void
     isOwner:boolean
+    followingInProgress:number[]
 }
 
-export const FriendsListProfile:React.FC<FriendsProfilePropsType> = ({friends,changeFollowUnfollow,isOwner}) => {
+export const FriendsListProfile:React.FC<FriendsProfilePropsType> = ({friends,changeFollowUnfollow,
+                                                                         isOwner,followingInProgress}) => {
 
     const [sizePortion, setSizePortion] = React.useState(4)
 
@@ -23,7 +25,7 @@ export const FriendsListProfile:React.FC<FriendsProfilePropsType> = ({friends,ch
     const friendsData=friendPortion.map((f) => {
         const avatar = viewAvatar(f.photos.small)
         return <SingleUser key={f.id} unfriend={changeFollowUnfollow} navigate={routes.toProfile} user={f}
-                           photo={avatar} isOwner={isOwner}/>
+                           photo={avatar} isOwner={isOwner} followingInProgress={followingInProgress}/>
     })
 
 
@@ -38,7 +40,11 @@ export const FriendsListProfile:React.FC<FriendsProfilePropsType> = ({friends,ch
             <Row justify={"center"}><h1>Friends</h1></Row>
             <Row justify={"center"}>
 
-                <Row>{friendsData}</Row>
+                <Row>{
+                    friendsData.length===0?
+                        'Empty'
+                        :friendsData
+                }</Row>
                 {showButtonMoreFriends && <Row justify={"end"}>
                     <Button style={{marginBottom: 15}} type={'primary'} onClick={showMoreUser}>Show more
                         friends <PlusCircleOutlined/>

@@ -8,11 +8,15 @@
 }
 
 .friendContainer:hover .delete{
-    background-color: #bae0ff;
+        background-color: #bae0ff;
+
 
 }
 
 .delete{
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
     display: none;
     position: absolute;
     right: 0;
@@ -25,6 +29,7 @@
     background-size: contain;
     border-radius: 50%;
 }
+
 .friendContainer:hover .delete{
     display: block;
     background-color: white;

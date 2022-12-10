@@ -9,12 +9,13 @@ import {UsersDataType} from "../../../Redux/users-reducer";
 
 type PeopleUnknownPropsType={
     usersUnknown:UsersDataType[]
+    followingInProgress:number[]
 }
-export const PeopleUnknown:React.FC<PeopleUnknownPropsType> = ({usersUnknown}) => {
+export const PeopleUnknown:React.FC<PeopleUnknownPropsType> = ({usersUnknown,followingInProgress}) => {
     const userMayYouKnown=usersUnknown.map((f) => {
         const avatar = viewAvatar(f.photos.small)
         return <SingleUser key={f.id} navigate={routes.toProfile} user={f}
-                           photo={avatar} />
+                           photo={avatar} followingInProgress={followingInProgress} />
     })
     return (
         <div className={s.profileInfoContainer}>

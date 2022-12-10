@@ -1,6 +1,6 @@
 import React from 'react';
 import s from './Search.module.css';
-import {Anchor, AutoComplete, Input, Row, SelectProps} from 'antd';
+import {AutoComplete, Input, Row, SelectProps} from 'antd';
 import {UsersDataType} from "../../../Redux/users-reducer";
 import {NavLink} from "react-router-dom";
 import sCommentForm from "../../Profile/MyPosts/CommentForm/CommentForm.module.css";
@@ -47,7 +47,7 @@ export const SearchAutoComplite: React.FC<SearchPropsType> = ({data, addTochedUs
 
     return (
 
-        <Anchor>
+
             <AutoComplete
                 options={options}
                 className={s.autoComlete}
@@ -56,7 +56,7 @@ export const SearchAutoComplite: React.FC<SearchPropsType> = ({data, addTochedUs
             >
                 <Input.Search  placeholder={placeholder} enterButton/>
             </AutoComplete>
-        </Anchor>
+
 
     );
 

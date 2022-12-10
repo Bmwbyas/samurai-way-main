@@ -59,6 +59,7 @@ export class ProfileContainerAPI extends React.Component<PropsTypeAPI> {
                      updateProfileData={this.props.updateProfileData}
                      savePhoto={this.props.savePhoto} usersUnknown={this.props.usersUnknown}
                      changeFollowUnfollow={this.props.changeFollowUnfollow}
+                     followingInProgress={this.props.followingInProgress}
             />
         )
     }
@@ -74,7 +75,7 @@ type MapStateToPropsType = {
     userIdMe: number | null
     friends: UsersDataType[]
     usersUnknown:UsersDataType[]
-
+    followingInProgress:number[]
 
 }
 type MapDispatchToPropsType = typeof mapDispatchToProps
@@ -88,6 +89,7 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
     userIdMe: state.auth.id,
     friends: state.usersPage.friends,
     usersUnknown:state.usersPage.usersUnknown,
+    followingInProgress:state.usersPage.followingInProgress
 
 })
 let mapDispatchToProps = {

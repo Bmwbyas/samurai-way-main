@@ -10,8 +10,13 @@ import {routes} from "../../../Routes/Routes";
 type FriendsListType = {
     friends: UsersDataType[]
     addTochedUser: (data: { id: number, name: string }) => void
+    followingInProgress:number[]
+    changeFollowUnfollow:(user:UsersDataType)=>void
+    isOwner:boolean
+
 }
-export const FriendsList: React.FC<FriendsListType> = ({friends,addTochedUser}) => {
+export const FriendsList: React.FC<FriendsListType> = ({friends,addTochedUser,
+                                                           changeFollowUnfollow,followingInProgress,isOwner}) => {
     const standartPortion = 7
     const [sizePortion, setSizePortion] = React.useState(standartPortion)
     const [prevSizePortion, setPrevSizePortion] = React.useState(0)
@@ -33,7 +38,9 @@ export const FriendsList: React.FC<FriendsListType> = ({friends,addTochedUser}) 
     }
     const friendsData = friendPortion.map((f) => {
         const avatar = viewAvatar(f.photos.small)
-        return <SingleUser key={f.id} addTochedUser={addTochedUser}  navigate={routes.toDialog} user={f} photo={avatar}/>
+        return <SingleUser key={f.id} addTochedUser={addTochedUser} followingInProgress={followingInProgress}
+                       unfriend={changeFollowUnfollow} isOwner={isOwner}
+                           navigate={routes.toDialog} user={f} photo={avatar}/>
     })
 
     return (
