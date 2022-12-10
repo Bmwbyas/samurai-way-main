@@ -5,7 +5,7 @@ import {HeaderContainer} from "./components/Header/Header.contaiter";
 import {connect} from "react-redux";
 import {AppStateType} from "./Redux/redux-store";
 import {compose} from "redux";
-import {initializeApp} from "./Redux/app-reducer";
+import {initializeApp, setError} from "./Redux/app-reducer";
 import {Preloader} from "./components/common/Preloader/Preloader";
 import {Layout} from 'antd';
 import {Navbar} from "./components/Navbar/Navbar";
@@ -32,7 +32,7 @@ class App extends React.Component<AppPropsType> {
                     {this.props.isAuth && <Navbar/>}
                     <MainContent/>
                 </Layout>
-                <Errors errorMessege={'fff'}/>
+                <Errors setError={setError} errorMessege={this.props.error}/>
             </Layout>
         );
     }
@@ -40,13 +40,13 @@ class App extends React.Component<AppPropsType> {
 
 type AppPropsType = MapDispatchToPropsType & MapStateToPropsType
 type MapDispatchToPropsType = typeof mapDispatchToProps
-type MapStateToPropsType = { initialized: boolean, isAuth: boolean }
+type MapStateToPropsType = { initialized: boolean, isAuth: boolean, error:string|null}
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
-    return {initialized: state.app.initialized, isAuth: state.auth.isAuth}
+    return {initialized: state.app.initialized, isAuth: state.auth.isAuth,error:state.app.error }
 }
 
 const mapDispatchToProps = {
-    initializeApp
+    initializeApp,setError
 }
 export default compose<React.FC>(
     withRouter,

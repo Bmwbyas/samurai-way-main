@@ -1,10 +1,10 @@
-import {appReducer, AppStateInitialType, initializeApp, initializedSuccessApp} from "./app-reducer";
+import {appReducer, AppStateInitialType, initializedSuccessApp} from "./app-reducer";
 
 let startState: AppStateInitialType ;
 
 beforeEach(() => {
 
-    startState = { initialized:false}
+    startState = { initialized:false ,error:null }
 })
 
 test('initialized should be changed', () => {

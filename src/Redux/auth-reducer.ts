@@ -2,6 +2,9 @@ import {authAPI, securityAPI, SendLoginPropertyType} from "../api/api";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
 import {FormAction, stopSubmit} from "redux-form";
+import {setIsFetching} from "./users-reducer";
+import {setError} from "./app-reducer";
+import {AxiosError} from "axios";
 
 export  type AuthStateType = {
     id: number | null,
@@ -9,13 +12,13 @@ export  type AuthStateType = {
     login: string | null
     isAuth: boolean
     captcha: string | null
-    avatar?:null|string
+    avatar?: null | string
 }
 type SetUserDataType = ReturnType<typeof setUserData>
 type SetCaptchaType = ReturnType<typeof setCaptcha>
 export type SetMyAvatarType = ReturnType<typeof setMyAvatar>
 
-type AuthReducerActionType = SetMyAvatarType|SetCaptchaType | SetUserDataType | FormAction
+type AuthReducerActionType = SetMyAvatarType | SetCaptchaType | SetUserDataType | FormAction
 
 
 let initialState: AuthStateType = {
@@ -24,7 +27,7 @@ let initialState: AuthStateType = {
     login: null,
     isAuth: false,
     captcha: null,
-    avatar:null
+    avatar: null
 }
 
 export const authReducer = (state = initialState, action: AuthReducerActionType): AuthStateType => {
@@ -38,13 +41,13 @@ export const authReducer = (state = initialState, action: AuthReducerActionType)
             return state;
     }
 }
-export const setUserData = (id: number | null, email: string | null, login: string | null, isAuth: boolean,captcha?:string | null) => ({
+export const setUserData = (id: number | null, email: string | null, login: string | null, isAuth: boolean, captcha?: string | null) => ({
     type: 'AUTH/SET-USER-DATA',
-    payload: {id, email, login, isAuth,captcha}
+    payload: {id, email, login, isAuth, captcha}
 }) as const
 
 export const setCaptcha = (captcha: string) => ({type: 'AUTH/SET-CAPTCHA', payload: {captcha}}) as const
-export const setMyAvatar = (avatar:string|null) => ({type: 'AUTH/SET-AVATAR', payload: {avatar}}) as const
+export const setMyAvatar = (avatar: string | null) => ({type: 'AUTH/SET-AVATAR', payload: {avatar}}) as const
 
 
 //Thunk creator for login user
@@ -59,30 +62,59 @@ export const getAuthUserData = (): authUserThunkType => async (dispatch) => {
 }
 export const loginAuthUser = (loginValue: SendLoginPropertyType): authUserThunkType =>
     async (dispatch) => {
-        const response = await authAPI.loginAuthMe(loginValue)
-        if (response.data.resultCode === 0) {
-            dispatch(getAuthUserData())
-        } else {
-            if (response.data.resultCode === 10) {
+        dispatch(setIsFetching(true))
+        try {
+            const response = await authAPI.loginAuthMe(loginValue)
+            if (response.data.resultCode === 0) {
+                dispatch(getAuthUserData())
+            } else if (response.data.resultCode === 1) {
+                let message = response.data.messages.length ? response.data.messages[0] : 'some error'
+                dispatch(setError({error: message}))
+            } else if (response.data.resultCode === 10) {
                 dispatch(getCaptchaURL())
+
+                let message = response.data.messages.length ? response.data.messages[0] : 'some error'
+                dispatch(setError({error: message}))
+                dispatch(stopSubmit('login', {_error: message}))
             }
-            let message = response.data.messages.length ? response.data.messages[0] : 'some error'
-            dispatch(stopSubmit('login', {_error: message}))
+
+            dispatch(setIsFetching(false))
+        } catch (e) {
+            const error = e as AxiosError
+            dispatch(setError({error: error.message ? error.message : "some error occurred"}))
+            dispatch(setIsFetching(false))
         }
+
     }
 
 export const logOutAuthUser = (): authUserThunkType =>
     async (dispatch) => {
-        const response = await authAPI.logOutAuthMe()
+        dispatch(setIsFetching(true))
 
-        if (response.data.resultCode === 0) {
-            dispatch(setUserData(null, null, null, false))
+        try {
+            const response = await authAPI.logOutAuthMe()
+
+            if (response.data.resultCode === 0) {
+                dispatch(setUserData(null, null, null, false))
+            }
+
+        } catch (e) {
+            const error = e as AxiosError
+            dispatch(setError({error: error.message ? error.message : "some error occurred"}))
+            dispatch(setIsFetching(false))
         }
+
     }
 export const getCaptchaURL = (): authUserThunkType =>
     async (dispatch) => {
-        const response = await securityAPI.getCaptchaUrl()
+        dispatch(setIsFetching(true))
+        try {
+            const response = await securityAPI.getCaptchaUrl()
             dispatch(setCaptcha(response.data.url))
-
+        } catch (e) {
+            const error = e as AxiosError
+            dispatch(setError({error: error.message ? error.message : "some error occurred"}))
+            dispatch(setIsFetching(false))
+        }
     }
 
