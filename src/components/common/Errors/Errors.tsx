@@ -21,9 +21,6 @@ export const Errors: React.FC<ErrorsPropsType> = ({errorMessege}) => {
     return (
         <>
             {contextHolder}
-
-
-
         </>
     );
 };
