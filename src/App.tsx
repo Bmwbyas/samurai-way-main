@@ -1,27 +1,16 @@
-import React, {lazy} from 'react';
+import React from 'react';
 import './App.css';
-import {Route, withRouter, Switch, Redirect} from "react-router-dom";
-import {UsersContainer} from "./components/Users/UsersContainer";
-import {ProfileContainer} from "./components/Profile/ProfileContainer";
+import {withRouter} from "react-router-dom";
 import {HeaderContainer} from "./components/Header/Header.contaiter";
-import {LoginContainer} from "./components/Login/LoginContainer";
 import {connect} from "react-redux";
 import {AppStateType} from "./Redux/redux-store";
 import {compose} from "redux";
 import {initializeApp} from "./Redux/app-reducer";
 import {Preloader} from "./components/common/Preloader/Preloader";
-import {withSuspense} from "./hoc/withSuspense";
 import {Layout} from 'antd';
 import {Navbar} from "./components/Navbar/Navbar";
-import {routes} from "./Routes/Routes";
-import {DialogContainer} from "./components/Dialogs/Dialog/DialogContainer";
-import Page404 from "./components/common/404/Page404";
-
-
-const {Content} = Layout;
-
-const DialogsContainer = lazy((): any => import('./components/Dialogs/DialogsContainer')
-    .then(({DialogsContainer}) => ({default: DialogsContainer})));
+import {Errors} from "./components/common/Errors/Errors";
+import {MainContent} from "./MainContent";
 
 class App extends React.Component<AppPropsType> {
     componentDidMount() {
@@ -36,26 +25,14 @@ class App extends React.Component<AppPropsType> {
         }
         return (
             <Layout>
+
                 <HeaderContainer/>
 
                 <Layout>
                     {this.props.isAuth && <Navbar/>}
-                    <Content>
-                        <Switch>
-
-                            <Route path={routes.dialogs} render={withSuspense(DialogsContainer)}/>
-                            <Route path={routes.dialog} render={() => <DialogContainer/>}/>
-                            <Route path={routes.profile} render={() => <ProfileContainer/>}/>
-                            <Route path={routes.users} render={() => <UsersContainer/>}/>
-                            <Route path={routes.login} render={() => <LoginContainer/>}/>
-                            <Route path={'/'} render={() => <Redirect to={'/login'}/>}/>
-
-                            <Route path={'*'} render={() => <Page404/>}/>
-
-                        </Switch>
-                    </Content>
+                    <MainContent/>
                 </Layout>
-
+                <Errors errorMessege={'fff'}/>
             </Layout>
         );
     }
