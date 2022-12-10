@@ -7,7 +7,7 @@ type ErrorsPropsType = {
 }
 export const Errors: React.FC<ErrorsPropsType> = ({errorMessege}) => {
     const [api, contextHolder] = notification.useNotification();
-    
+
     const openNotification = (placement: NotificationPlacement) => {
 
         api.error({
