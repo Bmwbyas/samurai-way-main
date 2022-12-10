@@ -20,6 +20,7 @@ type PostPropsType = {
     addComment: (payload: { postId: string, comment: string }) => void
     commentData: CommentsStateType
     toggleLike:(payload: { postId: string; id?: string; likeValue: number;}) =>void
+
 }
 
 export const Post: React.FC<PostPropsType> = ({

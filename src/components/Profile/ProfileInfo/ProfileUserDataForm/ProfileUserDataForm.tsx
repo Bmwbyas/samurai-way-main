@@ -83,7 +83,7 @@ export const ProfileUserDataForm: React.FC<ProfileUserDataFormPropsType> = ({
 
     const onSubmit: SubmitHandler<Inputs> = data => {
         setEditMode(false)
-        console.log(data)
+        // console.log(data)
         updateProfileData(data.dataFromServer)
         reset()
 

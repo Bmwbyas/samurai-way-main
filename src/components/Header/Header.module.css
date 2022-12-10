@@ -27,13 +27,19 @@
     top: -36%;
 }
 
-.header {
-    height: 50px;
-}
-
 .headerAvatar {
     display: flex;
     align-items: center;
+
+}
+
+.dropdown {
+    color: white;
+    cursor: pointer;
+
+}
+.tooltip{
+
 }
 
 .avatar {

@@ -53,6 +53,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = memo(({
                        avatarProfile={avatarProfile}
                        postData={postData}
                        addComment={addComment}
+                       name={userName}
                 />
             </div>
 
