@@ -1,10 +1,10 @@
 import {authAPI, securityAPI, SendLoginPropertyType} from "../api/api";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
-import {FormAction, stopSubmit} from "redux-form";
+import {FormAction} from "redux-form";
 import {setIsFetching} from "./users-reducer";
-import {setError} from "./app-reducer";
 import {AxiosError} from "axios";
+import {handleNetworkError, handleServerError} from "../utils/HandleNetworkError/handleNetworkError";
 
 export  type AuthStateType = {
     id: number | null,
@@ -54,11 +54,19 @@ export const setMyAvatar = (avatar: string | null) => ({type: 'AUTH/SET-AVATAR',
 type authUserThunkType = ThunkAction<any, AppStateType, unknown, AuthReducerActionType>
 
 export const getAuthUserData = (): authUserThunkType => async (dispatch) => {
-    const response = await authAPI.getAuthMe()
-    if (response.data.resultCode === 0) {
-        let {id, email, login} = response.data.data
-        dispatch(setUserData(id, email, login, true))
+    dispatch(setIsFetching(true))
+    try {
+        const response = await authAPI.getAuthMe()
+        if (response.data.resultCode === 0) {
+            let {id, email, login} = response.data.data
+            dispatch(setUserData(id, email, login, true))
+        }
+        dispatch(setIsFetching(false))
+    }catch (e){
+        const error = e as AxiosError
+        handleNetworkError(dispatch,error)
     }
+
 }
 export const loginAuthUser = (loginValue: SendLoginPropertyType): authUserThunkType =>
     async (dispatch) => {
@@ -68,21 +76,16 @@ export const loginAuthUser = (loginValue: SendLoginPropertyType): authUserThunkT
             if (response.data.resultCode === 0) {
                 dispatch(getAuthUserData())
             } else if (response.data.resultCode === 1) {
-                let message = response.data.messages.length ? response.data.messages[0] : 'some error'
-                dispatch(setError({error: message}))
+                handleServerError(dispatch,response.data.messages)
             } else if (response.data.resultCode === 10) {
                 dispatch(getCaptchaURL())
-
-                let message = response.data.messages.length ? response.data.messages[0] : 'some error'
-                dispatch(setError({error: message}))
-                dispatch(stopSubmit('login', {_error: message}))
+                handleServerError(dispatch,response.data.messages)
             }
 
             dispatch(setIsFetching(false))
         } catch (e) {
             const error = e as AxiosError
-            dispatch(setError({error: error.message ? error.message : "some error occurred"}))
-            dispatch(setIsFetching(false))
+            handleNetworkError(dispatch,error)
         }
 
     }
@@ -97,11 +100,13 @@ export const logOutAuthUser = (): authUserThunkType =>
             if (response.data.resultCode === 0) {
                 dispatch(setUserData(null, null, null, false))
             }
+            else{
+                handleServerError(dispatch,response.data.messages)
+            }
 
         } catch (e) {
             const error = e as AxiosError
-            dispatch(setError({error: error.message ? error.message : "some error occurred"}))
-            dispatch(setIsFetching(false))
+            handleNetworkError(dispatch,error)
         }
 
     }
@@ -111,10 +116,10 @@ export const getCaptchaURL = (): authUserThunkType =>
         try {
             const response = await securityAPI.getCaptchaUrl()
             dispatch(setCaptcha(response.data.url))
+            dispatch(setIsFetching(false))
         } catch (e) {
             const error = e as AxiosError
-            dispatch(setError({error: error.message ? error.message : "some error occurred"}))
-            dispatch(setIsFetching(false))
+            handleNetworkError(dispatch,error)
         }
     }
 

@@ -7,7 +7,8 @@ export  type AppStateInitialType = {
     initialized: boolean
     error:  null | string,
 }
-type InitializedSuccessAppType = ReturnType<typeof initializedSuccessApp>|ReturnType<typeof setError>
+export type SetErrorType=ReturnType<typeof setError>
+type InitializedSuccessAppType = ReturnType<typeof initializedSuccessApp>|SetErrorType
 
 type AppReducerActionType = InitializedSuccessAppType
 

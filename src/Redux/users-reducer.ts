@@ -28,7 +28,7 @@ type SetCurrentPageType = {
 }
 
 type SetTotalcountType = ReturnType<typeof setTotalCount>
-type SetIsFetchingType = ReturnType<typeof setIsFetching>
+export type SetIsFetchingType = ReturnType<typeof setIsFetching>
 type FollowingInProgressType = ReturnType<typeof setFollowingInProgress>
 type UsersReducerActionType = FollowUserActionType
     | SetUsers
