@@ -14,7 +14,7 @@ type FriendsPropsType = {
     isOwner:boolean
     followingInProgress:number[]
 }
-export const Friends: React.FC<FriendsPropsType> = ({changeFriends, friends,
+export const Friends: React.FC<FriendsPropsType> = React.memo(({changeFriends, friends,
                                                         isOwner,followingInProgress}) => {
     const standartPortion = 8
     const [sizePortion, setSizePortion] = React.useState(standartPortion)
@@ -22,6 +22,7 @@ export const Friends: React.FC<FriendsPropsType> = ({changeFriends, friends,
     const nextPortion = () => {
         setSizePortion(sizePortion + standartPortion)
     }
+    console.log('friends')
     const showNextFriendsButton = showMoreFriends(friends.length, sizePortion)
 
     const friendsData = friendPortion.map((f) => {
@@ -47,5 +48,5 @@ export const Friends: React.FC<FriendsPropsType> = ({changeFriends, friends,
 
         </>
     );
-};
+});
 

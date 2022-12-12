@@ -6,7 +6,7 @@ type PaginationUsersPropsType={
     updateUsersData:(data:{page:number,count:number})=>void
     totalUsersCount:number
 }
-export const PaginationUsers:React.FC<PaginationUsersPropsType> = ({updateUsersData,totalUsersCount,
+export const PaginationUsers:React.FC<PaginationUsersPropsType> =({updateUsersData,totalUsersCount,
                                                                        pageSize,currentPage
 }) => {
     const onChangePaginationValue = (page: number, pageSize: number) => updateUsersData({page, count: pageSize})
@@ -23,6 +23,7 @@ export const PaginationUsers:React.FC<PaginationUsersPropsType> = ({updateUsersD
         <Pagination defaultCurrent={currentPage} onChange={onChangePaginationValue}
                     hideOnSinglePage={true}
                     showTitle={false}
+                    current={currentPage}
                     defaultPageSize={pageSize} total={totalUsersCount}
                     pageSizeOptions={pageSizeOptions()}/>
     );

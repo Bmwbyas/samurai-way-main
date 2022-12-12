@@ -8,7 +8,7 @@ type SearchUserType = {
     placeholder:string
 
 }
-export const SearchUser: React.FC<SearchUserType> = ({getSearchUsers,isLoading,placeholder,defaultSearchValue}) => {
+export const SearchUser: React.FC<SearchUserType> = React.memo(({getSearchUsers,isLoading,placeholder,defaultSearchValue}) => {
 
     const onSearch = (value: string) => getSearchUsers && getSearchUsers(value)
     const defaultValue=defaultSearchValue??undefined
@@ -24,5 +24,5 @@ export const SearchUser: React.FC<SearchUserType> = ({getSearchUsers,isLoading,p
             disabled={isLoading}
         />
     );
-};
+});
 

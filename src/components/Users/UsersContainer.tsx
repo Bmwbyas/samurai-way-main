@@ -3,7 +3,8 @@ import {AppStateType} from "../../Redux/redux-store";
 import {connect} from "react-redux";
 import {
     changeFollow,
-    changeFollowUnfollow, getFriend,
+    changeFollowUnfollow,
+    getFriend,
     getUsers,
     setFollowingInProgress,
     updateUsersParams,
@@ -21,7 +22,6 @@ import {
     getUsersSuperSelector
 } from "../../Redux/usersSelectors";
 import {GetUsersParamsType} from "../../api/api";
-import {Skeleton} from "antd";
 import {getUserProfile} from "../../Redux/profile-reduser";
 
 
@@ -46,12 +46,18 @@ class UsersContainerWithAPI extends React.PureComponent<UsersPropsType> {
     }
 
 
+    componentWillUnmount() {
+        console.log('unmountUsers')
+        updateUsersParams({page: 1})
+    }
+
     render() {
         console.log('UsersContainerWithAPI Component render')
         return (
             <>
-                <Skeleton loading={this.props.isFetching} style={{height:'75vh'}}>
+                {/*<Skeleton loading={this.props.isFetching} style={{height:'75vh'}}>*/}
                     <Users
+
                         key={this.props.totalUsersCount}
                         usersData={this.props.usersData}
                         updateUsersData={this.updateUsersData}
@@ -65,7 +71,7 @@ class UsersContainerWithAPI extends React.PureComponent<UsersPropsType> {
                         friends={this.props.friends}
                         isOwner={this.props.myId === this.props.profileId}
                     />
-                </Skeleton>
+                {/*</Skeleton>*/}
             </>
         );
     }
@@ -114,7 +120,8 @@ const mapDispatchToProps = {
     changeFollowUnfollow,
     updateUsersParams,
     getFriend,
-    getUserProfile
+    getUserProfile,
+
 }
 
 export const UsersContainer = compose<React.ComponentType>(

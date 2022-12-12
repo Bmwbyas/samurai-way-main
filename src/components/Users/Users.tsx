@@ -1,12 +1,8 @@
 import React, {useCallback} from 'react';
-import s from "./Users.module.css";
 import {UsersDataType} from "../../Redux/users-reducer";
-import {User} from "./User/User";
-import sProfilePage from "../Profile/Profile.module.css";
-import {Col, Divider, Row} from "antd";
-import {SearchUser} from "../common/SearchUser/SearchUser";
+import {Col, Row} from "antd";
 import {Friends} from "./Friends/Friends";
-import {PaginationUsers} from "./PaginationUsers/PaginationUsers";
+import {ViewUsers} from "./ViewUsers/ViewUsers";
 
 
 type UsersJsxPropsType = {
@@ -20,7 +16,7 @@ type UsersJsxPropsType = {
     isLoading: boolean
     defaultSearchValue: string | null | undefined
     friends: UsersDataType[]
-    isOwner:boolean
+    isOwner: boolean
 
 }
 
@@ -41,45 +37,34 @@ export const Users: React.FC<UsersJsxPropsType> = React.memo(({
                                                               }) => {
     console.log('Users Component render')
 
-    const getSearchUsers = (term: string) => {
+    const getSearchUsers = useCallback((term: string) => {
         updateUsersData({term, page: 1, count: 10})
-    }
-    const changeFriends=useCallback((user:UsersDataType)=>{
+    },[])
+    const changeFriends = useCallback((user: UsersDataType) => {
         changeFollowUnfollow(user)
-    },[changeFollowUnfollow])
-    const setUsers =  usersData.map((user) => {
-        const onClickHandler = () => {
-            changeFriends(user)
-        }
-        return <User key={user.id} user={user} followingInProgress={followingInProgress}
-                     onClickHandler={onClickHandler}/>
-    })
+    }, [changeFollowUnfollow])
+    const setPaginationParams= useCallback((params: { page?: number, count?: number, term?: string })=>{
+        updateUsersData(params)
+    },[currentPage,pageSize])
 
     return (
 
-            <Row style={{marginTop: 20}} >
-                <Col className="gutter-row" span={15}>
+        <Row style={{marginTop: 20}}>
+            <Col className="gutter-row" span={15}>
 
-                    <div className={sProfilePage.profileInfoContainer}>
+                <ViewUsers usersData={usersData} changeFriends={changeFriends} followingInProgress={followingInProgress}
+                           getSearchUsers={getSearchUsers} totalUsersCount={totalUsersCount} pageSize={pageSize}
+                           updateUsersData={setPaginationParams} currentPage={currentPage}
+                           isLoading={isLoading} defaultSearchValue={defaultSearchValue}/>
 
-                        <Row>All Users <span className={s.totalCountUsers}>{totalUsersCount}</span> </Row>
-                        <Divider style={{margin: 10}}/>
-                        <SearchUser defaultSearchValue={defaultSearchValue} placeholder={'Search users'}
-                                    getSearchUsers={getSearchUsers} isLoading={isLoading}/>
-                        <Divider style={{margin: 10}}/>
+            </Col>
+            <Col className="gutter-row" span={9}>
 
-                        {setUsers}
-                        <PaginationUsers pageSize={pageSize} totalUsersCount={totalUsersCount}
-                        updateUsersData={updateUsersData} currentPage={currentPage}/>
-                    </div>
+                <Friends isOwner={isOwner} followingInProgress={followingInProgress} friends={friends}
+                         changeFriends={changeFriends}/>
 
-                </Col>
-                <Col className="gutter-row" span={9}>
-
-                   <Friends isOwner={isOwner} followingInProgress={followingInProgress} friends={friends} changeFriends={changeFriends}/>
-
-                </Col>
-            </Row>
+            </Col>
+        </Row>
 
     );
 });
