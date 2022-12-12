@@ -54,7 +54,9 @@ export const HeaderTSX: React.FC<HeaderPropsType> = ({isAuth, logOutAuthUser, lo
 
                 </Dropdown>
                 }
+
             </div>
+
         </Header>
     );
 }

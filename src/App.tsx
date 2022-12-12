@@ -11,6 +11,7 @@ import {Layout} from 'antd';
 import {Navbar} from "./components/Navbar/Navbar";
 import {Errors} from "./components/common/Errors/Errors";
 import {MainContent} from "./MainContent";
+import {Loading} from "./components/common/Loading/Loading";
 
 class App extends React.Component<AppPropsType> {
     componentDidMount() {
@@ -25,11 +26,11 @@ class App extends React.Component<AppPropsType> {
         }
         return (
             <Layout>
-
                 <HeaderContainer/>
-
+                { this.props.isFetching&& <Loading/>}
                 <Layout>
                     {this.props.isAuth && <Navbar/>}
+
                     <MainContent/>
                 </Layout>
                 <Errors setError={setError} errorMessege={this.props.error}/>
@@ -40,9 +41,14 @@ class App extends React.Component<AppPropsType> {
 
 type AppPropsType = MapDispatchToPropsType & MapStateToPropsType
 type MapDispatchToPropsType = typeof mapDispatchToProps
-type MapStateToPropsType = { initialized: boolean, isAuth: boolean, error:string|null}
+type MapStateToPropsType = { initialized: boolean, isAuth: boolean, error:string|null,isFetching:boolean}
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
-    return {initialized: state.app.initialized, isAuth: state.auth.isAuth,error:state.app.error }
+    return {
+        initialized: state.app.initialized,
+        isAuth: state.auth.isAuth,
+        error:state.app.error,
+        isFetching:state.usersPage.isFetching
+    }
 }
 
 const mapDispatchToProps = {

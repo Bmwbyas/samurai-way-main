@@ -25,7 +25,7 @@ import {GetUsersParamsType} from "../../api/api";
 import {getUserProfile} from "../../Redux/profile-reduser";
 
 
-class UsersContainerWithAPI extends React.PureComponent<UsersPropsType> {
+class UsersContainerWithAPI extends React.Component<UsersPropsType> {
 
     componentDidMount() {
         const {pageSize} = this.props
