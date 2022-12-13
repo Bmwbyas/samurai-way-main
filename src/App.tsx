@@ -28,12 +28,13 @@ class App extends React.Component<AppPropsType> {
             <Layout>
                 <HeaderContainer/>
                 { this.props.isFetching&& <Loading/>}
+                <Errors setError={setError} errorMessege={this.props.error}/>
                 <Layout>
                     {this.props.isAuth && <Navbar/>}
 
                     <MainContent/>
                 </Layout>
-                <Errors setError={setError} errorMessege={this.props.error}/>
+
             </Layout>
         );
     }

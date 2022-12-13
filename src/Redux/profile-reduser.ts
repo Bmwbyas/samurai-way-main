@@ -3,6 +3,9 @@ import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
 import {setMyAvatar, SetMyAvatarType} from "./auth-reducer";
 import {v1} from "uuid";
+import {AxiosError} from "axios";
+import {handleNetworkError, handleServerError} from "../utils/HandleNetworkError/handleNetworkError";
+import {setIsFetching, SetIsFetchingType} from "./users-reducer";
 
 export type ContactsType = {
     github: string | null
@@ -67,6 +70,7 @@ type ProfileReducerActionType =
     | SetMyAvatarType
     | ReturnType<typeof addComment>
     | ReturnType<typeof toggleLike>
+    | SetIsFetchingType
 
 export type ProfilePageStateType = typeof initialState
 const id1 = v1()
@@ -179,49 +183,91 @@ export const toggleLike = (payload: { postId: string, id?: string, likeValue: nu
 type ThunkCreatorType = ThunkAction<void, AppStateType, unknown, ProfileReducerActionType>
 
 export const getUserProfile = (userId: number): ThunkCreatorType => async (dispatch, getState: () => AppStateType) => {
-    const myId = getState().auth.id
-    if (!userId) userId = myId!
-    const response = await profileAPI.getProfile(userId)
+    dispatch(setIsFetching(true))
+    try {
+        const myId = getState().auth.id
+        if (!userId) userId = myId!
+        const response = await profileAPI.getProfile(userId)
 
-    if (response.data.userId === myId) {
-        dispatch(setMyAvatar(response.data.photos.small ?? ''))
+        if (response.data.userId === myId) {
+            dispatch(setMyAvatar(response.data.photos.small ?? ''))
+        }
+        dispatch(setUserProfile(response.data))
+        dispatch(setIsFetching(false))
+    } catch (e) {
+        const error = e as AxiosError
+        handleNetworkError(dispatch, error)
     }
-    dispatch(setUserProfile(response.data))
 }
 export const getProfileStatus = (userId: number): ThunkCreatorType => async (dispatch) => {
-
-    const response = await profileAPI.getStatus(userId)
-    dispatch(setProfileStatus(response.data))
+    dispatch(setIsFetching(true))
+    try {
+        const response = await profileAPI.getStatus(userId)
+        dispatch(setProfileStatus(response.data))
+        dispatch(setIsFetching(false))
+    } catch (e) {
+        const error = e as AxiosError
+        handleNetworkError(dispatch, error)
+    }
 
 
 }
 export const updateProfileStatus = (newStatus: string): ThunkCreatorType => async (dispatch) => {
-    const response = await profileAPI.updateStatus(newStatus)
-    if (response.data.resultCode === 0) {
-        dispatch(setProfileStatus(newStatus))
+    dispatch(setIsFetching(true))
+    try {
+        const response = await profileAPI.updateStatus(newStatus)
+        if (response.data.resultCode === 0) {
+            dispatch(setProfileStatus(newStatus))
+        }else {
+            handleServerError(dispatch, response.data.messages)
+        }
+        dispatch(setIsFetching(false))
+    }catch (e) {
+        const error = e as AxiosError
+        handleNetworkError(dispatch, error)
     }
+
 }
 export const savePhoto = (value: File): ThunkCreatorType => async (dispatch, getState: () => AppStateType) => {
-    const response = await profileAPI.savePhoto(value)
-    if (response.data.resultCode === 0) {
-        const myId = getState().auth.id
-        const oldProfile = getState().profilePage.profile
-        const newProfile = {...oldProfile!, photos: response.data.data.photos}
+    dispatch(setIsFetching(true))
+   try {
+       const response = await profileAPI.savePhoto(value)
+       if (response.data.resultCode === 0) {
+           const myId = getState().auth.id
+           const oldProfile = getState().profilePage.profile
+           const newProfile = {...oldProfile!, photos: response.data.data.photos}
 
-        if (newProfile.userId === myId) {
-            dispatch(setMyAvatar(response.data.data.photos.small))
-        }
-        dispatch(savePhotoSuccess(newProfile))
-    }
+           if (newProfile.userId === myId) {
+               dispatch(setMyAvatar(response.data.data.photos.small))
+           }
+           dispatch(savePhotoSuccess(newProfile))
+       }
+       else {
+           handleServerError(dispatch, response.data.messages)
+       }
+       dispatch(setIsFetching(false))
+   }catch (e) {
+       const error = e as AxiosError
+       handleNetworkError(dispatch, error)
+   }
+
+
 }
 export const updateProfileData = (newProfileData: UserUpdateProfileType): ThunkCreatorType => async (dispatch, getState: () => AppStateType) => {
+    dispatch(setIsFetching(true))
     try {
+
         const userId = getState().profilePage.profile!.userId
         const response = await profileAPI.updateUserData(newProfileData)
         if (response.data.resultCode === 0) {
             dispatch(getUserProfile(userId!))
         }
-    } catch (e) {
-
+        else {
+            handleServerError(dispatch, response.data.messages)
+        }
+        dispatch(setIsFetching(false))
+    }catch (e) {
+        const error = e as AxiosError
+        handleNetworkError(dispatch, error)
     }
 }

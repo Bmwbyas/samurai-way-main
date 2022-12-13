@@ -23,7 +23,9 @@ export const Errors: React.FC<ErrorsPropsType> = ({errorMessege,setError}) => {
 
 
     };
-    errorMessege && openNotification('bottom')
+    React.useEffect(()=>{
+        errorMessege && openNotification('bottom')},[])
+
     return (
         <>
             {contextHolder}

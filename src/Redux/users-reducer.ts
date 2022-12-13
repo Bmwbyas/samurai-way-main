@@ -2,6 +2,8 @@ import {GetUsersParamsType, usersAPI} from "../api/api";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
 import {getRandomInt} from "../components/common/IntegerRandom/IntegerRandom";
+import {AxiosError} from "axios";
+import {handleNetworkError, handleServerError} from "../utils/HandleNetworkError/handleNetworkError";
 
 export type UsersDataType = {
     id: number
@@ -41,19 +43,18 @@ type UsersReducerActionType = FollowUserActionType
     | ReturnType<typeof setFriend>
     | ReturnType<typeof clearDataFriends>
     | ReturnType<typeof setUserUnknown>
-|ReturnType<typeof toggleIsLoading>
-|ReturnType<typeof clearUsers>
-|ReturnType<typeof updateUsersParams>
-
+    | ReturnType<typeof toggleIsLoading>
+    | ReturnType<typeof clearUsers>
+    | ReturnType<typeof updateUsersParams>
 
 
 export type UsersPageStateType = typeof initialState
 let initialState = {
     getUsersParams: {
-        page:1,
-        count:8,
-        term:null,
-        friend:null
+        page: 1,
+        count: 8,
+        term: null,
+        friend: null
     } as GetUsersParamsType,
     usersData: [] as UsersDataType[],
     pageSize: 10,
@@ -61,9 +62,9 @@ let initialState = {
     currentPage: 1,
     isFetching: false,
     followingInProgress: [] as number[],
-    friends: []  as UsersDataType[],
+    friends: [] as UsersDataType[],
     usersUnknown: [] as UsersDataType[],
-    isLoading:false
+    isLoading: false
 
 }
 
@@ -80,7 +81,7 @@ export const usersReducer = (state = initialState, action: UsersReducerActionTyp
 
 
         case 'USER/SET-USERS':
-            return {...state, usersData:action.users}
+            return {...state, usersData: action.users}
 
         case 'USER/SET-CURRENT-PAGE':
             return {...state, currentPage: action.currentPage}
@@ -113,11 +114,11 @@ export const usersReducer = (state = initialState, action: UsersReducerActionTyp
         case "USER/USER-UNKNOWN":
             return {...state, usersUnknown: action.users}
         case "USER/TOGGLE-LOADING":
-        return {...state,isLoading:action.isLoading}
+            return {...state, isLoading: action.isLoading}
         case "USER/CLEAR-USERS":
-        return {...state,usersData: []}
+            return {...state, usersData: []}
         case "USER/UPDATE-USERS-PARAMS":
-            return {...state,getUsersParams: {...state.getUsersParams,...action.payload}}
+            return {...state, getUsersParams: {...state.getUsersParams, ...action.payload}}
         default:
             return state;
     }
@@ -145,8 +146,10 @@ export const clearDataFriends = () => ({type: 'USER/CLEAR-DATA-FRIENDS'}) as con
 export const setUserUnknown = (users: UsersDataType[]) => ({type: 'USER/USER-UNKNOWN', users}) as const
 export const toggleIsLoading = (isLoading: boolean) => ({type: 'USER/TOGGLE-LOADING', isLoading}) as const
 export const clearUsers = () => ({type: 'USER/CLEAR-USERS'}) as const
-export const updateUsersParams = (params:GetUsersParamsType) => ({type: 'USER/UPDATE-USERS-PARAMS',payload:params}) as const
-
+export const updateUsersParams = (params: GetUsersParamsType) => ({
+    type: 'USER/UPDATE-USERS-PARAMS',
+    payload: params
+}) as const
 
 
 type ThunkCreatorType = ThunkAction<void, AppStateType, unknown, UsersReducerActionType>
@@ -154,44 +157,60 @@ type ThunkCreatorType = ThunkAction<void, AppStateType, unknown, UsersReducerAct
 //thunks
 
 
-
-
-export const getUsers = (paramsGetUsers:GetUsersParamsType): ThunkCreatorType => async (dispatch, getState:()=>AppStateType) => {
-
+export const getUsers = (paramsGetUsers: GetUsersParamsType): ThunkCreatorType => async (dispatch, getState: () => AppStateType) => {
     dispatch(setIsFetching(true))
-    if(paramsGetUsers.term!==null)dispatch(toggleIsLoading(true))
-    let getParamsStore=getState().usersPage.getUsersParams
-    let params:GetUsersParamsType={
-        ...getParamsStore,...paramsGetUsers
-    }
-    dispatch(updateUsersParams(params))
-    const data = await usersAPI.getUsers(params)
+    try {
+
+        if (paramsGetUsers.term !== null) dispatch(toggleIsLoading(true))
+        let getParamsStore = getState().usersPage.getUsersParams
+        let params: GetUsersParamsType = {
+            ...getParamsStore, ...paramsGetUsers
+        }
+        dispatch(updateUsersParams(params))
+        const data = await usersAPI.getUsers(params)
 
         dispatch(setUsers(data.items))
         dispatch(setTotalCount(data.totalCount))
-    dispatch(setIsFetching(false))
-    if(paramsGetUsers.term!==null)dispatch(toggleIsLoading(false))
+        dispatch(setIsFetching(false))
+        if (paramsGetUsers.term !== null) dispatch(toggleIsLoading(false))
+        dispatch(setIsFetching(false))
+    } catch (e) {
+        const error = e as AxiosError
+        handleNetworkError(dispatch, error)
+    }
 }
 
 export const getUnknown = (): ThunkCreatorType => async (dispatch) => {
-    const currentPage = getRandomInt(1, 30)
-    const pageSize = 8
-    const response = await usersAPI.getUsers({page: currentPage, count: pageSize, friend: false})
-    dispatch(setUserUnknown(response.items))
-
+    dispatch(setIsFetching(true))
+    try {
+        const currentPage = getRandomInt(1, 30)
+        const pageSize = 8
+        const response = await usersAPI.getUsers({page: currentPage, count: pageSize, friend: false})
+        dispatch(setUserUnknown(response.items))
+        dispatch(setIsFetching(false))
+    } catch (e) {
+        const error = e as AxiosError
+        handleNetworkError(dispatch, error)
+    }
 }
 
 export const getFriend = (isFriends?: boolean): ThunkCreatorType => async (dispatch) => {
-
-    const response = await usersAPI.getUsers({page: 1, count: 100, friend: isFriends})
-    dispatch(setFriend(response.items))
+    dispatch(setIsFetching(true))
+    try {
+        const response = await usersAPI.getUsers({page: 1, count: 100, friend: isFriends})
+        dispatch(setFriend(response.items))
+        dispatch(setIsFetching(false))
+    } catch (e) {
+        const error = e as AxiosError
+        handleNetworkError(dispatch, error)
+    }
 
 }
 
 
 export const changeFollowUnfollow = (user: UsersDataType): ThunkCreatorType => async (dispatch) => {
     dispatch(setFollowingInProgress(true, user.id))
-
+    dispatch(setIsFetching(true))
     try {
         if (user.followed) {
             const data = await usersAPI.deleteFollowUser(user.id)
@@ -199,6 +218,9 @@ export const changeFollowUnfollow = (user: UsersDataType): ThunkCreatorType => a
                 dispatch(deleteFriend(user.id))
                 dispatch(changeFollow(user.id))
                 dispatch(getFriend(true))
+                dispatch(setIsFetching(false))
+            } else {
+                handleServerError(dispatch, data.messages)
             }
         } else {
             const data = await usersAPI.addFollowUser(user.id)
@@ -206,13 +228,17 @@ export const changeFollowUnfollow = (user: UsersDataType): ThunkCreatorType => a
                 dispatch(changeFollow(user.id))
                 dispatch(addFriend(user))
                 dispatch(getFriend(true))
+            } else {
+                handleServerError(dispatch, data.messages)
             }
+
 
         }
         dispatch(setFollowingInProgress(false, user.id))
 
-    }catch (e:any){
-
+    } catch (e) {
+        const error = e as AxiosError
+        handleNetworkError(dispatch, error)
     }
 
 }

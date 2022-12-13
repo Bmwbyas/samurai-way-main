@@ -6,7 +6,7 @@ export const Loading: React.FC = () => {
 
     return (
         <div className={s.progressContainer}>
-            <Spin style={{top:0,right:'50%'}} tip="Loading" size="large"/>
+            <Spin tip="Loading" size="large"/>
          </div>
     );
 };
