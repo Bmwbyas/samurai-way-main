@@ -103,7 +103,7 @@ export const logOutAuthUser = (): authUserThunkType =>
             else{
                 handleServerError(dispatch,response.data.messages)
             }
-
+            dispatch(setIsFetching(false))
         } catch (e) {
             const error = e as AxiosError
             handleNetworkError(dispatch,error)
