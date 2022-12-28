@@ -38,7 +38,7 @@ export const Login: React.FC<LoginType> = ({loginAuthUser, isAuth, captcha}) => 
                 <h1 className={s.title}>Log in</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
 
-                    <Controller
+                       <Controller
                         name="email"
                         control={control}
                         defaultValue=""
